@@ -1,0 +1,20 @@
+.section-carousel-medical-facility {
+    height: 330px;
+    padding-top: 1px;
+    background: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    .block-slide-medical-facility {
+        .img-customize-medical-facility {
+            height: 155px;
+            background-image: url("https://www.w3schools.com/css/rock600x400.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        p {
+            font-size: 16px;
+        }
+    }
+}

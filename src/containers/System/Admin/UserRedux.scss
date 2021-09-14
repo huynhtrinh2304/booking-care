@@ -1,0 +1,28 @@
+.preview-img-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .label-upload {
+        padding: 5px;
+        border-radius: 3px;
+        background-color: #ddd;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+    .content-img {
+        width: 65%;
+        height: 100px;
+        .preview-img-content {
+            width: 65%;
+            height: 100px;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            cursor: pointer;
+        }
+    }
+}

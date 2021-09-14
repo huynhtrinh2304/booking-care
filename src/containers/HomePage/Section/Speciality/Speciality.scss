@@ -1,0 +1,20 @@
+.section-carousel-speciality {
+    height: 330px;
+    background: #f5f5f5;
+    padding-top: 1px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    .block-slide-speciality {
+        .img-customize-speciality {
+            height: 155px;
+            background-image: url("https://i.ytimg.com/vi/5qap5aO4i9A/hq720_live.jpg?sqp=CIS4vYkG-oaymwEXCNAFEJQDSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDK2Q9a7bkJrPagb1Ht05n2-L8QOg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        p {
+            font-size: 16px;
+        }
+    }
+}
