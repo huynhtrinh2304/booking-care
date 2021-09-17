@@ -1,5 +1,7 @@
 import actionTypes from './actionTypes';
-import { getAllCodeServicesApi } from '../../services/userService'
+import { getAllCodeServicesApi, createNewUserApi } from '../../services/userService'
+
+
 
 
 
@@ -24,6 +26,19 @@ export const fetchGenderStart = () => {
 }
 
 
+//GENDER
+export const fetchGenderSuccess = (genderData) => ({
+    type: actionTypes.FETCH_GENDER_SUCCESS,
+    data: genderData
+
+});
+export const fetchGenderFailed = () => ({
+    type: actionTypes.FETCH_GENDER_FAILED
+})
+
+
+
+
 
 //POSITION
 export const fetchPositionStart = () => {
@@ -42,6 +57,17 @@ export const fetchPositionStart = () => {
         }
     }
 }
+
+
+//POSITION
+export const fetchPositionSuccess = (positionData) => ({
+    type: actionTypes.FETCH_POSITION_SUCCESS,
+    data: positionData
+})
+export const fetchPositionFailed = () => ({
+    type: actionTypes.FETCH_POSITION_FAILEDED
+})
+
 
 
 
@@ -65,46 +91,46 @@ export const fetchRoleStart = () => {
 }
 
 
-
-
-
-//GENDER
-export const fetchGenderSuccess = (genderData) => ({
-    type: actionTypes.FETCH_GENDER_SUCCESS,
-    data: genderData
-
-});
-
-export const fetchGenderFailed = () => ({
-    type: actionTypes.FETCH_GENDER_FAILED
-})
-
-
-
-
-
-//POSITION
-export const fetchPositionSuccess = (positionData) => ({
-    type: actionTypes.FETCH_POSITION_SUCCESS,
-    data: positionData
-})
-
-export const fetchPositionFailed = () => ({
-    type: actionTypes.FETCH_POSITION_FAILED
-})
-
-
-
-
-
 //ROLE
 export const fetchRoleSuccess = (roleData) => ({
     type: actionTypes.FETCH_ROLE_SUCCESS,
     data: roleData
 })
-
 export const fetchRoleFailed = () => ({
-    type: actionTypes.FETCH_ROLE_FAILED
+    type: actionTypes.FETCH_ROLE_FAILEDED
+})
+
+
+
+
+
+//CREATE USER BY REDUX
+export const createNewUser = (data) => {
+    return async (dispatch, getState) => {
+        try {
+            console.log(data);
+            let res = await createNewUserApi(data);
+            if (res && res.errCode === 0) {
+                dispatch(createUserSuccess(res.errMessage));
+            } else {
+                dispatch(createUserFailed(res.errMessage));
+            }
+        } catch (error) {
+            dispatch(fetchRoleFailed());
+            console.log('createUserFailed', error);
+        }
+    }
+}
+
+
+//CREATE USER BY REDUX
+export const createUserSuccess = (errMessage) => ({
+    type: actionTypes.CREATE_USER_SUCCESS,
+    errMessage: errMessage
+})
+export const createUserFailed = (errMessage) => ({
+    type: actionTypes.CREATE_USER_FAILED,
+    errMessage: errMessage
 })
 
 

@@ -5,6 +5,7 @@
     justify-content: space-between;
     .label-upload {
         padding: 5px;
+        margin-top: 30px;
         border-radius: 3px;
         background-color: #ddd;
         cursor: pointer;
@@ -15,9 +16,9 @@
     }
     .content-img {
         width: 65%;
-        height: 100px;
+        height: 66px;
         .preview-img-content {
-            width: 65%;
+            width: 100%;
             height: 100px;
             background-position: center;
             background-repeat: no-repeat;
