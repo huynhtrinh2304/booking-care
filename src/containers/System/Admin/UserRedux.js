@@ -3,11 +3,13 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions'
 import './UserRedux.scss'
-
+import TableManageUser from './TableManageUser';
 
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 
+
+import 'react-toastify/dist/ReactToastify.css';
 
 
 class UserRedux extends Component {
@@ -22,6 +24,8 @@ class UserRedux extends Component {
             roleArr: [],
             previewImgURL: '',
             isOpenLightBox: false,
+            isOpenFormCreateUser: false,
+            isCreatedUser: true,
 
             infoUser: {
 
@@ -42,6 +46,8 @@ class UserRedux extends Component {
 
 
         }
+
+
     }
 
 
@@ -70,8 +76,29 @@ class UserRedux extends Component {
         }
 
         if (prevProps.roleRedux !== this.props.roleRedux) {
+
             this.setState({
                 roleArr: this.props.roleRedux
+            })
+        }
+
+
+        if (prevProps.users !== this.props.users) {
+            this.setState({
+                infoUser: {
+
+                    email: '',
+                    password: '',
+                    firstName: '',
+                    lastName: '',
+                    phoneNumber: '',
+                    address: '',
+                    gender: '',
+                    position: '',
+                    role: '',
+
+                },
+
             })
         }
 
@@ -107,36 +134,27 @@ class UserRedux extends Component {
 
     handleSaveUser = async () => {
         let isValid = this.validateInput();
-        let infoUser = { ...this.state.infoUser }
         if (isValid === false) return;
 
         await this.props.createNewUser(this.state.infoUser);
 
-        alert(this.props.isCreatedUser[1])
-        console.log(this.state.infoUser);
-        this.setState({
-            infoUser: {
-                email: 'a',
-                password: '',
-                firstName: '',
-                lastName: '',
-                phoneNumber: '',
-                address: '',
-                gender: '',
-                position: '',
-                role: '',
-            }
-        })
-        this.render();
+
+
 
     }
 
+
+
+
     onChangeInput = (e) => {
+        let copyState = { ...this.state.infoUser }
+        let name = e.target.name;
+        let value = e.target.value;
+        copyState[name] = value;
 
-        let name = e.target.name
-        let value = e.target.value
-        this.state.infoUser[name] = value;
-
+        this.setState({
+            infoUser: copyState
+        })
 
     }
 
@@ -172,6 +190,13 @@ class UserRedux extends Component {
         return isValid;
     }
 
+    handleOpenForm = () => {
+
+        this.setState({
+            isOpenFormCreateUser: !this.state.isOpenFormCreateUser,
+        })
+
+    }
 
 
 
@@ -181,15 +206,21 @@ class UserRedux extends Component {
         let positions = this.state.positionArr;
         let roles = this.state.roleArr;
         let language = this.props.language;
+        let isOpenFormCreateUser = this.state.isOpenFormCreateUser;
+        let copyState = { ...this.state.infoUser }
+
+
+
 
 
         return (
-            <div className="user-redux-container">
+            <div className="user-redux-container container">
+
+
                 <div className="title">
                     Manage users redux
                 </div>
-
-                <div className="user-redux-body">
+                <div className="user-redux-body" hidden={isOpenFormCreateUser === true ? "hidden" : null}>
 
                     <div className="container">
 
@@ -201,38 +232,33 @@ class UserRedux extends Component {
 
                             <div className="form-group col-3">
                                 <label htmlFor=""><FormattedMessage id="manage-user.email" /></label>
-                                <input className="form-control" type="text" name="email" placeholder="Email" onChange={(e) => this.onChangeInput(e)} />
+                                <input className="form-control" type="text" name="email" value={copyState.email} placeholder="Email" onChange={(e) => this.onChangeInput(e)} />
                             </div>
 
                             <div className="form-group col-3">
                                 <label htmlFor=""><FormattedMessage id="manage-user.password" /></label>
-                                <input className="form-control" type="text" name="password" placeholder="Password" onChange={(e) => this.onChangeInput(e)} />
+                                <input className="form-control" type="text" name="password" value={copyState.password} placeholder="Password" onChange={(e) => this.onChangeInput(e)} />
                             </div>
 
                             <div className="form-group col-3">
                                 <label htmlFor=""><FormattedMessage id="manage-user.first-name" /></label>
-                                <input className="form-control" type="text" name="firstName" placeholder="First name" onChange={(e) => this.onChangeInput(e)} />
+                                <input className="form-control" type="text" name="firstName" value={copyState.firstName} placeholder="First name" onChange={(e) => this.onChangeInput(e)} />
                             </div>
 
                             <div className="form-group col-3">
                                 <label htmlFor=""><FormattedMessage id="manage-user.last-name" /></label>
-                                <input className="form-control" type="text" name="lastName" placeholder="Last name" onChange={(e) => this.onChangeInput(e)} />
+                                <input className="form-control" type="text" name="lastName" value={copyState.lastName} placeholder="Last name" onChange={(e) => this.onChangeInput(e)} />
                             </div>
-
 
                             <div className="form-group col-3">
                                 <label htmlFor=""><FormattedMessage id="manage-user.phone-number" /></label>
-                                <input className="form-control" type="text" name="phoneNumber" placeholder="Phone number" onChange={(e) => this.onChangeInput(e)} />
+                                <input className="form-control" type="text" name="phoneNumber" value={copyState.phoneNumber} placeholder="Phone number" onChange={(e) => this.onChangeInput(e)} />
                             </div>
 
                             <div className="form-group col-9">
                                 <label htmlFor=""><FormattedMessage id="manage-user.address" /></label>
-                                <input className="form-control" type="text" name="address" placeholder="Address" onChange={(e) => this.onChangeInput(e)} />
+                                <input className="form-control" type="text" name="address" value={copyState.address} placeholder="Address" onChange={(e) => this.onChangeInput(e)} />
                             </div>
-
-
-
-
 
                             <div className="form-group col-3">
                                 <label htmlFor=""><FormattedMessage id="manage-user.gender" /></label>
@@ -265,7 +291,6 @@ class UserRedux extends Component {
                             </div>
 
                             <div className="form-group col-3">
-
                                 <div className="preview-img-container">
                                     <input
                                         id="preview-img"
@@ -275,7 +300,6 @@ class UserRedux extends Component {
 
                                     />
                                     <label className="label-upload" htmlFor="preview-img" >Tải ảnh </label>
-
                                     {this.state.previewImgURL &&
                                         <div className="content-img">
                                             <div className="preview-img-content"
@@ -283,36 +307,25 @@ class UserRedux extends Component {
                                                 onClick={() => this.openPreviewImg()}
                                             >
                                             </div>
-
                                         </div>
                                     }
-
-
                                 </div>
                             </div>
-
                             <div className="form-group col-3">
                                 <button
                                     className="btn btn-primary"
                                     onClick={() => this.handleSaveUser()}
                                 >
-
                                     <FormattedMessage id="manage-user.save" />
-
                                 </button>
                             </div>
-
-
                         </div>
-
-
-
-
-
-
                     </div>
 
                 </div>
+
+
+
 
                 {
                     this.state.isOpenLightBox && <Lightbox
@@ -321,6 +334,20 @@ class UserRedux extends Component {
 
                     />
                 }
+
+
+
+
+                <div className="col-12 text-center mt-5">
+                    <button type="button" className="btn btn-danger" onClick={() => this.handleOpenForm()}>Hidden</button>
+                </div>
+
+                <div className="col-12">
+                    <TableManageUser />
+                </div>
+
+
+
 
             </div>
         )
@@ -350,7 +377,7 @@ const mapStateToProps = state => {
         positionRedux: state.admin.positions,
         roleRedux: state.admin.roles,
         isCreatedUser: state.admin.isCreatedUser,
-
+        users: state.admin.dataUser,
 
 
 
@@ -365,7 +392,7 @@ const mapDispatchToProps = dispatch => {
         getPositionStart: () => dispatch(actions.fetchPositionStart()),
         getRoleStart: () => dispatch(actions.fetchRoleStart()),
         createNewUser: (data) => dispatch(actions.createNewUser(data)),
-
+        getAllUsersRedux: () => dispatch(actions.getAllUsersRedux()),
 
 
 

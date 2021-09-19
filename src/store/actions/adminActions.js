@@ -1,6 +1,6 @@
 import actionTypes from './actionTypes';
-import { getAllCodeServicesApi, createNewUserApi } from '../../services/userService'
-
+import { getAllCodeServicesApi, createNewUserApi, getAllUsers, deleteUserApi } from '../../services/userService'
+import { toast } from 'react-toastify';
 
 
 
@@ -108,10 +108,13 @@ export const fetchRoleFailed = () => ({
 export const createNewUser = (data) => {
     return async (dispatch, getState) => {
         try {
-            console.log(data);
+
             let res = await createNewUserApi(data);
+            toast.success("Create a new user success")
             if (res && res.errCode === 0) {
                 dispatch(createUserSuccess(res.errMessage));
+                dispatch(getAllUsersRedux());
+
             } else {
                 dispatch(createUserFailed(res.errMessage));
             }
@@ -134,4 +137,90 @@ export const createUserFailed = (errMessage) => ({
 })
 
 
+
+
+//READ USER BY REDUX
+export const getAllUsersRedux = () => {
+    return async (dispatch, getState) => {
+        try {
+
+            let res = await getAllUsers("ALL");
+
+            if (res && res.errCode === 0) {
+                dispatch(getUsersSuccess(res.users.reverse()));
+            } else {
+                dispatch(getUsersFailed());
+            }
+        } catch (error) {
+            dispatch(getUsersFailed());
+            console.log('createUserFailed', error);
+        }
+    }
+}
+
+
+//READ USER BY REDUX
+export const getUsersSuccess = (data) => ({
+    type: actionTypes.GET_ALL_USER_SUCCESS,
+    data: data
+})
+export const getUsersFailed = () => ({
+    type: actionTypes.GET_ALL_USER_FAILED,
+
+})
+
+
+
+
+//DELETE USER BY ID
+export const deleteUserById = (id) => {
+    const Undo = ({ onUndo, closeToast }) => {
+        const handleClick = () => {
+            onUndo();
+            closeToast();
+        };
+
+        return (
+            <div>
+                <h3>
+                    Row Deleted <button onClick={handleClick}>UNDO</button>
+                </h3>
+            </div>
+        );
+    };
+    return async (dispatch, getState) => {
+
+        try {
+
+            let res = await deleteUserApi(id);
+            toast(<Undo onUndo={() => dispatch({ id, type: "UNDO" })} />, {
+                // hook will be called whent the component unmount
+                onClose: () => {
+                    console.log('undo');
+                }
+            });
+            if (res && res.errCode === 0) {
+                dispatch(deleteUserSuccess());
+                dispatch(getAllUsersRedux());
+
+            } else {
+                dispatch(deleteUserFailed());
+            }
+        } catch (error) {
+            dispatch(deleteUserFailed());
+            console.log('deleteUserFailed', error);
+        }
+    }
+}
+
+
+
+//DELETE USER BY REDUX
+export const deleteUserSuccess = () => ({
+    type: actionTypes.DELETE_USER_SUCCESS,
+
+})
+export const deleteUserFailed = () => ({
+    type: actionTypes.DELETE_USER_FAILED,
+})
 
