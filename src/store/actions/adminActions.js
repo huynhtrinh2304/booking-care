@@ -174,31 +174,16 @@ export const getUsersFailed = () => ({
 
 //DELETE USER BY ID
 export const deleteUserById = (id) => {
-    const Undo = ({ onUndo, closeToast }) => {
-        const handleClick = () => {
-            onUndo();
-            closeToast();
-        };
 
-        return (
-            <div>
-                <h3>
-                    Row Deleted <button onClick={handleClick}>UNDO</button>
-                </h3>
-            </div>
-        );
-    };
     return async (dispatch, getState) => {
 
         try {
 
             let res = await deleteUserApi(id);
-            toast(<Undo onUndo={() => dispatch({ id, type: "UNDO" })} />, {
-                // hook will be called whent the component unmount
-                onClose: () => {
-                    console.log('undo');
-                }
-            });
+
+
+
+
             if (res && res.errCode === 0) {
                 dispatch(deleteUserSuccess());
                 dispatch(getAllUsersRedux());

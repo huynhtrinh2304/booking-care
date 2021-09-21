@@ -5,6 +5,10 @@ import './TableManageUser.scss'
 import * as actions from '../../../store/actions'
 
 
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+
+
 
 class TableManageUser extends Component {
 
@@ -12,8 +16,8 @@ class TableManageUser extends Component {
         super(props);
         this.state = {
             usersRedux: [],
-
-
+            testDelete: false,
+            undoDelete: true,
         }
     }
 
@@ -28,13 +32,27 @@ class TableManageUser extends Component {
             this.setState({ usersRedux: this.props.users })
         }
 
+    }
+
+
+
+
+    handleDeleteUser = (id) => {
+
+        toast.warning(
+            <Undo
+                undoUser={this.undoUser}
+                id={id}
+                deleteUserById={this.props.deleteUserById}
+            />, {
+            position: toast.POSITION.TOP_CENTER
+        });
 
 
     }
 
+    handleEditUser = (id) => {
 
-    handleDeleteUser = (id) => {
-        this.props.deleteUserById(id);
     }
 
 
@@ -68,7 +86,7 @@ class TableManageUser extends Component {
                             {users && users.map((user, index) => {
 
                                 return (
-                                    <tr key={index}>
+                                    <tr key={index} id={user.id}>
 
                                         <td>{user.email}</td>
                                         <td>{user.firstName}</td>
@@ -76,9 +94,9 @@ class TableManageUser extends Component {
                                         <td>{user.address}</td>
 
                                         <td className="text-center" style={{ maxWidth: '120px' }}>
-                                            <button type="button" className="btn btn-primary" ><i className="fas fa-user-edit"></i></button>
+                                            <button type="button" className="btn btn-primary" onClick={() => { this.handleEditUser(user.id) }} ><i className="fas fa-user-edit"></i></button>
 
-                                            <button type="button" onClick={() => { this.handleDeleteUser(user.id) }} className="btn btn-danger"><i className="fas fa-user-minus"></i></button>
+                                            <button type="button" className="btn btn-danger" onClick={() => { this.handleDeleteUser(user.id) }} ><i className="fas fa-user-minus"></i></button>
                                         </td>
 
                                     </tr>
@@ -113,5 +131,35 @@ const mapDispatchToProps = dispatch => {
 
     };
 };
+
+
+
+
+
+
+class Undo extends Component {
+
+
+    handleDestroyClick = () => {
+        this.props.deleteUserById(this.props.id);
+
+    };
+
+
+    render() {
+        return (
+            <div className="modal-comfirm container">
+                <h4>Do you want delete user?</h4>
+                <div className="btn-confirm">
+                    <button className="btn btn-danger destroy" onClick={this.handleDestroyClick}>Destroy</button>
+
+                    <button className="btn btn-primary undo">Undo</button>
+                </div>
+            </div>
+        );
+    }
+}
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableManageUser);

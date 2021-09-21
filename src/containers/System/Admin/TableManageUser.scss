@@ -7,3 +7,20 @@
         margin: 0 10px;
     }
 }
+
+.modal-comfirm {
+    height: 100px;
+    h4 {
+    }
+
+    .btn-confirm {
+        padding: 10px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-around;
+        .destroy {
+        }
+        .undo {
+        }
+    }
+}
