@@ -46,6 +46,10 @@ const actionTypes = Object.freeze({
     DELETE_USER_SUCCESS: 'DELETE_USER_SUCCESS',
     DELETE_USER_FAILED: 'DELETE_USER_FAILED',
 
+    // Update user by redux
+    UPDATE_USER_SUCCESS: 'UPDATE_USER_SUCCESS',
+    UPDATE_USER_FAILED: 'UPDATE_USER_FAILED',
+
 
 
 

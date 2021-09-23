@@ -51,7 +51,9 @@ class TableManageUser extends Component {
 
     }
 
-    handleEditUser = (id) => {
+    handleEditUser = (user) => {
+
+        this.props.setStateUpdataUser(user);
 
     }
 
@@ -94,7 +96,7 @@ class TableManageUser extends Component {
                                         <td>{user.address}</td>
 
                                         <td className="text-center" style={{ maxWidth: '120px' }}>
-                                            <button type="button" className="btn btn-primary" onClick={() => { this.handleEditUser(user.id) }} ><i className="fas fa-user-edit"></i></button>
+                                            <button type="button" className="btn btn-primary" onClick={() => { this.handleEditUser(user) }} ><i className="fas fa-user-edit"></i></button>
 
                                             <button type="button" className="btn btn-danger" onClick={() => { this.handleDeleteUser(user.id) }} ><i className="fas fa-user-minus"></i></button>
                                         </td>
@@ -153,7 +155,7 @@ class Undo extends Component {
                 <div className="btn-confirm">
                     <button className="btn btn-danger destroy" onClick={this.handleDestroyClick}>Destroy</button>
 
-                    <button className="btn btn-primary undo">Undo</button>
+                    <button className="btn btn-primary undo">Cancel</button>
                 </div>
             </div>
         );

@@ -26,7 +26,7 @@ class UserRedux extends Component {
             isOpenLightBox: false,
             isOpenFormCreateUser: false,
             isCreatedUser: true,
-
+            isUpdating: false,
             infoUser: {
 
                 email: '',
@@ -133,13 +133,20 @@ class UserRedux extends Component {
 
 
     handleSaveUser = async () => {
+
         let isValid = this.validateInput();
         if (isValid === false) return;
 
         await this.props.createNewUser(this.state.infoUser);
-
-
-
+        let selectGender = document.getElementById('gender').children[0];
+        let selectPosition = document.getElementById('position').children[0];
+        let selectRole = document.getElementById('role').children[0];
+        let array = [selectGender, selectPosition, selectRole]
+        for (let i = 0; i < array.length; i++) {
+            let element = array[i];
+            element.setAttribute('selected', 'selected');
+        }
+        alert(this.props.isCreatedUser)
 
     }
 
@@ -198,6 +205,73 @@ class UserRedux extends Component {
 
     }
 
+    loopSelect = (data, value) => {
+        for (let i = 1; i < data.length; i++) {
+            let element = data[i];
+
+            if (element.value === value) {
+                element.setAttribute('selected', 'selected');
+                break;
+            }
+        }
+    }
+
+    setStateUpdataUser = (user) => {
+        // selected='selected'
+        let selectGender = document.getElementById('gender').children;
+        let selectPosition = document.getElementById('position').children;
+        let selectRole = document.getElementById('role').children;
+
+        this.loopSelect(selectGender, user.gender);
+        this.loopSelect(selectPosition, user.positionId);
+        this.loopSelect(selectRole, user.roleId);
+
+
+
+
+
+
+        this.setState({
+            infoUser: {
+                email: user.email,
+                password: '123456',
+                firstName: user.firstName,
+                lastName: user.lastName,
+                phoneNumber: user.phoneNumber,
+                address: user.address,
+                gender: user.gender,
+                position: user.positionId,
+                role: user.roleId,
+
+            },
+            isUpdating: true,
+        })
+
+
+    }
+
+    handleUpdateUser = () => {
+        let selectGender = document.getElementById('gender').children[0];
+        let selectPosition = document.getElementById('position').children[0];
+        let selectRole = document.getElementById('role').children[0];
+
+        let array = [selectGender, selectPosition, selectRole]
+
+
+        let infoAfterUpdate = { ...this.state.infoUser }
+        this.props.updateUserRedux(infoAfterUpdate)
+        this.setState({
+            isUpdating: false,
+        })
+        for (let i = 0; i < array.length; i++) {
+            let element = array[i];
+            element.setAttribute('selected', 'selected');
+        }
+
+
+
+    }
+
 
 
     render() {
@@ -232,12 +306,12 @@ class UserRedux extends Component {
 
                             <div className="form-group col-3">
                                 <label htmlFor=""><FormattedMessage id="manage-user.email" /></label>
-                                <input className="form-control" type="text" name="email" value={copyState.email} placeholder="Email" onChange={(e) => this.onChangeInput(e)} />
+                                <input className="form-control" type="text" name="email" value={copyState.email} placeholder="Email" onChange={(e) => this.onChangeInput(e)} disabled={this.state.isUpdating && 'disabled'} />
                             </div>
 
                             <div className="form-group col-3">
                                 <label htmlFor=""><FormattedMessage id="manage-user.password" /></label>
-                                <input className="form-control" type="text" name="password" value={copyState.password} placeholder="Password" onChange={(e) => this.onChangeInput(e)} />
+                                <input className="form-control" type={this.state.isUpdating ? 'password' : 'text'} name="password" value={copyState.password} placeholder="Password" onChange={(e) => this.onChangeInput(e)} disabled={this.state.isUpdating && 'disabled'} />
                             </div>
 
                             <div className="form-group col-3">
@@ -262,8 +336,8 @@ class UserRedux extends Component {
 
                             <div className="form-group col-3">
                                 <label htmlFor=""><FormattedMessage id="manage-user.gender" /></label>
-                                <select className="form-control" name="gender" onChange={(e) => this.onChangeInput(e)}>
-                                    <option defaultValue value=''>Choose...</option>
+                                <select className="form-control" id="gender" name="gender" onChange={(e) => this.onChangeInput(e)}>
+                                    <option value=''>Choose...</option>
                                     {genders && genders.length > 0 && genders.map((data, index) => {
                                         return <option key={index} value={data.key}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
                                     })}
@@ -272,8 +346,8 @@ class UserRedux extends Component {
 
                             <div className="form-group col-3">
                                 <label htmlFor=""><FormattedMessage id="manage-user.position" /></label>
-                                <select className="form-control" name="position" onChange={(e) => this.onChangeInput(e)}>
-                                    <option defaultValue value=''>Choose...</option>
+                                <select className="form-control" id="position" name="position" onChange={(e) => this.onChangeInput(e)}>
+                                    <option value=''>Choose...</option>
                                     {positions && positions.length > 0 && positions.map((data, index) => {
                                         return <option key={index} value={data.key}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
                                     })}
@@ -282,8 +356,8 @@ class UserRedux extends Component {
 
                             <div className="form-group col-3">
                                 <label htmlFor=""><FormattedMessage id="manage-user.role-id" /></label>
-                                <select className="form-control" name="role" onChange={(e) => this.onChangeInput(e)}>
-                                    <option defaultValue value=''>Choose...</option>
+                                <select className="form-control" id="role" name="role" onChange={(e) => this.onChangeInput(e)}>
+                                    <option value=''>Choose...</option>
                                     {roles && roles.length > 0 && roles.map((data, index) => {
                                         return <option key={index} value={data.key}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
                                     })}
@@ -312,12 +386,26 @@ class UserRedux extends Component {
                                 </div>
                             </div>
                             <div className="form-group col-3">
-                                <button
-                                    className="btn btn-primary"
-                                    onClick={() => this.handleSaveUser()}
-                                >
-                                    <FormattedMessage id="manage-user.save" />
-                                </button>
+                                {
+                                    this.state.isUpdating === true
+                                        ?
+                                        <button
+                                            className="btn btn-info"
+                                            onClick={() => this.handleUpdateUser()}
+                                        >
+                                            Update user profile
+                                        </button>
+                                        :
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => this.handleSaveUser()}
+                                        >
+                                            <FormattedMessage id="manage-user.save" />
+                                        </button>
+                                }
+
+
+
                             </div>
                         </div>
                     </div>
@@ -343,7 +431,7 @@ class UserRedux extends Component {
                 </div>
 
                 <div className="col-12">
-                    <TableManageUser />
+                    <TableManageUser setStateUpdataUser={this.setStateUpdataUser} />
                 </div>
 
 
@@ -354,16 +442,6 @@ class UserRedux extends Component {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -393,7 +471,7 @@ const mapDispatchToProps = dispatch => {
         getRoleStart: () => dispatch(actions.fetchRoleStart()),
         createNewUser: (data) => dispatch(actions.createNewUser(data)),
         getAllUsersRedux: () => dispatch(actions.getAllUsersRedux()),
-
+        updateUserRedux: (data) => dispatch(actions.updateUserRedux(data))
 
 
         // processLogout: () => dispatch(actions.processLogout()),

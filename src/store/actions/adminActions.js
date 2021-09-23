@@ -1,5 +1,5 @@
 import actionTypes from './actionTypes';
-import { getAllCodeServicesApi, createNewUserApi, getAllUsers, deleteUserApi } from '../../services/userService'
+import { getAllCodeServicesApi, createNewUserApi, getAllUsers, deleteUserApi, updateUserApi } from '../../services/userService'
 import { toast } from 'react-toastify';
 
 
@@ -110,8 +110,9 @@ export const createNewUser = (data) => {
         try {
 
             let res = await createNewUserApi(data);
-            toast.success("Create a new user success")
+
             if (res && res.errCode === 0) {
+                toast.success("Create a new user success")
                 dispatch(createUserSuccess(res.errMessage));
                 dispatch(getAllUsersRedux());
 
@@ -209,3 +210,39 @@ export const deleteUserFailed = () => ({
     type: actionTypes.DELETE_USER_FAILED,
 })
 
+
+
+//UPDATE USER BY ID
+export const updateUserRedux = (data) => {
+
+    return async (dispatch, getState) => {
+
+        try {
+
+            let res = await updateUserApi(data);
+
+            if (res && res.errCode === 0) {
+                dispatch(updateUserSuccess());
+                toast.success('Update Success')
+                dispatch(getAllUsersRedux());
+
+            } else {
+                dispatch(deleteUserFailed());
+            }
+        } catch (error) {
+            dispatch(updateUserFailed());
+            console.log('updateUserFailed', error);
+        }
+    }
+}
+
+
+
+//UPDATE USER BY REDUX
+export const updateUserSuccess = () => ({
+    type: actionTypes.UPDATE_USER_SUCCESS
+
+})
+export const updateUserFailed = () => ({
+    type: actionTypes.UPDATE_USER_FAILED,
+})
