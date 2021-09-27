@@ -51,9 +51,9 @@ class TableManageUser extends Component {
 
     }
 
-    handleEditUser = (user) => {
+    handleEditUser = async (user) => {
 
-        this.props.setStateUpdataUser(user);
+        await this.props.setStateUpdataUser(user);
 
     }
 

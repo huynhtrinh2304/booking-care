@@ -113,11 +113,11 @@ export const createNewUser = (data) => {
 
             if (res && res.errCode === 0) {
                 toast.success("Create a new user success")
-                dispatch(createUserSuccess(res.errMessage));
+                dispatch(createUserSuccess(res));
                 dispatch(getAllUsersRedux());
 
             } else {
-                dispatch(createUserFailed(res.errMessage));
+                dispatch(createUserFailed(res));
             }
         } catch (error) {
             dispatch(fetchRoleFailed());
@@ -212,13 +212,13 @@ export const deleteUserFailed = () => ({
 
 
 
-//UPDATE USER BY ID
+//UPDATE USER BY EMAIL
 export const updateUserRedux = (data) => {
 
-    return async (dispatch, getState) => {
+    return async (dispatch) => {
 
         try {
-
+            console.log(data);
             let res = await updateUserApi(data);
 
             if (res && res.errCode === 0) {

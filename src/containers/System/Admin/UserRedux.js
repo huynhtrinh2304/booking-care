@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+import { LANGUAGES, CommonUtils } from '../../../utils';
 import * as actions from '../../../store/actions'
 import './UserRedux.scss'
 import TableManageUser from './TableManageUser';
@@ -27,6 +28,7 @@ class UserRedux extends Component {
             isOpenFormCreateUser: false,
             isCreatedUser: true,
             isUpdating: false,
+
             infoUser: {
 
                 email: '',
@@ -38,6 +40,7 @@ class UserRedux extends Component {
                 gender: '',
                 position: '',
                 role: '',
+                avatar: '',
 
             },
 
@@ -85,6 +88,7 @@ class UserRedux extends Component {
 
         if (prevProps.users !== this.props.users) {
             this.setState({
+                previewImgURL: '',
                 infoUser: {
 
                     email: '',
@@ -99,6 +103,7 @@ class UserRedux extends Component {
 
                 },
 
+
             })
         }
 
@@ -109,17 +114,25 @@ class UserRedux extends Component {
 
 
 
-    handleOnChangeImg = (e) => {
+    handleOnChangeImg = async (e) => {
         let data = e.target.files;
         let file = data[0];
 
-
         if (file && file.type.indexOf('image') != -1) {
-            let objecturl = URL.createObjectURL(file)
-            this.setState({
-                previewImgURL: objecturl
+            let base64 = await CommonUtils.getBase64(file);
+            let objecturl = URL.createObjectURL(file);
+            let stateInfoUser = { ...this.state.infoUser };
+            stateInfoUser.avatar = base64;
+
+
+
+            await this.setState({
+                previewImgURL: objecturl,
+                infoUser: stateInfoUser,
             })
+
         }
+
     }
 
 
@@ -137,16 +150,26 @@ class UserRedux extends Component {
         let isValid = this.validateInput();
         if (isValid === false) return;
 
+
         await this.props.createNewUser(this.state.infoUser);
         let selectGender = document.getElementById('gender').children[0];
         let selectPosition = document.getElementById('position').children[0];
         let selectRole = document.getElementById('role').children[0];
         let array = [selectGender, selectPosition, selectRole]
-        for (let i = 0; i < array.length; i++) {
-            let element = array[i];
-            element.setAttribute('selected', 'selected');
+
+        if (this.props.isCreatedUser.errCode === 0) {
+            for (let i = 0; i < array.length; i++) {
+                let element = array[i];
+                element.setAttribute('selected', 'selected');
+            }
         }
-        alert(this.props.isCreatedUser)
+
+        if (this.props.isCreatedUser.errCode === 1) {
+            alert(this.props.isCreatedUser.errMessage)
+        }
+
+
+
 
     }
 
@@ -159,9 +182,14 @@ class UserRedux extends Component {
         let value = e.target.value;
         copyState[name] = value;
 
+
+
         this.setState({
             infoUser: copyState
         })
+
+
+
 
     }
 
@@ -179,6 +207,7 @@ class UserRedux extends Component {
                 'gender',
                 'position',
                 'role',
+                'avatar',
 
 
             ]
@@ -205,29 +234,13 @@ class UserRedux extends Component {
 
     }
 
-    loopSelect = (data, value) => {
-        for (let i = 1; i < data.length; i++) {
-            let element = data[i];
-
-            if (element.value === value) {
-                element.setAttribute('selected', 'selected');
-                break;
-            }
-        }
-    }
 
     setStateUpdataUser = (user) => {
-        // selected='selected'
-        let selectGender = document.getElementById('gender').children;
-        let selectPosition = document.getElementById('position').children;
-        let selectRole = document.getElementById('role').children;
 
-        this.loopSelect(selectGender, user.gender);
-        this.loopSelect(selectPosition, user.positionId);
-        this.loopSelect(selectRole, user.roleId);
-
-
-
+        let imageBase64 = '';
+        if (user.image) {
+            imageBase64 = new Buffer(user.image, 'base64').toString('binary');
+        }
 
 
 
@@ -242,35 +255,35 @@ class UserRedux extends Component {
                 gender: user.gender,
                 position: user.positionId,
                 role: user.roleId,
-
+                avatar: imageBase64
             },
+            previewImgURL: imageBase64,
             isUpdating: true,
         })
 
 
     }
 
+
+
+
+
     handleUpdateUser = () => {
-        let selectGender = document.getElementById('gender').children[0];
-        let selectPosition = document.getElementById('position').children[0];
-        let selectRole = document.getElementById('role').children[0];
+        let infoAfterUpdate = { ...this.state.infoUser };
+        console.log(infoAfterUpdate);
+        this.props.updateUserRedux(infoAfterUpdate);
 
-        let array = [selectGender, selectPosition, selectRole]
-
-
-        let infoAfterUpdate = { ...this.state.infoUser }
-        this.props.updateUserRedux(infoAfterUpdate)
         this.setState({
             isUpdating: false,
         })
-        for (let i = 0; i < array.length; i++) {
-            let element = array[i];
-            element.setAttribute('selected', 'selected');
-        }
-
-
 
     }
+
+
+
+
+
+
 
 
 
@@ -281,7 +294,7 @@ class UserRedux extends Component {
         let roles = this.state.roleArr;
         let language = this.props.language;
         let isOpenFormCreateUser = this.state.isOpenFormCreateUser;
-        let copyState = { ...this.state.infoUser }
+        let copyState = { ...this.state.infoUser };
 
 
 
@@ -336,7 +349,7 @@ class UserRedux extends Component {
 
                             <div className="form-group col-3">
                                 <label htmlFor=""><FormattedMessage id="manage-user.gender" /></label>
-                                <select className="form-control" id="gender" name="gender" onChange={(e) => this.onChangeInput(e)}>
+                                <select className="form-control" name="gender" value={copyState.gender} onChange={(e) => this.onChangeInput(e)}>
                                     <option value=''>Choose...</option>
                                     {genders && genders.length > 0 && genders.map((data, index) => {
                                         return <option key={index} value={data.key}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
@@ -346,7 +359,7 @@ class UserRedux extends Component {
 
                             <div className="form-group col-3">
                                 <label htmlFor=""><FormattedMessage id="manage-user.position" /></label>
-                                <select className="form-control" id="position" name="position" onChange={(e) => this.onChangeInput(e)}>
+                                <select className="form-control" name="position" value={copyState.position} onChange={(e) => this.onChangeInput(e)}>
                                     <option value=''>Choose...</option>
                                     {positions && positions.length > 0 && positions.map((data, index) => {
                                         return <option key={index} value={data.key}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
@@ -356,7 +369,7 @@ class UserRedux extends Component {
 
                             <div className="form-group col-3">
                                 <label htmlFor=""><FormattedMessage id="manage-user.role-id" /></label>
-                                <select className="form-control" id="role" name="role" onChange={(e) => this.onChangeInput(e)}>
+                                <select className="form-control" name="role" value={copyState.role} onChange={(e) => this.onChangeInput(e)}>
                                     <option value=''>Choose...</option>
                                     {roles && roles.length > 0 && roles.map((data, index) => {
                                         return <option key={index} value={data.key}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
@@ -374,6 +387,7 @@ class UserRedux extends Component {
 
                                     />
                                     <label className="label-upload" htmlFor="preview-img" >Tải ảnh </label>
+
                                     {this.state.previewImgURL &&
                                         <div className="content-img">
                                             <div className="preview-img-content"
@@ -385,6 +399,8 @@ class UserRedux extends Component {
                                     }
                                 </div>
                             </div>
+
+
                             <div className="form-group col-3">
                                 {
                                     this.state.isUpdating === true
@@ -433,8 +449,6 @@ class UserRedux extends Component {
                 <div className="col-12">
                     <TableManageUser setStateUpdataUser={this.setStateUpdataUser} />
                 </div>
-
-
 
 
             </div>
