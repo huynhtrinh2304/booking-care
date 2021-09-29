@@ -152,17 +152,6 @@ class UserRedux extends Component {
 
 
         await this.props.createNewUser(this.state.infoUser);
-        let selectGender = document.getElementById('gender').children[0];
-        let selectPosition = document.getElementById('position').children[0];
-        let selectRole = document.getElementById('role').children[0];
-        let array = [selectGender, selectPosition, selectRole]
-
-        if (this.props.isCreatedUser.errCode === 0) {
-            for (let i = 0; i < array.length; i++) {
-                let element = array[i];
-                element.setAttribute('selected', 'selected');
-            }
-        }
 
         if (this.props.isCreatedUser.errCode === 1) {
             alert(this.props.isCreatedUser.errMessage)
@@ -280,7 +269,9 @@ class UserRedux extends Component {
     }
 
 
-
+    setStateIsUpdate = () => {
+        this.setState({ isUpdating: false });
+    }
 
 
 
@@ -352,7 +343,7 @@ class UserRedux extends Component {
                                 <select className="form-control" name="gender" value={copyState.gender} onChange={(e) => this.onChangeInput(e)}>
                                     <option value=''>Choose...</option>
                                     {genders && genders.length > 0 && genders.map((data, index) => {
-                                        return <option key={index} value={data.key}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
+                                        return <option key={index} value={data.keyMap}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
                                     })}
                                 </select>
                             </div>
@@ -362,7 +353,7 @@ class UserRedux extends Component {
                                 <select className="form-control" name="position" value={copyState.position} onChange={(e) => this.onChangeInput(e)}>
                                     <option value=''>Choose...</option>
                                     {positions && positions.length > 0 && positions.map((data, index) => {
-                                        return <option key={index} value={data.key}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
+                                        return <option key={index} value={data.keyMap}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
                                     })}
                                 </select>
                             </div>
@@ -372,7 +363,7 @@ class UserRedux extends Component {
                                 <select className="form-control" name="role" value={copyState.role} onChange={(e) => this.onChangeInput(e)}>
                                     <option value=''>Choose...</option>
                                     {roles && roles.length > 0 && roles.map((data, index) => {
-                                        return <option key={index} value={data.key}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
+                                        return <option key={index} value={data.keyMap}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
                                     })}
                                 </select>
                             </div>
@@ -447,7 +438,10 @@ class UserRedux extends Component {
                 </div>
 
                 <div className="col-12">
-                    <TableManageUser setStateUpdataUser={this.setStateUpdataUser} />
+                    <TableManageUser
+                        setStateUpdataUser={this.setStateUpdataUser}
+                        setStateIsUpdate={this.setStateIsUpdate}
+                    />
                 </div>
 
 

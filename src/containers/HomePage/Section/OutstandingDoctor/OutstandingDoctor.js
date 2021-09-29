@@ -6,14 +6,40 @@ import Slider from 'react-slick';
 
 import './OutstandingDoctor.scss';
 
+import * as actions from '../../../../store/actions'
+
 
 
 
 
 class OutstandingDoctor extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            arrDoctors: [],
+        }
+    }
+
+    componentDidMount() {
+        this.props.loadTopDoctors();
+
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.topDoctors !== this.props.topDoctors) {
+            this.setState({
+                arrDoctors: this.props.topDoctors
+            })
+        }
+    };
+
+
 
     render() {
+        let arrDoctors = this.state.arrDoctors;
+        let { language } = this.props;
+        console.log(arrDoctors);
 
         return (
 
@@ -33,88 +59,32 @@ class OutstandingDoctor extends Component {
                     <div className="container">
 
                         <Slider {...this.props.settings}>
-
-                            <div className="block-slide-outstanding-doctor">
-                                <div className="img-customize-outstanding-doctor">
-
-                                </div>
-
-                                <p className="level-doctor">Thạc sĩ, Bác sĩ Phạm Đăng Bảng</p>
-                                <p>Da liễu</p>
-
-                            </div>
-
-                            <div className="block-slide-outstanding-doctor">
-                                <div className="img-customize-outstanding-doctor">
-
-                                </div>
-
-                                <p className="level-doctor">Thạc sĩ, Bác sĩ Phạm Đăng Bảng</p>
-                                <p>Da liễu</p>
-
-                            </div>
-
-                            <div className="block-slide-outstanding-doctor">
-                                <div className="img-customize-outstanding-doctor">
-
-                                </div>
-
-                                <p className="level-doctor">Thạc sĩ, Bác sĩ Phạm Đăng Bảng</p>
-                                <p>Da liễu</p>
-
-                            </div>
-
-                            <div className="block-slide-outstanding-doctor">
-                                <div className="img-customize-outstanding-doctor">
-
-                                </div>
-
-                                <p className="level-doctor">Thạc sĩ, Bác sĩ Phạm Đăng Bảng</p>
-                                <p>Da liễu</p>
-
-                            </div>
-
-                            <div className="block-slide-outstanding-doctor">
-                                <div className="img-customize-outstanding-doctor">
-
-                                </div>
-
-                                <p className="level-doctor">Thạc sĩ, Bác sĩ Phạm Đăng Bảng</p>
-                                <p>Da liễu</p>
-
-                            </div>
-
-                            <div className="block-slide-outstanding-doctor">
-                                <div className="img-customize-outstanding-doctor">
-
-                                </div>
-
-                                <p className="level-doctor">Thạc sĩ, Bác sĩ Phạm Đăng Bảng</p>
-                                <p>Da liễu</p>
-
-                            </div>
-
-                            <div className="block-slide-outstanding-doctor">
-                                <div className="img-customize-outstanding-doctor">
-
-                                </div>
-
-                                <p className="level-doctor">Thạc sĩ, Bác sĩ Phạm Đăng Bảng</p>
-                                <p>Da liễu</p>
-
-                            </div>
-
-                            <div className="block-slide-outstanding-doctor">
-                                <div className="img-customize-outstanding-doctor">
-
-                                </div>
-
-                                <p className="level-doctor">Thạc sĩ, Bác sĩ Phạm Đăng Bảng</p>
-                                <p>Da liễu</p>
-
-                            </div>
+                            {
+                                arrDoctors && arrDoctors.length > 0 && arrDoctors.map((value, index) => {
+                                    let avatar = '';
+                                    if (value.image) {
+                                        avatar = new Buffer(value.image, 'base64').toString('binary');
+                                    }
 
 
+                                    let nameVi = `${value.positionData.valueVi}, ${value.firstName},${value.lastName}`
+                                    let nameEn = `${value.positionData.valueEn}, ${value.firstName},${value.lastName}`
+
+                                    return (
+                                        <div className="block-slide-outstanding-doctor">
+                                            <div
+                                                className="img-customize-outstanding-doctor"
+                                                style={{ backgroundImage: `url(${avatar})` }}
+                                            >
+                                            </div>
+
+                                            <p className="level-doctor">{language == 'vi' ? nameVi : nameEn}</p>
+                                            <p>Da liễu</p>
+
+                                        </div>
+                                    )
+                                })
+                            }
 
 
 
@@ -136,13 +106,14 @@ const mapStateToProps = state => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         language: state.app.language,
-        state: state
+        state: state,
+        topDoctors: state.admin.topDoctors
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-
+        loadTopDoctors: () => dispatch(actions.fetchTopDoctor()),
     };
 };
 

@@ -38,7 +38,10 @@ const getAllCodeServicesApi = (inputType) => {
 
 }
 
+const getTopDoctorHomeService = (limit) => {
+    return axios.get(`/api/top-doctor-home?limit=${limit}`)
 
+}
 
 
 
@@ -48,5 +51,6 @@ export {
     createNewUserApi,
     deleteUserApi,
     updateUserApi,
-    getAllCodeServicesApi
+    getAllCodeServicesApi,
+    getTopDoctorHomeService
 }

@@ -52,6 +52,10 @@ const actionTypes = Object.freeze({
 
 
 
+    // Update user by redux
+    FETCH_TOP_DOCTORS_SUCCESS: 'FETCH_TOP_DOCTORS_SUCCESS',
+    FETCH_TOP_DOCTORS_FAILED: 'FETCH_TOP_DOCTORS_FAILED',
+
 
 
 

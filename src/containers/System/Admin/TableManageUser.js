@@ -48,6 +48,7 @@ class TableManageUser extends Component {
             position: toast.POSITION.TOP_CENTER
         });
 
+        this.props.setStateIsUpdate();
 
     }
 
@@ -61,6 +62,7 @@ class TableManageUser extends Component {
 
 
     render() {
+
         let users = this.state.usersRedux;
 
         return (
@@ -149,6 +151,7 @@ class Undo extends Component {
 
 
     render() {
+
         return (
             <div className="modal-comfirm container">
                 <h4>Do you want delete user?</h4>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 // Component
 import HomeHeader from './HomeHeader';
-import Speciality from './Section/Speciality/Specialty.js';
+import Speciality from './Section/Speciality/Speciality.js';
 import MedicalFacility from './Section/MedicalFacility/MedicalFacility.js';
 import OutstandingDoctor from './Section/OutstandingDoctor/OutstandingDoctor.js';
 import HandBook from './Section/HandBook/HandBook.js';

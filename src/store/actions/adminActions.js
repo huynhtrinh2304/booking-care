@@ -1,5 +1,12 @@
 import actionTypes from './actionTypes';
-import { getAllCodeServicesApi, createNewUserApi, getAllUsers, deleteUserApi, updateUserApi } from '../../services/userService'
+import {
+    getAllCodeServicesApi,
+    createNewUserApi, getAllUsers,
+    deleteUserApi,
+    updateUserApi,
+    getTopDoctorHomeService
+} from '../../services/userService'
+
 import { toast } from 'react-toastify';
 
 
@@ -46,6 +53,7 @@ export const fetchPositionStart = () => {
         try {
 
             let res = await getAllCodeServicesApi('POSITION');
+
             if (res && res.errCode === 0) {
                 dispatch(fetchPositionSuccess(res.data));
             } else {
@@ -182,9 +190,6 @@ export const deleteUserById = (id) => {
 
             let res = await deleteUserApi(id);
 
-
-
-
             if (res && res.errCode === 0) {
                 dispatch(deleteUserSuccess());
                 dispatch(getAllUsersRedux());
@@ -237,7 +242,6 @@ export const updateUserRedux = (data) => {
 }
 
 
-
 //UPDATE USER BY REDUX
 export const updateUserSuccess = () => ({
     type: actionTypes.UPDATE_USER_SUCCESS
@@ -246,3 +250,30 @@ export const updateUserSuccess = () => ({
 export const updateUserFailed = () => ({
     type: actionTypes.UPDATE_USER_FAILED,
 })
+
+// Get top doctor
+export const fetchTopDoctor = () => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await getTopDoctorHomeService(10);
+
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.FETCH_TOP_DOCTORS_SUCCESS,
+                    data: res.users
+                });
+
+
+            } else {
+                dispatch({
+                    type: actionTypes.FETCH_TOP_DOCTORS_FAILED,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: actionTypes.FETCH_TOP_DOCTORS_FAILED,
+            });
+        }
+    }
+}
