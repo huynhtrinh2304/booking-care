@@ -39,7 +39,7 @@ class OutstandingDoctor extends Component {
     render() {
         let arrDoctors = this.state.arrDoctors;
         let { language } = this.props;
-        console.log(arrDoctors);
+
 
         return (
 
@@ -71,7 +71,7 @@ class OutstandingDoctor extends Component {
                                     let nameEn = `${value.positionData.valueEn}, ${value.firstName},${value.lastName}`
 
                                     return (
-                                        <div className="block-slide-outstanding-doctor">
+                                        <div key={index} className="block-slide-outstanding-doctor">
                                             <div
                                                 className="img-customize-outstanding-doctor"
                                                 style={{ backgroundImage: `url(${avatar})` }}
@@ -85,8 +85,6 @@ class OutstandingDoctor extends Component {
                                     )
                                 })
                             }
-
-
 
                         </Slider>
                     </div>

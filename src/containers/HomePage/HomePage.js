@@ -30,11 +30,19 @@ class HomePage extends Component {
 
         let settings = {
 
-            infinite: true,
+            infinite: false,
             speed: 1000,
             slidesToShow: 4,
             slidesToScroll: 1,
             // autoplay: true,
+            afterChange: function (index) {
+                let prev = document.querySelector('.slick-prev');
+                let next = document.querySelector('.slick-prev');
+
+                console.log(prev);
+            },
+
+
 
         };
 
