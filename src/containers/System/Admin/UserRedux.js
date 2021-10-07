@@ -13,6 +13,25 @@ import 'react-image-lightbox/style.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 
+
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
+// import style manually
+import 'react-markdown-editor-lite/lib/index.css';
+
+const mdParser = new MarkdownIt(/* Markdown-it options */);
+
+function handleEditorChange({ html, text }) {
+    console.log('handleEditorChange', html, text);
+}
+
+
+
+
+
+
+
+
 class UserRedux extends Component {
 
     constructor(props) {
@@ -292,160 +311,168 @@ class UserRedux extends Component {
 
 
         return (
-            <div className="user-redux-container container">
+            <React.Fragment>
 
 
-                <div className="title">
-                    Manage users redux
-                </div>
-                <div className="user-redux-body" hidden={isOpenFormCreateUser === true ? "hidden" : null}>
+                <div className="user-redux-container container">
 
-                    <div className="container">
 
-                        <div className="row">
+                    <div className="title">
+                        Manage users redux
+                    </div>
+                    <div className="user-redux-body" hidden={isOpenFormCreateUser === true ? "hidden" : null}>
 
-                            <div className="form-group col-12">
-                                <h1><FormattedMessage id="manage-user.add" /></h1>
-                            </div>
+                        <div className="container">
 
-                            <div className="form-group col-3">
-                                <label htmlFor=""><FormattedMessage id="manage-user.email" /></label>
-                                <input className="form-control" type="text" name="email" value={copyState.email} placeholder="Email" onChange={(e) => this.onChangeInput(e)} disabled={this.state.isUpdating && 'disabled'} />
-                            </div>
+                            <div className="row">
 
-                            <div className="form-group col-3">
-                                <label htmlFor=""><FormattedMessage id="manage-user.password" /></label>
-                                <input className="form-control" type={this.state.isUpdating ? 'password' : 'text'} name="password" value={copyState.password} placeholder="Password" onChange={(e) => this.onChangeInput(e)} disabled={this.state.isUpdating && 'disabled'} />
-                            </div>
+                                <div className="form-group col-12">
+                                    <h1><FormattedMessage id="manage-user.add" /></h1>
+                                </div>
 
-                            <div className="form-group col-3">
-                                <label htmlFor=""><FormattedMessage id="manage-user.first-name" /></label>
-                                <input className="form-control" type="text" name="firstName" value={copyState.firstName} placeholder="First name" onChange={(e) => this.onChangeInput(e)} />
-                            </div>
+                                <div className="form-group col-3">
+                                    <label htmlFor=""><FormattedMessage id="manage-user.email" /></label>
+                                    <input className="form-control" type="text" name="email" value={copyState.email} placeholder="Email" onChange={(e) => this.onChangeInput(e)} disabled={this.state.isUpdating && 'disabled'} />
+                                </div>
 
-                            <div className="form-group col-3">
-                                <label htmlFor=""><FormattedMessage id="manage-user.last-name" /></label>
-                                <input className="form-control" type="text" name="lastName" value={copyState.lastName} placeholder="Last name" onChange={(e) => this.onChangeInput(e)} />
-                            </div>
+                                <div className="form-group col-3">
+                                    <label htmlFor=""><FormattedMessage id="manage-user.password" /></label>
+                                    <input className="form-control" type={this.state.isUpdating ? 'password' : 'text'} name="password" value={copyState.password} placeholder="Password" onChange={(e) => this.onChangeInput(e)} disabled={this.state.isUpdating && 'disabled'} />
+                                </div>
 
-                            <div className="form-group col-3">
-                                <label htmlFor=""><FormattedMessage id="manage-user.phone-number" /></label>
-                                <input className="form-control" type="text" name="phoneNumber" value={copyState.phoneNumber} placeholder="Phone number" onChange={(e) => this.onChangeInput(e)} />
-                            </div>
+                                <div className="form-group col-3">
+                                    <label htmlFor=""><FormattedMessage id="manage-user.first-name" /></label>
+                                    <input className="form-control" type="text" name="firstName" value={copyState.firstName} placeholder="First name" onChange={(e) => this.onChangeInput(e)} />
+                                </div>
 
-                            <div className="form-group col-9">
-                                <label htmlFor=""><FormattedMessage id="manage-user.address" /></label>
-                                <input className="form-control" type="text" name="address" value={copyState.address} placeholder="Address" onChange={(e) => this.onChangeInput(e)} />
-                            </div>
+                                <div className="form-group col-3">
+                                    <label htmlFor=""><FormattedMessage id="manage-user.last-name" /></label>
+                                    <input className="form-control" type="text" name="lastName" value={copyState.lastName} placeholder="Last name" onChange={(e) => this.onChangeInput(e)} />
+                                </div>
 
-                            <div className="form-group col-3">
-                                <label htmlFor=""><FormattedMessage id="manage-user.gender" /></label>
-                                <select className="form-control" name="gender" value={copyState.gender} onChange={(e) => this.onChangeInput(e)}>
-                                    <option value=''>Choose...</option>
-                                    {genders && genders.length > 0 && genders.map((data, index) => {
-                                        return <option key={index} value={data.keyMap}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
-                                    })}
-                                </select>
-                            </div>
+                                <div className="form-group col-3">
+                                    <label htmlFor=""><FormattedMessage id="manage-user.phone-number" /></label>
+                                    <input className="form-control" type="text" name="phoneNumber" value={copyState.phoneNumber} placeholder="Phone number" onChange={(e) => this.onChangeInput(e)} />
+                                </div>
 
-                            <div className="form-group col-3">
-                                <label htmlFor=""><FormattedMessage id="manage-user.position" /></label>
-                                <select className="form-control" name="position" value={copyState.position} onChange={(e) => this.onChangeInput(e)}>
-                                    <option value=''>Choose...</option>
-                                    {positions && positions.length > 0 && positions.map((data, index) => {
-                                        return <option key={index} value={data.keyMap}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
-                                    })}
-                                </select>
-                            </div>
+                                <div className="form-group col-9">
+                                    <label htmlFor=""><FormattedMessage id="manage-user.address" /></label>
+                                    <input className="form-control" type="text" name="address" value={copyState.address} placeholder="Address" onChange={(e) => this.onChangeInput(e)} />
+                                </div>
 
-                            <div className="form-group col-3">
-                                <label htmlFor=""><FormattedMessage id="manage-user.role-id" /></label>
-                                <select className="form-control" name="role" value={copyState.role} onChange={(e) => this.onChangeInput(e)}>
-                                    <option value=''>Choose...</option>
-                                    {roles && roles.length > 0 && roles.map((data, index) => {
-                                        return <option key={index} value={data.keyMap}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
-                                    })}
-                                </select>
-                            </div>
+                                <div className="form-group col-3">
+                                    <label htmlFor=""><FormattedMessage id="manage-user.gender" /></label>
+                                    <select className="form-control" name="gender" value={copyState.gender} onChange={(e) => this.onChangeInput(e)}>
+                                        <option value=''>Choose...</option>
+                                        {genders && genders.length > 0 && genders.map((data, index) => {
+                                            return <option key={index} value={data.keyMap}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
+                                        })}
+                                    </select>
+                                </div>
 
-                            <div className="form-group col-3">
-                                <div className="preview-img-container">
-                                    <input
-                                        id="preview-img"
-                                        type="file"
-                                        hidden
-                                        onChange={(e) => this.handleOnChangeImg(e)}
+                                <div className="form-group col-3">
+                                    <label htmlFor=""><FormattedMessage id="manage-user.position" /></label>
+                                    <select className="form-control" name="position" value={copyState.position} onChange={(e) => this.onChangeInput(e)}>
+                                        <option value=''>Choose...</option>
+                                        {positions && positions.length > 0 && positions.map((data, index) => {
+                                            return <option key={index} value={data.keyMap}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
+                                        })}
+                                    </select>
+                                </div>
 
-                                    />
-                                    <label className="label-upload" htmlFor="preview-img" >Tải ảnh </label>
+                                <div className="form-group col-3">
+                                    <label htmlFor=""><FormattedMessage id="manage-user.role-id" /></label>
+                                    <select className="form-control" name="role" value={copyState.role} onChange={(e) => this.onChangeInput(e)}>
+                                        <option value=''>Choose...</option>
+                                        {roles && roles.length > 0 && roles.map((data, index) => {
+                                            return <option key={index} value={data.keyMap}>{language === 'vi' ? data.valueVi : data.valueEn}</option>
+                                        })}
+                                    </select>
+                                </div>
 
-                                    {this.state.previewImgURL &&
-                                        <div className="content-img">
-                                            <div className="preview-img-content"
-                                                style={{ backgroundImage: `url(${this.state.previewImgURL})` }}
-                                                onClick={() => this.openPreviewImg()}
-                                            >
+                                <div className="form-group col-3">
+                                    <div className="preview-img-container">
+                                        <input
+                                            id="preview-img"
+                                            type="file"
+                                            hidden
+                                            onChange={(e) => this.handleOnChangeImg(e)}
+
+                                        />
+                                        <label className="label-upload" htmlFor="preview-img" >Tải ảnh </label>
+
+                                        {this.state.previewImgURL &&
+                                            <div className="content-img">
+                                                <div className="preview-img-content"
+                                                    style={{ backgroundImage: `url(${this.state.previewImgURL})` }}
+                                                    onClick={() => this.openPreviewImg()}
+                                                >
+                                                </div>
                                             </div>
-                                        </div>
+                                        }
+                                    </div>
+                                </div>
+
+
+                                <div className="form-group col-3">
+                                    {
+                                        this.state.isUpdating === true
+                                            ?
+                                            <button
+                                                className="btn btn-info"
+                                                onClick={() => this.handleUpdateUser()}
+                                            >
+                                                Update user profile
+                                            </button>
+                                            :
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() => this.handleSaveUser()}
+                                            >
+                                                <FormattedMessage id="manage-user.save" />
+                                            </button>
                                     }
+
+
+
                                 </div>
                             </div>
-
-
-                            <div className="form-group col-3">
-                                {
-                                    this.state.isUpdating === true
-                                        ?
-                                        <button
-                                            className="btn btn-info"
-                                            onClick={() => this.handleUpdateUser()}
-                                        >
-                                            Update user profile
-                                        </button>
-                                        :
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={() => this.handleSaveUser()}
-                                        >
-                                            <FormattedMessage id="manage-user.save" />
-                                        </button>
-                                }
-
-
-
-                            </div>
                         </div>
+
                     </div>
 
+
+
+
+                    {
+                        this.state.isOpenLightBox && <Lightbox
+                            mainSrc={this.state.previewImgURL}
+                            onCloseRequest={() => this.setState({ isOpenLightBox: false })}
+
+                        />
+                    }
+
+
+
+
+                    <div className="col-12 text-center mt-5">
+                        <button type="button" className="btn btn-danger" onClick={() => this.handleOpenForm()}>Hidden</button>
+                    </div>
+
+                    <div className="col-12">
+                        <TableManageUser
+                            setStateUpdataUser={this.setStateUpdataUser}
+                            setStateIsUpdate={this.setStateIsUpdate}
+                        />
+                    </div>
+
+
                 </div>
 
+                <div className="footer-manage" style={{ height: '50px', backgroundColor: '#39648f', marginTop: '20px' }} >
 
-
-
-                {
-                    this.state.isOpenLightBox && <Lightbox
-                        mainSrc={this.state.previewImgURL}
-                        onCloseRequest={() => this.setState({ isOpenLightBox: false })}
-
-                    />
-                }
-
-
-
-
-                <div className="col-12 text-center mt-5">
-                    <button type="button" className="btn btn-danger" onClick={() => this.handleOpenForm()}>Hidden</button>
                 </div>
-
-                <div className="col-12">
-                    <TableManageUser
-                        setStateUpdataUser={this.setStateUpdataUser}
-                        setStateIsUpdate={this.setStateIsUpdate}
-                    />
-                </div>
-
-
-            </div>
+            </React.Fragment>
         )
     }
 
