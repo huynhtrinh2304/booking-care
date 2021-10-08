@@ -7,6 +7,8 @@ import {
     getTopDoctorHomeService
 } from '../../services/userService'
 
+import { getAllDoctorsService, postInforDoctorService } from '../../services/doctorService'
+
 import { toast } from 'react-toastify';
 
 
@@ -273,6 +275,61 @@ export const fetchTopDoctor = () => {
             console.log(error);
             dispatch({
                 type: actionTypes.FETCH_TOP_DOCTORS_FAILED,
+            });
+        }
+    }
+}
+
+
+// Get top doctor
+export const fetchAllDoctors = () => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await getAllDoctorsService();
+
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.FETCH_ALL_DOCTORS_SUCCESS,
+                    doctors: res.doctors,
+                });
+
+
+            } else {
+                dispatch({
+                    type: actionTypes.FETCH_ALL_DOCTORS_FAILED,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: actionTypes.FETCH_ALL_DOCTORS_FAILED,
+            });
+        }
+    }
+}
+
+// Get top doctor
+export const postInforDoctor = (inforDoctor) => {
+    return async (dispatch, getState) => {
+        try {
+
+            let res = await postInforDoctorService(inforDoctor);
+
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.POST_INFOR_DOCTORS_SUCCESS,
+                });
+
+                toast.success('Update Success')
+            } else {
+                dispatch({
+                    type: actionTypes.POST_INFOR_DOCTORS_FAILED,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: actionTypes.FETCH_ALL_DOCTORS_FAILED,
             });
         }
     }

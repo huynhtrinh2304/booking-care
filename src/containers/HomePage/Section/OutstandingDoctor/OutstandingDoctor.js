@@ -67,8 +67,8 @@ class OutstandingDoctor extends Component {
                                     }
 
 
-                                    let nameVi = `${value.positionData.valueVi}, ${value.firstName},${value.lastName}`
-                                    let nameEn = `${value.positionData.valueEn}, ${value.firstName},${value.lastName}`
+                                    let nameVi = `${value.positionData.valueVi}, ${value.firstName} ${value.lastName}`
+                                    let nameEn = `${value.positionData.valueEn}, ${value.firstName} ${value.lastName}`
 
                                     return (
                                         <div key={index} className="block-slide-outstanding-doctor">

@@ -52,13 +52,18 @@ const actionTypes = Object.freeze({
 
 
 
-    // Update user by redux
+    // Get top doctor
     FETCH_TOP_DOCTORS_SUCCESS: 'FETCH_TOP_DOCTORS_SUCCESS',
     FETCH_TOP_DOCTORS_FAILED: 'FETCH_TOP_DOCTORS_FAILED',
 
 
+    // Get all doctor by redux
+    FETCH_ALL_DOCTORS_SUCCESS: 'FETCH_ALL_DOCTORS_SUCCESS',
+    FETCH_ALL_DOCTORS_FAILED: 'FETCH_ALL_DOCTORS_FAILED',
 
-
+    // Post infor doctor
+    POST_INFOR_DOCTORS_SUCCESS: 'POST_INFOR_DOCTORS_SUCCESS',
+    POST_INFOR_DOCTORS_FAILED: 'POST_INFOR_DOCTORS_FAILED',
 
 
 })

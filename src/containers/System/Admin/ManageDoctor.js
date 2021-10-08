@@ -26,18 +26,25 @@ class ManageDoctor extends Component {
 
             contentHtml: '',
             contentMarkdown: '',
-            selectedDoctor: null,
+            selectedDoctors: '',
             description: '',
+            listDocs: [],
 
         }
     }
 
 
     componentDidMount() {
-
+        this.props.fetchAllDoctors();
     }
 
-
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.doctors !== this.props.doctors) {
+            this.setState({
+                listDocs: this.props.doctors
+            })
+        }
+    }
 
 
 
@@ -52,12 +59,33 @@ class ManageDoctor extends Component {
     }
 
     saveContentMarkdown = () => {
-        console.log(this.state);
+        let state = this.state;
+        let { listDocs, ...inforDoctor } = state
+
+        if (!inforDoctor.selectedDoctors) {
+            alert('Please select a doctor');
+            return;
+        }
+
+        if (!inforDoctor.description) {
+            alert('You missing description for doctor ');
+            return;
+        }
+
+        if (!inforDoctor.contentMarkdown) {
+            alert('You missing content for doctor ');
+            return;
+        }
+
+
+
+
+        this.props.postInforDoctor(inforDoctor);
     }
 
-    handleChange = (selectedDoctor) => {
+    handleChange = async (selectedDoctor) => {
 
-        this.setState({ selectedDoctor: selectedDoctor });
+        await this.setState({ selectedDoctors: selectedDoctor.value });
 
     };
 
@@ -72,14 +100,21 @@ class ManageDoctor extends Component {
 
 
 
+
+
     render() {
         let mdParser = new MarkdownIt(/* Markdown-it options */);
-        let { selectedDoctor } = this.state;
-        let options = [
-            { value: 'chocolate', label: 'Chocolate' },
-            { value: 'strawberry', label: 'Strawberry' },
-            { value: 'vanilla', label: 'Vanilla' },
-        ];
+        // let { selectedDoctor } = this.state;
+        let options = [];
+        let { ...state } = this.state;
+
+
+
+        state.listDocs.map((doctor) => {
+            options.push({ value: doctor.id, label: `${doctor.lastName} ${doctor.firstName}` });
+        })
+
+
 
 
         return (
@@ -94,7 +129,7 @@ class ManageDoctor extends Component {
                         <label htmlFor="">Choose a doctor</label>
 
                         <Select
-                            value={selectedDoctor}
+                            // value={selectedDoctor}
                             onChange={this.handleChange}
                             options={options}
                         />
@@ -120,7 +155,7 @@ class ManageDoctor extends Component {
 
 
                 <MdEditor
-                    style={{ height: '500px' }}
+                    style={{ height: '300px' }}
                     renderHTML={text => mdParser.render(text)}
                     onChange={this.handleEditorChange}
 
@@ -150,46 +185,20 @@ class ManageDoctor extends Component {
 
 const mapStateToProps = state => {
     return {
-        users: state.admin.dataUser,
+        doctors: state.admin.allDoctors,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllUsersRedux: () => dispatch(actions.getAllUsersRedux()),
-        deleteUserById: (id) => dispatch(actions.deleteUserById(id)),
+        fetchAllDoctors: () => dispatch(actions.fetchAllDoctors()),
+        postInforDoctor: (inforDoctor) => dispatch(actions.postInforDoctor(inforDoctor))
 
     };
 };
 
 
 
-
-
-
-class Undo extends Component {
-
-
-    handleDestroyClick = () => {
-        this.props.deleteUserById(this.props.id);
-
-    };
-
-
-    render() {
-
-        return (
-            <div className="modal-comfirm container">
-                <h4>Do you want delete user?</h4>
-                <div className="btn-confirm">
-                    <button className="btn btn-danger destroy" onClick={this.handleDestroyClick}>Destroy</button>
-
-                    <button className="btn btn-primary undo">Cancel</button>
-                </div>
-            </div>
-        );
-    }
-}
 
 
 
