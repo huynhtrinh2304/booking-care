@@ -8,6 +8,13 @@
         height: 270px;
         border: 1px solid rgba(73, 69, 69, 0.637);
         text-align: center;
+        cursor: pointer;
+        &:hover {
+            .level-doctor {
+                color: #45c3d2;
+            }
+        }
+
         .img-customize-outstanding-doctor {
             height: 150px;
             width: 150px;

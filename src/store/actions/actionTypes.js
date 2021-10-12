@@ -66,6 +66,8 @@ const actionTypes = Object.freeze({
     POST_INFOR_DOCTORS_FAILED: 'POST_INFOR_DOCTORS_FAILED',
 
 
+
+
 })
 
 export default actionTypes;

@@ -8,7 +8,8 @@ const initialState = {
     isCreatedUser: '',
     dataUser: [],
     topDoctors: [],
-    allDoctors: []
+    allDoctors: [],
+
 }
 
 const adminReducer = (state = initialState, action) => {
@@ -168,6 +169,15 @@ const adminReducer = (state = initialState, action) => {
                 ...state,
 
             }
+
+
+
+
+
+
+
+
+
 
 
 

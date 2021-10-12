@@ -7,7 +7,7 @@ import {
     getTopDoctorHomeService
 } from '../../services/userService'
 
-import { getAllDoctorsService, postInforDoctorService } from '../../services/doctorService'
+import { getAllDoctorsService, postInforDoctorService, getDetailDoctorService } from '../../services/doctorService'
 
 import { toast } from 'react-toastify';
 
@@ -334,3 +334,4 @@ export const postInforDoctor = (inforDoctor) => {
         }
     }
 }
+

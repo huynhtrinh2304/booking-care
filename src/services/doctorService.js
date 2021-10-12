@@ -11,7 +11,13 @@ const postInforDoctorService = (inforDoctor) => {
 
 }
 
+const getDetailDoctorService = (id) => {
+    return axios.get(`/api/get-detail-doctor?id=${id}`)
+
+}
+
 export {
     getAllDoctorsService,
-    postInforDoctorService
+    postInforDoctorService,
+    getDetailDoctorService
 }

@@ -9,7 +9,7 @@ import OutstandingDoctor from './Section/OutstandingDoctor/OutstandingDoctor.js'
 import HandBook from './Section/HandBook/HandBook.js';
 import About from './Section/About/About';
 import Footer from './Footer/Footer';
-
+import HomeBanner from './HomeBanner'
 
 
 
@@ -45,6 +45,8 @@ class HomePage extends Component {
             <div>
 
                 <HomeHeader />
+
+                <HomeBanner />
 
                 <Speciality settings={settings} />
 

@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-
 import Slider from 'react-slick';
-
 import './OutstandingDoctor.scss';
-
 import * as actions from '../../../../store/actions'
-
-
-
-
+import { withRouter } from 'react-router';
 
 class OutstandingDoctor extends Component {
 
@@ -33,6 +27,12 @@ class OutstandingDoctor extends Component {
             })
         }
     };
+
+    handleViewDetailDoctor = (value) => {
+        this.props.history.push(`detail-doctor/${value.id}`)
+
+
+    }
 
 
 
@@ -71,7 +71,9 @@ class OutstandingDoctor extends Component {
                                     let nameEn = `${value.positionData.valueEn}, ${value.firstName} ${value.lastName}`
 
                                     return (
-                                        <div key={index} className="block-slide-outstanding-doctor">
+
+                                        <div key={index} className="block-slide-outstanding-doctor" onClick={() => this.handleViewDetailDoctor(value)}>
+
                                             <div
                                                 className="img-customize-outstanding-doctor"
                                                 style={{ backgroundImage: `url(${avatar})` }}
@@ -81,7 +83,9 @@ class OutstandingDoctor extends Component {
                                             <p className="level-doctor">{language == 'vi' ? nameVi : nameEn}</p>
                                             <p>Da liễu</p>
 
+
                                         </div>
+
                                     )
                                 })
                             }
@@ -118,7 +122,7 @@ const mapDispatchToProps = dispatch => {
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(OutstandingDoctor);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(OutstandingDoctor));
 
 
 
