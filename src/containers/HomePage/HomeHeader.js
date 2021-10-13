@@ -4,7 +4,7 @@ import './HomeHeader.scss';
 import { FormattedMessage } from 'react-intl';
 import { LANGUAGES } from '../../utils';
 import { changeLanguageApp } from '../../store/actions';
-
+import { withRouter } from 'react-router';
 
 
 
@@ -15,7 +15,9 @@ class HomeHeader extends Component {
     }
 
 
-
+    handleBackHome = () => {
+        this.props.history.push(`/home`)
+    }
 
 
     render() {
@@ -30,7 +32,7 @@ class HomeHeader extends Component {
                         <div className="left-content">
 
                             <i className="fas fa-bars"></i>
-                            <div className="header-logo">
+                            <div className="header-logo" onClick={this.handleBackHome}>
                             </div>
 
                         </div>
@@ -131,4 +133,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeHeader);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeHeader));

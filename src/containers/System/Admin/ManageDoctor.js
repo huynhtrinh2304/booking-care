@@ -2,19 +2,14 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions'
-
-
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
-
-
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css';
-
 import Select from 'react-select';
-
+import { getDetailDoctorService, putUpdateDetailDoctor } from '../../../services/doctorService'
+import { toast } from 'react-toastify';
 
 
 
@@ -26,9 +21,10 @@ class ManageDoctor extends Component {
 
             contentHtml: '',
             contentMarkdown: '',
-            selectedDoctors: '',
+            selectedDoctor: '',
             description: '',
-            listDocs: [],
+            isUpdating: false,
+            options: []
 
         }
     }
@@ -36,14 +32,15 @@ class ManageDoctor extends Component {
 
     componentDidMount() {
         this.props.fetchAllDoctors();
+
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.doctors !== this.props.doctors) {
-            this.setState({
-                listDocs: this.props.doctors
-            })
+            this.optionsSelectedDoctor(this.props.doctors);
+
         }
+
     }
 
 
@@ -58,11 +55,13 @@ class ManageDoctor extends Component {
 
     }
 
-    saveContentMarkdown = () => {
-        let state = this.state;
-        let { listDocs, ...inforDoctor } = state
 
-        if (!inforDoctor.selectedDoctors) {
+    addContentMarkdown = async () => {
+        let state = this.state;
+        let { options, ...inforDoctor } = state
+
+
+        if (!inforDoctor.selectedDoctor) {
             alert('Please select a doctor');
             return;
         }
@@ -80,14 +79,71 @@ class ManageDoctor extends Component {
 
 
 
-        this.props.postInforDoctor(inforDoctor);
+        let res = this.props.postInforDoctor(inforDoctor);
+        if (res) {
+            await this.setState({
+                isUpdating: false,
+                contentMarkdown: '',
+                description: '',
+
+            })
+        }
+
+
+
     }
+
+
+    updateContentMarkdown = async () => {
+        let state = this.state;
+        let { options, ...inforDoctor } = state
+
+        let res = await putUpdateDetailDoctor(inforDoctor);
+        if (res && res.errCode === 0) {
+            toast.success(res.message);
+            await this.setState({
+                isUpdating: false,
+                contentMarkdown: '',
+                description: '',
+
+
+            })
+
+        }
+    }
+
 
     handleChange = async (selectedDoctor) => {
 
-        await this.setState({ selectedDoctors: selectedDoctor.value });
+        let res = await getDetailDoctorService(selectedDoctor.value);
+
+
+
+        if (res.inforDoctor.Markdown) {
+            await this.setState({
+                isUpdating: true,
+                contentMarkdown: res.inforDoctor.Markdown.contentMarkdown,
+                contentHtml: res.inforDoctor.Markdown.contentHtml,
+                description: res.inforDoctor.Markdown.description,
+
+
+            })
+        }
+
+        if (res.inforDoctor.Markdown === 0) {
+            await this.setState({
+                isUpdating: false,
+                contentMarkdown: '',
+                contentHtml: '',
+                description: '',
+            })
+        }
+
+        this.setState({ selectedDoctor: selectedDoctor.value })
 
     };
+
+
 
     handleChangeTextArea = (e) => {
         this.state.description = e.target.value
@@ -99,23 +155,23 @@ class ManageDoctor extends Component {
 
 
 
+    optionsSelectedDoctor = (list) => {
 
-
-
-    render() {
-        let mdParser = new MarkdownIt(/* Markdown-it options */);
-        // let { selectedDoctor } = this.state;
-        let options = [];
-        let { ...state } = this.state;
-
-
-
-        state.listDocs.map((doctor) => {
-            options.push({ value: doctor.id, label: `${doctor.lastName} ${doctor.firstName}` });
+        list.map((doctor) => {
+            this.state.options.push({ value: doctor.id, label: `${doctor.lastName} ${doctor.firstName}` });
         })
 
+        return list;
+    }
 
 
+    onClickSelect = () => {
+        console.log('a');
+    }
+
+    render() {
+
+        let mdParser = new MarkdownIt(/* Markdown-it options */);
 
         return (
             <div className="container-markdown container mt-5">
@@ -129,9 +185,8 @@ class ManageDoctor extends Component {
                         <label htmlFor="">Choose a doctor</label>
 
                         <Select
-                            // value={selectedDoctor}
                             onChange={this.handleChange}
-                            options={options}
+                            options={this.state.options}
                         />
 
 
@@ -158,17 +213,33 @@ class ManageDoctor extends Component {
                     style={{ height: '300px' }}
                     renderHTML={text => mdParser.render(text)}
                     onChange={this.handleEditorChange}
-
+                    value={this.state.contentMarkdown}
                 />
 
                 <div className="col-6 text-center mt-5">
-                    <button
-                        type="button"
-                        className="btn btn-success"
-                        onClick={() => this.saveContentMarkdown()}
-                    >
-                        Lưu
-                    </button>
+                    {this.state.isUpdating === true ?
+                        <button
+                            type="button"
+                            className="btn btn-warning"
+                            onClick={() => this.updateContentMarkdown()}
+                            style={{ width: '85px', borderRadius: '20px' }}
+                        >
+                            Lưu
+                        </button> :
+
+                        <button
+                            type="button"
+                            className="btn btn-success"
+                            onClick={() => this.addContentMarkdown()}
+                            style={{ width: '120px', borderRadius: '20px' }}
+                        >
+                            Thêm thông tin
+                        </button>
+
+                    }
+
+
+
                 </div>
 
             </div>

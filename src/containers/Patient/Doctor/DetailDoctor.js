@@ -7,7 +7,7 @@ import './DetailDoctor.scss'
 import HomeHeader from '../../HomePage/HomeHeader'
 
 import 'react-toastify/dist/ReactToastify.css';
-import { getDetailDoctorService } from '../../../services/doctorService'
+import { getDetailDoctorService } from '../../../services/doctorService';
 
 
 

@@ -320,11 +320,17 @@ export const postInforDoctor = (inforDoctor) => {
                     type: actionTypes.POST_INFOR_DOCTORS_SUCCESS,
                 });
 
-                toast.success('Update Success')
+                toast.success('Save Success');
+                return true;
+
             } else {
                 dispatch({
                     type: actionTypes.POST_INFOR_DOCTORS_FAILED,
                 });
+
+                toast.error('Save error');
+                return false;
+
             }
         } catch (error) {
             console.log(error);
