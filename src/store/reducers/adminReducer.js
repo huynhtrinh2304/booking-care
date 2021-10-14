@@ -5,6 +5,7 @@ const initialState = {
     genders: [],
     positions: [],
     roles: [],
+    timeSchedule: [],
     isCreatedUser: '',
     dataUser: [],
     topDoctors: [],
@@ -171,6 +172,25 @@ const adminReducer = (state = initialState, action) => {
             }
 
 
+        //Time Schedule
+        case actionTypes.FETCH_ALLCODE_SCHEDULE_SUCCESS:
+
+            state.timeSchedule = action.data;
+
+            return {
+                ...state,
+
+            }
+
+        //Time Schedule
+        case actionTypes.FETCH_ALLCODE_SCHEDULE_FAILED:
+
+            state.timeSchedule = [];
+
+            return {
+                ...state,
+
+            }
 
 
 

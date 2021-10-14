@@ -35,12 +35,11 @@ class Login extends Component {
     }
 
 
-    handleLogin = async () => {
+    handleLogin = async (e) => {
         this.state.errorMessage = '';
         try {
-            let data = await handleLoginApi(this.state.username, this.state.password);
-            console.log(data);
 
+            let data = await handleLoginApi(this.state.username, this.state.password);
             if (data && data.errCode !== 0) {
                 this.setState({
                     errorMessage: data.errMessage,
@@ -50,8 +49,6 @@ class Login extends Component {
             if (data && data.errCode == 0) {
                 this.props.userLoginSuccess(data.user);
             }
-
-
 
         } catch (error) {
             if (error.response) {
@@ -66,6 +63,38 @@ class Login extends Component {
         }
     }
 
+
+
+    handleLoginEnter = async (e) => {
+        if (e.key === 'Enter') {
+            this.state.errorMessage = '';
+            try {
+
+                let data = await handleLoginApi(this.state.username, this.state.password);
+                if (data && data.errCode !== 0) {
+                    this.setState({
+                        errorMessage: data.errMessage,
+                    })
+                }
+
+                if (data && data.errCode == 0) {
+                    this.props.userLoginSuccess(data.user);
+                }
+
+            } catch (error) {
+                if (error.response) {
+
+                    if (error.response.data) {
+                        this.setState({
+                            errorMessage: error.response.data.message
+                        })
+                    }
+                }
+
+            }
+        }
+
+    }
 
     render() {
 
@@ -100,7 +129,7 @@ class Login extends Component {
                                     name="password"
                                     placeholder="Enter your password"
                                     autoComplete="off"
-                                    value={this.state.password} onChange={(e) => { this.handleOnChangeInput(e) }}
+                                    value={this.state.password} onKeyDown={(e) => { this.handleLoginEnter(e) }} onChange={(e) => { this.handleOnChangeInput(e) }}
 
                                 />
 
@@ -121,7 +150,13 @@ class Login extends Component {
                         </div>
 
                         <div className="col-12 ">
-                            <button className="btn-login" onClick={(event) => { this.handleLogin(event); }}>Login</button>
+                            <button
+                                className="btn-login"
+                                onClick={(event) => { this.handleLogin(event) }}
+
+                            >
+                                Login
+                            </button>
                         </div>
 
                         <div className="col-12 fogot-password">

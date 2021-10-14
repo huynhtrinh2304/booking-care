@@ -341,3 +341,30 @@ export const postInforDoctor = (inforDoctor) => {
     }
 }
 
+//TIME
+export const fetchTimeSchedule = () => {
+    return async (dispatch, getState) => {
+        try {
+
+            let res = await getAllCodeServicesApi('TIME');
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.FETCH_ALLCODE_SCHEDULE_SUCCESS,
+                    data: res.data
+                });
+            } else {
+                dispatch({
+                    type: actionTypes.FETCH_ALLCODE_SCHEDULE_SUCCESS
+                })
+            }
+        } catch (error) {
+            console.log('fetchTimeScheduleFailed', error);
+            dispatch({
+                type: actionTypes.FETCH_ALLCODE_SCHEDULE_SUCCESS
+            })
+
+        }
+    }
+}
+
+

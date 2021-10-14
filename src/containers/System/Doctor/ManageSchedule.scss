@@ -1,0 +1,12 @@
+.container-schedule {
+    .content-schedule {
+        .title-schedule {
+            text-align: center;
+            text-transform: uppercase;
+        }
+        .choose-hour {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}
