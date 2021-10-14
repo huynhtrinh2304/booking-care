@@ -48,7 +48,7 @@ class Login extends Component {
             }
 
             if (data && data.errCode == 0) {
-                this.props.userLoginSuccess(data.user)
+                this.props.userLoginSuccess(data.user);
             }
 
 
@@ -68,6 +68,7 @@ class Login extends Component {
 
 
     render() {
+
         return (
             <div className="login-background">
                 <div className="login-container">

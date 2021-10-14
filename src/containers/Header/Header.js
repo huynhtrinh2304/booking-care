@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import * as actions from "../../store/actions";
 import Navigator from '../../components/Navigator';
-import { adminMenu } from './menuApp';
+import { adminMenu, doctorMenu } from './menuApp';
 import './Header.scss';
 
 
@@ -20,6 +20,11 @@ import { FormattedMessage } from 'react-intl';
 
 class Header extends Component {
 
+    componentDidMount() {
+
+    }
+
+
 
 
     handleChangeLanguage = (language) => {
@@ -31,18 +36,19 @@ class Header extends Component {
     render() {
         const { processLogout, language, userInfo } = this.props;
 
+        console.log(userInfo);
 
         return (
             <div className="header-container">
 
                 {/* thanh navigator */}
                 <div className="header-tabs-container">
-                    <Navigator menus={adminMenu} />
+                    {userInfo.roleId === 'R2' ? <Navigator menus={doctorMenu} /> : <Navigator menus={adminMenu} />}
+
+
                 </div>
 
                 <div className="header-languages-logout">
-
-
 
                     <div className="languages">
                         <span>
