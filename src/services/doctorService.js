@@ -21,9 +21,19 @@ const putUpdateDetailDoctor = (data) => {
 
 }
 
+const bulkCreateScheduleService = (data) => {
+    return axios.post(`/api/bulk-create-schedule`, data)
+
+}
+
+
+
+
+
 export {
     getAllDoctorsService,
     postInforDoctorService,
     getDetailDoctorService,
-    putUpdateDetailDoctor
+    putUpdateDetailDoctor,
+    bulkCreateScheduleService
 }

@@ -8,7 +8,9 @@ import DatePicker from '../../../components/Input/DatePicker';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
 import moment from 'moment';
-import { dateFormat } from '../../../utils/constant'
+import { dateFormat } from '../../../utils/constant';
+import { bulkCreateScheduleService } from '../../../services/doctorService';
+
 
 
 class ManageSchedule extends Component {
@@ -25,9 +27,9 @@ class ManageSchedule extends Component {
         }
     }
 
-    componentDidMount() {
-        this.props.fetchAllDoctors();
-        this.props.fetchTimeSchedule();
+    async componentDidMount() {
+        await this.props.fetchAllDoctors();
+        await this.props.fetchTimeSchedule();
 
     }
 
@@ -97,38 +99,60 @@ class ManageSchedule extends Component {
 
     }
 
-    handleSaveScheduleDoctor = () => {
+    handleSaveScheduleDoctor = async () => {
         let { timeSchedule, currentDate, selectedDoctor } = this.state;
-        let formateDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER);
+        let formateDate = new Date(currentDate).getTime();
         let result = [];
 
 
+
+
         if (!selectedDoctor && _.isEmpty(selectedDoctor)) {
-            toast.error('Please choose a doctor')
+            toast.error('Please choose a doctor');
+            return;
         }
 
-        if (!currentDate) {
-            toast.error('Invalid date')
+        if ((currentDate instanceof Date && !isNaN(currentDate)) === false) {
+            toast.error('Invalid date');
+            return;
+
         }
+
+
 
         if (timeSchedule && timeSchedule.length > 0) {
             let selectedTime = timeSchedule.filter(time => time.isSelected === true)
-            let object = {};
+
+
             selectedTime.map(time => {
+                let object = {};
+
                 object.doctorId = selectedDoctor.value;
-                object.time = time.keyMap;
+                object.timeType = time.keyMap;
                 object.date = formateDate;
 
                 result.push(object)
 
             })
 
-
         }
+        console.log(selectedDoctor.value);
 
-        console.log(result);
+        let res = await bulkCreateScheduleService({
+            arrSchedule: result,
+            doctorId: selectedDoctor.value,
+            date: formateDate
+
+        });
+
+
 
     }
+
+
+
+
+
 
 
     render() {

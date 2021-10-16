@@ -30,8 +30,8 @@ class ManageDoctor extends Component {
     }
 
 
-    componentDidMount() {
-        this.props.fetchAllDoctors();
+    async componentDidMount() {
+        await this.props.fetchAllDoctors();
 
     }
 
