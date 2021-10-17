@@ -8,7 +8,7 @@ import HomeHeader from '../../HomePage/HomeHeader'
 
 import 'react-toastify/dist/ReactToastify.css';
 import { getDetailDoctorService } from '../../../services/doctorService';
-
+import DoctorSchedule from './DoctorSchedule'
 
 
 
@@ -36,6 +36,7 @@ class DetailDoctor extends Component {
 
     componentDidUpdate(prevProps, prevState) {
 
+
     }
 
 
@@ -43,7 +44,6 @@ class DetailDoctor extends Component {
 
     render() {
 
-        console.log(this.state.detailDoctor);
         let language = this.props.language;
         let inforVi = '';
         let inforEn = '';
@@ -54,6 +54,7 @@ class DetailDoctor extends Component {
 
         }
 
+        console.log(this.state.detailDoctor);
         return (
             <>
                 <HomeHeader />
@@ -93,8 +94,14 @@ class DetailDoctor extends Component {
                             </div>
                         </div>
 
-                        <div className="schedule-doctor">
+                        <div className="schedule-doctor mt-4">
+                            <div className="content-lefr">
 
+                            </div>
+
+                            <div className="content-right">
+                                <DoctorSchedule id={this.props.match.params.id} />
+                            </div>
                         </div>
 
 
@@ -104,7 +111,7 @@ class DetailDoctor extends Component {
                     <div className="detail-infor-doctor">
                         <div className="block-content-detail">
                             {
-                                this.state.detailDoctor.Markdown && this.state.detailDoctor.Markdown.contentHtml &&
+                                this.state.detailDoctor && this.state.detailDoctor.Markdown && this.state.detailDoctor.Markdown.contentHtml &&
                                 <div dangerouslySetInnerHTML={{ __html: this.state.detailDoctor.Markdown.contentHtml }}></div>
                             }
 

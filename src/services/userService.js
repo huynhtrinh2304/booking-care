@@ -43,6 +43,10 @@ const getTopDoctorHomeService = (limit) => {
 
 }
 
+const getScheduleDoctorByDateService = (doctorId, date) => {
+    return axios.get(`/api/get-schedule-doctor-by-date?doctorId=${doctorId}&date=${date}`)
+
+}
 
 
 export {
@@ -53,5 +57,6 @@ export {
     updateUserApi,
     getAllCodeServicesApi,
     getTopDoctorHomeService,
+    getScheduleDoctorByDateService
 
 }

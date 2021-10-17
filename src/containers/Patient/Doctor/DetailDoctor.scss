@@ -1,6 +1,6 @@
 .doctor-detail-container {
     .schedule-and-infor-doctor {
-        height          : 400px;
+        // height          : 400px;
         background-color: #f7f6f6;
         padding         : 25px 14%;
         border-bottom   : 1px solid #fbfbfb;
@@ -50,6 +50,21 @@
                     }
                 }
             }
+        }
+
+        .schedule-doctor {
+            display: flex;
+            height: 200px;
+            border: solid 1px red;
+            
+            .content-left {
+
+            }
+
+            .content-right {
+
+            }
+                
         }
     }
 

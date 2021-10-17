@@ -136,7 +136,7 @@ class ManageSchedule extends Component {
             })
 
         }
-        console.log(selectedDoctor.value);
+
 
         let res = await bulkCreateScheduleService({
             arrSchedule: result,
