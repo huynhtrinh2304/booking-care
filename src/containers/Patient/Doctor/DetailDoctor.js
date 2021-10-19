@@ -54,7 +54,7 @@ class DetailDoctor extends Component {
 
         }
 
-        console.log(this.state.detailDoctor);
+
         return (
             <>
                 <HomeHeader />
@@ -95,12 +95,12 @@ class DetailDoctor extends Component {
                         </div>
 
                         <div className="schedule-doctor mt-4">
-                            <div className="content-lefr">
-
+                            <div className="content-left">
+                                <DoctorSchedule id={this.props.match.params.id} />
                             </div>
 
                             <div className="content-right">
-                                <DoctorSchedule id={this.props.match.params.id} />
+
                             </div>
                         </div>
 

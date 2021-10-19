@@ -181,6 +181,7 @@ class ManageSchedule extends Component {
                                 onChange={this.handleChange}
                                 options={this.state.options}
                                 value={this.state.selectedDoctor}
+                                placeholder="Doctor"
                             />
 
                         </div>

@@ -1,0 +1,29 @@
+.container-schedule {
+    .choose-date {
+        margin: 20px 0;
+    }
+
+    .detail-calendar {
+        .choose-hour {
+            .text-calendar {
+                font-size: 18px;
+            }
+            .time-content {
+                button {
+                    height: 38px;
+                    width: 155px;
+                    background-color: #fff04b;
+                    color: #333;
+                    border: none;
+                    margin: 10px 10px 10px 0;
+                    font-family: cursive;
+
+                    &:hover {
+                        background-color: #45c3d2;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+}

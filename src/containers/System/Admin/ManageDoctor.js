@@ -186,6 +186,7 @@ class ManageDoctor extends Component {
                         <Select
                             onChange={this.handleChange}
                             options={this.state.options}
+                            placeholder="Doctor"
                         />
 
 
