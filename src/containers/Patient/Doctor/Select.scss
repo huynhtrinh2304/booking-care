@@ -1,10 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway);
 
-* {
-    margin    : 0;
-    padding   : 0;
-    transition: all .2s;
-}
+// * {
+//     margin    : 0;
+//     padding   : 0;
+//     transition: all .2s;
+// }
 
 
 
@@ -23,7 +23,7 @@ select {
     cursor      : pointer;
     padding-left: 15px;
     padding-top : 3px;
-
+    transition      : 1s;
 
 }
 
@@ -31,7 +31,7 @@ select:hover {
     background-color: transparent;
     color           : red;
     padding-left    : 30px;
-    transition      : 1s;
+
 }
 
 select option {

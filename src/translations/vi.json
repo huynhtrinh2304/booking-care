@@ -53,5 +53,12 @@
         "role-id": "Vai trò",
         "avatar": "Ảnh đại diện",
         "save": "Lưu user"
+    },
+    "homepage": {},
+    "manage-schedule": {},
+    "patient": {
+        "detail-doctor": {
+            "schedule": "Lịch khám"
+        }
     }
 }

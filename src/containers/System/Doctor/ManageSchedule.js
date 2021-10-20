@@ -105,9 +105,12 @@ class ManageSchedule extends Component {
         let result = [];
 
 
+        if (!selectedDoctor && _.isEmpty(selectedDoctor && selectedDoctor.value === 0)) {
+            toast.error('Please choose a doctor');
+            return;
+        }
 
-
-        if (!selectedDoctor && _.isEmpty(selectedDoctor)) {
+        if (selectedDoctor.value === 0) {
             toast.error('Please choose a doctor');
             return;
         }
@@ -115,13 +118,12 @@ class ManageSchedule extends Component {
         if ((currentDate instanceof Date && !isNaN(currentDate)) === false) {
             toast.error('Invalid date');
             return;
-
         }
 
 
 
         if (timeSchedule && timeSchedule.length > 0) {
-            let selectedTime = timeSchedule.filter(time => time.isSelected === true)
+            let selectedTime = timeSchedule.filter(time => time.isSelected = true)
 
 
             selectedTime.map(time => {
@@ -147,6 +149,22 @@ class ManageSchedule extends Component {
 
 
 
+        if (res && res.errCode === 0) {
+            toast.success('Create schedule successfully');
+
+            this.state.timeSchedule.filter(time => time.isSelected = false);
+            console.log(this.state.timeSchedule);
+            this.setState({
+                selectedDoctor: { value: 0, label: 'Doctor...' },
+                currentDate: '',
+            })
+
+
+        } else {
+            toast.error("Can't save schedule");
+        }
+
+
     }
 
 
@@ -158,7 +176,7 @@ class ManageSchedule extends Component {
     render() {
         let { timeSchedule } = this.state;
         let language = this.props.language;
-
+        let date = new Date();
 
         return (
 
@@ -181,7 +199,7 @@ class ManageSchedule extends Component {
                                 onChange={this.handleChange}
                                 options={this.state.options}
                                 value={this.state.selectedDoctor}
-                                placeholder="Doctor"
+                                placeholder="Doctor..."
                             />
 
                         </div>
@@ -193,7 +211,7 @@ class ManageSchedule extends Component {
                                 onChange={this.handleOnChangeDatePicker}
                                 className="form-control"
                                 value={this.state.currentDate}
-                                minDate={new Date()}
+                                minDate={date.setDate(date.getDate() - 1)}
                             />
                         </div>
 

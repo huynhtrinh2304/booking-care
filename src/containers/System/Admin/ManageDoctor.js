@@ -57,13 +57,24 @@ class ManageDoctor extends Component {
 
     addContentMarkdown = async () => {
         let state = this.state;
-        let { options, ...inforDoctor } = state
+        let inforDoctor = {
+            contentHtml: state.contentHtml,
+            contentMarkdown: state.contentMarkdown,
+            description: state.description,
+            selectedDoctor: state.selectedDoctor.value
+        }
 
 
         if (!inforDoctor.selectedDoctor) {
             alert('Please select a doctor');
             return;
         }
+
+        if (this.state.selectedDoctor.value === 0) {
+            alert('Please select a doctor');
+            return;
+        }
+
 
         if (!inforDoctor.description) {
             alert('You missing description for doctor ');
@@ -76,14 +87,14 @@ class ManageDoctor extends Component {
         }
 
 
+        let res = await this.props.postInforDoctor(inforDoctor);
 
-
-        let res = this.props.postInforDoctor(inforDoctor);
         if (res) {
             await this.setState({
                 isUpdating: false,
                 contentMarkdown: '',
                 description: '',
+                selectedDoctor: { value: 0, label: 'Doctor...' },
 
             })
         }
@@ -138,7 +149,7 @@ class ManageDoctor extends Component {
             })
         }
 
-        this.setState({ selectedDoctor: selectedDoctor.value })
+        this.setState({ selectedDoctor: selectedDoctor })
 
     };
 
@@ -164,10 +175,6 @@ class ManageDoctor extends Component {
     }
 
 
-    onClickSelect = () => {
-        console.log('a');
-    }
-
     render() {
 
         let mdParser = new MarkdownIt(/* Markdown-it options */);
@@ -187,6 +194,7 @@ class ManageDoctor extends Component {
                             onChange={this.handleChange}
                             options={this.state.options}
                             placeholder="Doctor"
+                            value={this.state.selectedDoctor}
                         />
 
 

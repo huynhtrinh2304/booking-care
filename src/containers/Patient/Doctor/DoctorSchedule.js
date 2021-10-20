@@ -45,18 +45,38 @@ class DoctorSchedule extends Component {
 
     setArrDays = () => {
         let allDay = [];
+        let today = new Date().setHours(0, 0, 0, 0);
+
+
+
         for (let i = 0; i < 7; i++) {
             let object = {};
+            object.value = moment(new Date()).add(i, 'days').startOf('day').valueOf();
+
 
             if (this.props.language === LANGUAGES.VI) {
                 let day = moment(new Date()).add(i, 'days').format('dddd - DD/MM');
+
                 object.label = day.charAt(0).toUpperCase() + day.slice(1);
+
+                if (object.value === today) {
+                    let label = object.label.slice(object.label.indexOf(' ', 6))
+                    object.label = 'Hôm nay' + label;
+
+                }
 
             } else {
                 object.label = moment(new Date()).locale('en').add(i, 'days').format('ddd - DD/MM');
+
+                if (object.value === today) {
+                    let label = object.label.slice(object.label.indexOf(' ', 3))
+                    object.label = 'Today' + label;
+
+                }
             }
 
-            object.value = moment(new Date()).add(i, 'days').startOf('day').valueOf();
+
+
             allDay.push(object);
         }
         this.setState({
@@ -108,7 +128,9 @@ class DoctorSchedule extends Component {
                         <div className="choose-hour">
 
                             <div className="text-calendar">
-                                <span><i className="fas fa-calendar-plus"> Lịch khám</i></span>
+                                <span>
+                                    <i className="fas fa-calendar-plus">  <FormattedMessage id="patient.detail-doctor.schedule" /> </i>
+                                </span>
                             </div>
 
                             <div className="time-content">

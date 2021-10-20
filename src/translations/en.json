@@ -53,5 +53,12 @@
         "role-id": "RoleID",
         "avatar": "Avatar",
         "save": "Save user"
+    },
+    "homepage": {},
+    "manage-schedule": {},
+    "patient": {
+        "detail-doctor": {
+            "schedule": "Schedule"
+        }
     }
 }
