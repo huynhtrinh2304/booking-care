@@ -60,5 +60,12 @@
         "detail-doctor": {
             "schedule": "Lịch khám"
         }
+    },
+    "admin": {
+        "manage-doctor": {
+            "title": "Thêm thông tin cho bác sĩ",
+            "select-doctor": "Chọn bác sĩ",
+            "intro-doctor": "Giới thiệu thông tin bác sĩ"
+        }
     }
 }

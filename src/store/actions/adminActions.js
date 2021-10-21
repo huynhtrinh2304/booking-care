@@ -368,3 +368,49 @@ export const fetchTimeSchedule = () => {
 }
 
 
+//Data allcode
+export const fetchDataFromAllCode = () => {
+    return async (dispatch, getState) => {
+        try {
+
+            let resPrice = await getAllCodeServicesApi("PRICE");
+            let resPayment = await getAllCodeServicesApi("PAYMENT");
+            let resProvince = await getAllCodeServicesApi("PROVINCE");
+
+            if (
+                resPrice && resPrice.errCode === 0 &&
+                resPayment && resPayment.errCode === 0 &&
+                resProvince && resProvince.errCode === 0
+            ) {
+
+                let data = {
+                    price: resPrice.data,
+                    payment: resPayment.data,
+                    province: resProvince.data,
+
+                }
+                dispatch({
+                    type: actionTypes.FETCH_PRICE_PAYMENT_PROVINCE_SUCCESS,
+                    data: data
+                });
+
+            } else {
+                dispatch({
+                    type: actionTypes.FETCH_PRICE_PAYMENT_PROVINCE_FAILED,
+                });
+            }
+
+
+
+
+        } catch (error) {
+            console.log('fetchDataFromAllCode', error);
+            dispatch({
+                type: actionTypes.FETCH_PRICE_PAYMENT_PROVINCE_FAILED,
+            });
+        }
+    }
+}
+
+
+

@@ -10,6 +10,8 @@ const initialState = {
     dataUser: [],
     topDoctors: [],
     allDoctors: [],
+    dataAllCode: []
+
 
 }
 
@@ -191,6 +193,29 @@ const adminReducer = (state = initialState, action) => {
                 ...state,
 
             }
+
+
+
+        // PRICE PAYMENT PROVINCE allcode
+        case actionTypes.FETCH_PRICE_PAYMENT_PROVINCE_SUCCESS:
+
+            state.dataAllCode = action.data;
+
+
+
+            return {
+                ...state,
+            }
+
+        case actionTypes.FETCH_PRICE_PAYMENT_PROVINCE_FAILED:
+            state.dataAllCode = [];
+
+
+
+            return {
+                ...state,
+            }
+
 
 
 

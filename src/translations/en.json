@@ -60,5 +60,12 @@
         "detail-doctor": {
             "schedule": "Schedule"
         }
+    },
+    "admin": {
+        "manage-doctor": {
+            "title": "Add more info doctor",
+            "select-doctor": "Select doctor",
+            "intro-doctor": "Introduce doctor information"
+        }
     }
 }
