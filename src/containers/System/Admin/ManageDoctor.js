@@ -8,8 +8,7 @@ import MdEditor from 'react-markdown-editor-lite';
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css';
 import Select from 'react-select';
-import { getDetailDoctorService, putUpdateDetailDoctor } from '../../../services/doctorService';
-import { getAllCodeServicesApi } from '../../../services/userService';
+import { getInforDoctorService, putUpdateDetailDoctor } from '../../../services/doctorService';
 import { toast } from 'react-toastify';
 import { LANGUAGES } from '../../../utils';
 
@@ -29,23 +28,28 @@ class ManageDoctor extends Component {
             doctors: [],
 
 
-            listPrice: [],
-            listPayment: [],
-            listProvince: [],
+            listPriceVi: [],
+            listPaymentVi: [],
+            listProvinceVi: [],
+
+            listPriceEn: [],
+            listPaymentEn: [],
+            listProvinceEn: [],
 
             // Save to doctor_infor table
-            selectedPrice: '',
-            selectedPayment: '',
-            selectedProvince: '',
+            selectedPriceVi: '',
+            selectedPaymentVi: '',
+            selectedProvinceVi: '',
+
+            selectedPriceEn: '',
+            selectedPaymentEn: '',
+            selectedProvinceEn: '',
+
+
+
             nameClinic: '',
             addressClinic: '',
             note: '',
-
-
-
-
-
-
 
 
         }
@@ -60,8 +64,6 @@ class ManageDoctor extends Component {
     }
 
 
-
-
     componentDidUpdate(prevProps, prevState) {
 
         if (prevProps.doctors !== this.props.doctors) {
@@ -74,10 +76,16 @@ class ManageDoctor extends Component {
             let province = this.buildDataSelect(this.props.dataAllCode.province);
 
             this.setState({
-                listPrice: price,
-                listPayment: payment,
-                listProvince: province
+
+                listPriceVi: price.dataVi,
+                listPaymentVi: payment.dataVi,
+                listProvinceVi: province.dataVi,
+
+                listPriceEn: price.dataEn,
+                listPaymentEn: payment.dataEn,
+                listProvinceEn: province.dataEn,
             })
+
 
 
         }
@@ -87,10 +95,17 @@ class ManageDoctor extends Component {
             let payment = this.buildDataSelect(this.props.dataAllCode.payment);
             let province = this.buildDataSelect(this.props.dataAllCode.province);
 
+
+
             this.setState({
-                listPrice: price,
-                listPayment: payment,
-                listProvince: province
+
+                listPriceVi: price.dataVi,
+                listPaymentVi: payment.dataVi,
+                listProvinceVi: province.dataVi,
+
+                listPriceEn: price.dataEn,
+                listPaymentEn: payment.dataEn,
+                listProvinceEn: province.dataEn,
             })
 
         }
@@ -101,13 +116,24 @@ class ManageDoctor extends Component {
 
 
     buildDataSelect = (data) => {
+        let result = { dataVi: [], dataEn: [] };
         if (data && data.length > 0) {
-            let result = data.map((item) => {
-                let labelSelect = this.props.language === LANGUAGES.VI ? item.valueVi : item.valueEn;
-                return { value: item.keyMap, label: labelSelect }
+            data.map((item) => {
+                result.dataVi.push({ value: item.keyMap, label: item.valueVi.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' đ' })
+                result.dataEn.push({ value: item.keyMap, label: item.valueEn + ' USD' })
             })
-            return result
         }
+        return result
+
+    }
+
+    optionsSelectedDoctor = (list) => {
+
+        list.map((doctor) => {
+            this.state.doctors.push({ value: doctor.id, label: `${doctor.lastName} ${doctor.firstName}` });
+        })
+
+        return list;
     }
 
     handleEditorChange = (data) => {
@@ -122,46 +148,84 @@ class ManageDoctor extends Component {
 
     addContentMarkdown = async () => {
         let state = this.state;
+
         let inforDoctor = {
             contentHtml: state.contentHtml,
             contentMarkdown: state.contentMarkdown,
             description: state.description,
-            selectedDoctor: state.selectedDoctor.value
+            selectedDoctor: state.selectedDoctor.value,
+
+            // data table doctor_infor
+            price: this.state.selectedPriceVi.value,
+            payment: this.state.selectedPaymentVi.value,
+            province: this.state.selectedProvinceVi.value,
+            addressClinic: this.state.addressClinic,
+            nameClinic: this.state.nameClinic,
+            note: this.state.note,
+
+
         }
+
+
 
         if (!inforDoctor.selectedDoctor) {
             alert('Please select a doctor');
             return;
         }
 
-        if (this.state.selectedDoctor.value === 0) {
-            alert('Please select a doctor');
-            return;
-        }
+        let response = this.validateInput(inforDoctor)
 
+        if (response) {
 
-        if (!inforDoctor.description) {
-            alert('You missing description for doctor ');
-            return;
-        }
+            let res = await this.props.postInforDoctor(inforDoctor);
 
-        if (!inforDoctor.contentMarkdown) {
-            alert('You missing content for doctor ');
-            return;
-        }
+            if (res) {
+                await this.setState({
+                    isUpdating: false,
+                    contentMarkdown: '',
+                    description: '',
+                    selectedDoctor: '',
 
-        let res = await this.props.postInforDoctor(inforDoctor);
+                    nameClinic: '',
+                    addressClinic: '',
+                    note: '',
 
-        if (res) {
-            await this.setState({
-                isUpdating: false,
-                contentMarkdown: '',
-                description: '',
-                selectedDoctor: { value: 0, label: 'Doctor...' },
+                    selectedPriceVi: '',
+                    selectedPriceEn: '',
 
-            })
+                    selectedPaymentVi: '',
+                    selectedPaymentEn: '',
+
+                    selectedProvinceVi: '',
+                    selectedProvinceEn: '',
+
+                })
+            }
         }
     }
+
+    validateInput = (inforDoctor) => {
+        let arrValidate = [
+            'price',
+            'payment',
+            'province',
+            'nameClinic',
+            'addressClinic',
+            'note',
+            'description',
+            'contentMarkdown',
+        ];
+
+        for (let i = 0; i < arrValidate.length; i++) {
+
+            if (!inforDoctor[arrValidate[i]]) {
+                alert(`You missing ${arrValidate[i]} for doctor `);
+                return false;
+            }
+        }
+        return true;
+    }
+
 
 
     updateContentMarkdown = async () => {
@@ -170,8 +234,18 @@ class ManageDoctor extends Component {
             contentHtml: state.contentHtml,
             contentMarkdown: state.contentMarkdown,
             description: state.description,
-            selectedDoctor: state.selectedDoctor.value
+            selectedDoctor: state.selectedDoctor.value,
+
+            // data table doctor_infor
+            price: this.state.selectedPriceVi.value,
+            payment: this.state.selectedPaymentVi.value,
+            province: this.state.selectedProvinceVi.value,
+            addressClinic: this.state.addressClinic,
+            nameClinic: this.state.nameClinic,
+            note: this.state.note,
+
         }
+
 
         let res = await putUpdateDetailDoctor(inforDoctor);
         if (res && res.errCode === 0) {
@@ -180,35 +254,109 @@ class ManageDoctor extends Component {
                 isUpdating: false,
                 contentMarkdown: '',
                 description: '',
-                selectedDoctor: { value: 0, label: 'Doctor...' },
+                selectedDoctor: '',
 
+                selectedPriceVi: '',
+                selectedPriceEn: '',
+
+                selectedPaymentVi: '',
+                selectedPaymentEn: '',
+
+                selectedProvinceVi: '',
+                selectedProvinceEn: '',
+
+                nameClinic: '',
+                addressClinic: '',
+                note: '',
             })
 
         }
     }
 
 
+
     handleChange = async (selectedDoctor) => {
 
-        let res = await getDetailDoctorService(selectedDoctor.value);
-
-        if (res.inforDoctor.Markdown) {
-            await this.setState({
-                isUpdating: true,
-                contentMarkdown: res.inforDoctor.Markdown.contentMarkdown,
-                contentHtml: res.inforDoctor.Markdown.contentHtml,
-                description: res.inforDoctor.Markdown.description,
+        let res = await getInforDoctorService(selectedDoctor.value);
 
 
-            })
+        if (res && res.error === 0 && res.inforDoctor !== 0) {
+            if (res.inforDoctor && res.inforDoctor.dataMarkdown && res.inforDoctor.doctorInfor) {
+
+                this.setState({
+                    isUpdating: true,
+                    contentMarkdown: res.inforDoctor.dataMarkdown.contentMarkdown,
+                    contentHtml: res.inforDoctor.dataMarkdown.contentHtml,
+                    description: res.inforDoctor.dataMarkdown.description,
+
+
+                    selectedPriceVi: {
+                        value: res.inforDoctor.doctorInfor.priceId,
+                        label: res.inforDoctor.doctorInfor.priceData.valueVi.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' đ'
+                    },
+
+                    selectedPriceEn: {
+                        value: res.inforDoctor.doctorInfor.priceId,
+                        label: res.inforDoctor.doctorInfor.priceData.valueEn + " USD"
+                    },
+
+
+                    selectedPaymentVi: {
+                        value: res.inforDoctor.doctorInfor.paymentId,
+                        label: res.inforDoctor.doctorInfor.paymentData.valueVi
+                    },
+
+                    selectedPaymentEn: {
+                        value: res.inforDoctor.doctorInfor.paymentId,
+                        label: res.inforDoctor.doctorInfor.paymentData.valueEn
+                    },
+
+
+                    selectedProvinceVi: {
+                        value: res.inforDoctor.doctorInfor.provinceId,
+                        label: res.inforDoctor.doctorInfor.provinceData.valueVi
+                    },
+
+                    selectedProvinceEn: {
+                        value: res.inforDoctor.doctorInfor.provinceId,
+                        label: res.inforDoctor.doctorInfor.provinceData.valueEn
+                    },
+
+
+
+
+
+                    nameClinic: res.inforDoctor.doctorInfor.nameClinic,
+                    addressClinic: res.inforDoctor.doctorInfor.addressClinic,
+                    note: res.inforDoctor.doctorInfor.note,
+
+
+                })
+            }
+
+
         }
 
-        if (res.inforDoctor.Markdown === 0) {
-            await this.setState({
+        if (res.inforDoctor === 0) {
+            this.setState({
                 isUpdating: false,
                 contentMarkdown: '',
                 contentHtml: '',
                 description: '',
+
+                nameClinic: '',
+                addressClinic: '',
+                note: '',
+
+                selectedPriceVi: '',
+                selectedPriceEn: '',
+
+                selectedPaymentVi: '',
+                selectedPaymentEn: '',
+
+                selectedProvinceVi: '',
+                selectedProvinceEn: '',
+
             })
         }
 
@@ -226,21 +374,56 @@ class ManageDoctor extends Component {
 
     }
 
+    handleChangeSelectData = (nameVi, nameEn, listPriceVi, listPriceEn, value) => {
+        let valueVi = {};
+        let valueEn = {};
 
 
-    optionsSelectedDoctor = (list) => {
+        listPriceVi.map(item => {
+            if (item.value === value.value) {
+                valueVi = { value: value.value, label: item.label }
+            }
+        });
 
-        list.map((doctor) => {
-            this.state.doctors.push({ value: doctor.id, label: `${doctor.lastName} ${doctor.firstName}` });
+        listPriceEn.map(item => {
+            if (item.value === value.value) {
+                valueEn = { value: value.value, label: item.label }
+            }
+        });
+
+        this.setState({
+            [nameVi]: valueVi,
+            [nameEn]: valueEn,
+
         })
-
-        return list;
     }
+
+    onChangeInput = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+
+
+        this.setState({
+            [name]: value
+        })
+    }
+
+
 
 
     render() {
 
         let mdParser = new MarkdownIt(/* Markdown-it options */);
+
+        let { language } = this.props;
+        let {
+            listPriceVi, listPaymentVi, listProvinceVi, listPriceEn, listPaymentEn, listProvinceEn,
+        } = this.state;
+
+        let {
+            selectedPriceVi, selectedPaymentVi, selectedProvinceVi,
+            selectedPriceEn, selectedPaymentEn, selectedProvinceEn,
+        } = this.state;
 
 
         return (
@@ -269,8 +452,12 @@ class ManageDoctor extends Component {
                         <label htmlFor="">Chọn giá</label>
 
                         <Select
-                            options={this.state.listPrice}
+                            options={language === LANGUAGES.VI ? listPriceVi : listPriceEn}
                             placeholder="Price..."
+                            onChange={this.handleChangeSelectData.bind(
+                                this, 'selectedPriceVi', 'selectedPriceEn', listPriceVi, listPriceEn
+                            )}
+                            value={language === LANGUAGES.VI ? selectedPriceVi : selectedPriceEn}
                         />
                     </div>
 
@@ -279,9 +466,12 @@ class ManageDoctor extends Component {
                         <label htmlFor="">Chọn phương thức thanh toán</label>
 
                         <Select
-
-                            options={this.state.listPayment}
+                            options={language === LANGUAGES.VI ? listPaymentVi : listPaymentEn}
                             placeholder="Payment..."
+                            onChange={this.handleChangeSelectData.bind(
+                                this, 'selectedPaymentVi', 'selectedPaymentEn', listPaymentVi, listPaymentEn
+                            )}
+                            value={language === LANGUAGES.VI ? selectedPaymentVi : selectedPaymentEn}
                         />
                     </div>
 
@@ -290,29 +480,51 @@ class ManageDoctor extends Component {
                         <label htmlFor="">Chọn tỉnh thành</label>
 
                         <Select
-                            options={this.state.listProvince}
+                            options={language === LANGUAGES.VI ? listProvinceVi : listProvinceEn}
                             placeholder="Province..."
-
+                            onChange={this.handleChangeSelectData.bind(
+                                this, 'selectedProvinceVi', 'selectedProvinceEn', listProvinceVi, listProvinceEn
+                            )}
+                            value={language === LANGUAGES.VI ? selectedProvinceVi : selectedProvinceEn}
                         />
 
                     </div>
 
                     <div className="select-province col-4 mt-4">
                         <label htmlFor="">Tên phòng khám</label>
+                        <input
+                            className="form-control"
+                            name="nameClinic"
+                            type="text"
+                            value={this.state.nameClinic}
+                            onChange={(e) => this.onChangeInput(e)}
 
-                        <input className="form-control" type="text" />
+                        />
 
                     </div>
 
                     <div className="select-province col-4 mt-4">
                         <label htmlFor="">Địa chỉ phòng khám</label>
-                        <input className="form-control" type="text" />
+                        <input
+                            className="form-control"
+                            type="text"
+                            value={this.state.addressClinic}
+                            name="addressClinic"
+                            onChange={(e) => this.onChangeInput(e)}
+                        />
 
                     </div>
 
                     <div className="select-province col-4 mt-4">
                         <label htmlFor="">Note</label>
-                        <input className="form-control" type="text" />
+                        <input
+                            className="form-control"
+                            name="note"
+                            type="text"
+                            value={this.state.note}
+                            onChange={(e) => this.onChangeInput(e)}
+
+                        />
 
 
                     </div>

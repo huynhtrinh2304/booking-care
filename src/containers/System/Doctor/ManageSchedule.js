@@ -110,11 +110,6 @@ class ManageSchedule extends Component {
             return;
         }
 
-        if (selectedDoctor.value === 0) {
-            toast.error('Please choose a doctor');
-            return;
-        }
-
         if ((currentDate instanceof Date && !isNaN(currentDate)) === false) {
             toast.error('Invalid date');
             return;
@@ -153,9 +148,9 @@ class ManageSchedule extends Component {
             toast.success('Create schedule successfully');
 
             this.state.timeSchedule.filter(time => time.isSelected = false);
-            console.log(this.state.timeSchedule);
+
             this.setState({
-                selectedDoctor: { value: 0, label: 'Doctor...' },
+                selectedDoctor: '',
                 currentDate: '',
             })
 

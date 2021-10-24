@@ -178,15 +178,9 @@ class UserRedux extends Component {
         let value = e.target.value;
         copyState[name] = value;
 
-
-
         this.setState({
             infoUser: copyState
         })
-
-
-
-
     }
 
     validateInput = () => {

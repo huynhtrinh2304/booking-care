@@ -1,30 +1,31 @@
 .doctor-detail-container {
     .schedule-and-infor-doctor {
         // height          : 400px;
-        background-color: #f7f6f6;
-        padding: 25px 14%;
-        border-bottom: 1px solid #fbfbfb;
+        background-color: #ffffff;
+        padding         : 25px 14%;
+
+        border-bottom: 1px solid #ccc;
 
         .intro-doctor {
-            display: flex;
+            display    : flex;
             align-items: center;
 
             .avatar-doctor {
-                height: 120px;
-                width: 120px;
-                border-radius: 50%;
-                background-image: url("https://cdn.bookingcare.vn/fr/w200/2020/03/17/114430-bshung.jpg");
+                height             : 120px;
+                width              : 120px;
+                border-radius      : 50%;
+                background-image   : url("https://cdn.bookingcare.vn/fr/w200/2020/03/17/114430-bshung.jpg");
                 background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
+                background-repeat  : no-repeat;
+                background-size    : cover;
             }
 
             .content-doctor {
                 padding-left: 20px;
-                width: 90%;
+                width       : 90%;
 
                 h1 {
-                    font-size: 28px;
+                    font-size  : 28px;
                     font-weight: bold;
                 }
 
@@ -35,13 +36,14 @@
                 }
 
                 .button-social {
+
                     .btn-like,
                     .btn-share {
                         background-color: #1877f2;
-                        color: #fff;
-                        border: none;
-                        border-radius: 5px;
-                        width: 12%;
+                        color           : #fff;
+                        border          : none;
+                        border-radius   : 5px;
+                        width           : 12%;
                     }
 
                     .btn-share {
@@ -53,19 +55,59 @@
 
         .schedule-doctor {
             display: flex;
-            height: 260px;
+            height : 280px;
 
             .content-left {
-                width: 60%;
+                width       : 60%;
+                border-right: 1px solid #eee;
             }
 
             .content-right {
+                display    : flex;
+                align-items: center;
+                margin-top : 65px;
+
+                .more-detail-doctor {
+                    margin-left: 50px;
+
+                    .location {
+                        font-size     : 16px;
+                        text-transform: uppercase;
+                        color         : #666;
+                        font-weight   : bold;
+                    }
+
+                    .name-clinic {
+                        border-bottom : 1px solid #eee;
+                        padding-bottom: 10px;
+
+                        p {
+                            font-weight: bold;
+                        }
+                    }
+
+                    .price-doctor {
+                        display   : flex;
+                        margin-top: 10px;
+
+                        p {
+                            color         : #666;
+                            text-transform: uppercase;
+                            padding-right : 10px;
+                            font-weight   : bold;
+                        }
+
+                        span {
+                            color: #666;
+                        }
+                    }
+                }
             }
         }
     }
 
     .detail-infor-doctor {
-        padding: 0 14%;
+        padding   : 0 14%;
         background: #f9f9f9;
 
         .block-content-detail {
@@ -73,7 +115,7 @@
 
             img {
                 height: auto;
-                width: 100%;
+                width : 100%;
             }
         }
     }
