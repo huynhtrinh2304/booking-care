@@ -9,6 +9,8 @@ import HomeHeader from '../../HomePage/HomeHeader'
 import 'react-toastify/dist/ReactToastify.css';
 import { getDetailDoctorService, getInforDoctorService } from '../../../services/doctorService';
 import DoctorSchedule from './DoctorSchedule'
+import DoctorExtraInfor from './DoctorExtraInfor'
+
 
 
 
@@ -55,17 +57,10 @@ class DetailDoctor extends Component {
 
 
     render() {
-        let { moreDetailDoctor } = this.state;
+
         let language = this.props.language;
         let inforVi = '';
         let inforEn = '';
-        let priceVi, priceEn;
-        if (moreDetailDoctor && moreDetailDoctor.priceData) {
-            priceVi = moreDetailDoctor.priceData.valueVi.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' đ';
-            priceEn = moreDetailDoctor.priceData.valueEn + ' USD';
-        }
-
-
 
         if (this.state.detailDoctor && this.state.detailDoctor.positionData) {
             inforEn = `${this.state.detailDoctor.positionData.valueEn}, ${this.state.detailDoctor.firstName} ${this.state.detailDoctor.lastName} `;
@@ -120,23 +115,7 @@ class DetailDoctor extends Component {
                             </div>
 
                             <div className="content-right">
-                                <div className="more-detail-doctor">
-                                    <h3 className="location">ĐỊA CHỈ KHÁM</h3>
-                                    <div className="name-clinic">
-                                        <p>{moreDetailDoctor && moreDetailDoctor.nameClinic && moreDetailDoctor.nameClinic}</p>
-                                        <span>{moreDetailDoctor && moreDetailDoctor.addressClinic && moreDetailDoctor.addressClinic}</span>
-                                    </div>
-
-                                    <div className="price-doctor">
-                                        <p>Giá khám:</p>
-                                        <span>
-                                            {moreDetailDoctor &&
-                                                moreDetailDoctor.priceData &&
-                                                language === LANGUAGES.VI ? priceVi : priceEn
-                                            }
-                                        </span>
-                                    </div>
-                                </div>
+                                <DoctorExtraInfor id={this.props.match.params.id} />
                             </div>
                         </div>
 

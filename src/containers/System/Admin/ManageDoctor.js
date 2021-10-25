@@ -71,12 +71,11 @@ class ManageDoctor extends Component {
         }
 
         if (prevProps.dataAllCode !== this.props.dataAllCode) {
-            let price = this.buildDataSelect(this.props.dataAllCode.price);
+            let price = this.buildDataSelect(this.props.dataAllCode.price, true);
             let payment = this.buildDataSelect(this.props.dataAllCode.payment);
             let province = this.buildDataSelect(this.props.dataAllCode.province);
 
             this.setState({
-
                 listPriceVi: price.dataVi,
                 listPaymentVi: payment.dataVi,
                 listProvinceVi: province.dataVi,
@@ -91,7 +90,7 @@ class ManageDoctor extends Component {
         }
 
         if (prevProps.language !== this.props.language) {
-            let price = this.buildDataSelect(this.props.dataAllCode.price);
+            let price = this.buildDataSelect(this.props.dataAllCode.price, true);
             let payment = this.buildDataSelect(this.props.dataAllCode.payment);
             let province = this.buildDataSelect(this.props.dataAllCode.province);
 
@@ -115,12 +114,18 @@ class ManageDoctor extends Component {
     }
 
 
-    buildDataSelect = (data) => {
+    buildDataSelect = (data, price) => {
         let result = { dataVi: [], dataEn: [] };
         if (data && data.length > 0) {
             data.map((item) => {
-                result.dataVi.push({ value: item.keyMap, label: item.valueVi.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' đ' })
-                result.dataEn.push({ value: item.keyMap, label: item.valueEn + ' USD' })
+                if (price === true) {
+                    result.dataVi.push({ value: item.keyMap, label: item.valueVi.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' đ' })
+                    result.dataEn.push({ value: item.keyMap, label: item.valueEn + ' USD' })
+                } else {
+                    result.dataVi.push({ value: item.keyMap, label: item.valueVi })
+                    result.dataEn.push({ value: item.keyMap, label: item.valueEn })
+                }
+
             })
         }
         return result
