@@ -281,7 +281,7 @@ export const fetchTopDoctor = () => {
 }
 
 
-// Get top doctor
+
 export const fetchAllDoctors = () => {
     return async (dispatch, getState) => {
         try {

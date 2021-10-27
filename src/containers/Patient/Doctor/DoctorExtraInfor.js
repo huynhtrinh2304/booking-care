@@ -98,10 +98,12 @@ class DetailDoctor extends Component {
                                                 }
                                             </p>
                                         </div>
-                                        <p className="note">Được ưu tiên khám trước khi đật khám qua BookingCare. Giá khám cho người nước ngoài là 30 USD</p>
+                                        <p className="note">{moreDetailDoctor.note}</p>
                                     </div>
                                     <div className="content-down">
-                                        <p className="title-down">Người bệnh có thể thanh toán chi phí bằng hình thức tiền mặt và quẹt thẻ</p>
+                                        <p className="title-down">
+                                            Người bệnh có thể thanh toán chi phí bằng hình thức {language === LANGUAGES.VI ? moreDetailDoctor.paymentData.valueVi : moreDetailDoctor.paymentData.valueEn}
+                                        </p>
                                     </div>
                                 </div>
                             </div>

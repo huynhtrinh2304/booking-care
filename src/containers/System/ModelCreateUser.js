@@ -90,7 +90,8 @@ class ModelCreateUser extends Component {
         return (
             <Modal
                 isOpen={this.props.isOpen}
-                toggle={() => this.toggle()} className={'modal-user-container'}
+                toggle={() => this.toggle()}
+                className={'modal-user-container'}
                 size="lg"
 
             >

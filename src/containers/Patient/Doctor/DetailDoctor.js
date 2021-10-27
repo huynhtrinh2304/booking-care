@@ -111,11 +111,15 @@ class DetailDoctor extends Component {
 
                         <div className="schedule-doctor mt-4">
                             <div className="content-left">
-                                <DoctorSchedule id={this.props.match.params.id} />
+                                <DoctorSchedule
+                                    id={this.props.match.params.id}
+                                />
                             </div>
 
                             <div className="content-right">
-                                <DoctorExtraInfor id={this.props.match.params.id} />
+                                <DoctorExtraInfor
+                                    id={this.props.match.params.id}
+                                />
                             </div>
                         </div>
 

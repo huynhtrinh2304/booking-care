@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { LANGUAGES, CommonUtils } from '../../../utils';
-import * as actions from '../../../store/actions'
 import './DoctorSchedule.scss'
 import localization from 'moment/locale/vi';
 import moment from 'moment';
 import { getScheduleDoctorByDateService } from '../../../services/userService';
 import './Select.scss'
-
+import BookingModal from './Modal/BookingModal'
 
 
 
@@ -19,6 +18,8 @@ class DoctorSchedule extends Component {
         this.state = {
             allDay: [],
             scheduleOfDay: [],
+            isOpenModelBooking: false,
+            inforDoctor: '',
 
         }
 
@@ -30,10 +31,7 @@ class DoctorSchedule extends Component {
         let date = moment(new Date()).add(0, 'days').startOf('day').valueOf();
         let doctorId = this.props.id;
         this.callFunctionGetSchedule(doctorId, date);
-
         this.setArrDays();
-
-
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -103,13 +101,37 @@ class DoctorSchedule extends Component {
         }
     }
 
+    openModelBookingSchedule = (value) => {
+        this.setState({
+            isOpenModelBooking: true,
+            inforDoctor: value
+        })
+    }
+
+
+    setIsOpenModalBooking = () => {
+        this.setState({
+            isOpenModelBooking: !this.state.isOpenModelBooking,
+            inforDoctor: ''
+        })
+    }
+
 
     render() {
         let { allDay, scheduleOfDay } = this.state;
-        let { language } = this.props
+        let { language } = this.props;
+
+
 
         return (
             <>
+
+                <BookingModal
+                    isOpen={this.state.isOpenModelBooking}
+                    toggleModalBooking={this.setIsOpenModalBooking}
+                    doctorDetail={this.state.inforDoctor}
+
+                />
                 <div className="container-schedule">
 
                     <div className="choose-date ">
@@ -139,7 +161,7 @@ class DoctorSchedule extends Component {
 
                                         let timeValue = language === LANGUAGES.VI ? value.timeTypeData.valueVi : value.timeTypeData.valueEn;
                                         return (
-                                            <button key={index}>{timeValue}</button>
+                                            <button key={index} onClick={() => this.openModelBookingSchedule(value)}>{timeValue}</button>
                                         )
                                     }) :
 
