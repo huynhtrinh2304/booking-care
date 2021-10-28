@@ -98,11 +98,15 @@ class DetailDoctor extends Component {
                                                 }
                                             </p>
                                         </div>
-                                        <p className="note">{moreDetailDoctor.note}</p>
+                                        <p className="note">{moreDetailDoctor && moreDetailDoctor.note && moreDetailDoctor.note}</p>
                                     </div>
                                     <div className="content-down">
                                         <p className="title-down">
-                                            Người bệnh có thể thanh toán chi phí bằng hình thức {language === LANGUAGES.VI ? moreDetailDoctor.paymentData.valueVi : moreDetailDoctor.paymentData.valueEn}
+                                            Người bệnh có thể thanh toán chi phí bằng hình thức {language === LANGUAGES.VI ?
+                                                moreDetailDoctor && moreDetailDoctor.paymentData && moreDetailDoctor.paymentData.valueVi
+                                                : moreDetailDoctor && moreDetailDoctor.paymentData && moreDetailDoctor.paymentData.valueEn
+
+                                            }
                                         </p>
                                     </div>
                                 </div>

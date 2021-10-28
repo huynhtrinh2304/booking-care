@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { connect } from 'react-redux';
-import './BookingModal.scss'
+import './BookingModal.scss';
 import { LANGUAGES, CommonUtils } from '../../../../utils';
-import * as actions from '../../../../store/actions'
-
+import * as actions from '../../../../store/actions';
+import ProfileDoctor from '../ProfileDoctor';
 
 
 class BookingModal extends Component {
@@ -36,7 +36,6 @@ class BookingModal extends Component {
 
     handleAcceptBooking = () => {
         console.log('đâsds');
-
     }
 
 
@@ -50,6 +49,7 @@ class BookingModal extends Component {
             hourEn = doctorDetail.timeTypeData.valueEn;
         }
 
+
         return (
             <Modal
                 isOpen={this.props.isOpen}
@@ -59,7 +59,10 @@ class BookingModal extends Component {
 
             >
                 <ModalHeader toggle={() => this.toggle()}>
-                    ĐẶT LỊCH KHÁM: <span>{language === LANGUAGES.VI ? hourVi : hourEn}</span>
+                    <ProfileDoctor
+                        id={doctorDetail.doctorId}
+                        doctorDetail={doctorDetail}
+                    />
                 </ModalHeader>
 
                 <ModalBody>

@@ -91,7 +91,6 @@ class DetailDoctor extends Component {
                                         {
                                             this.state.detailDoctor && this.state.detailDoctor.Markdown && this.state.detailDoctor.Markdown.description &&
                                             <span dangerouslySetInnerHTML={{ __html: this.state.detailDoctor.Markdown.description }}></span>
-
                                         }
                                     </p>
                                 </div>
