@@ -30,7 +30,6 @@ class ManageSchedule extends Component {
     async componentDidMount() {
         await this.props.fetchAllDoctors();
         await this.props.fetchTimeSchedule();
-
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -38,15 +37,12 @@ class ManageSchedule extends Component {
             this.optionsSelectedDoctor(this.props.doctors);
 
         }
-
         if (prevProps.timeSchedule !== this.props.timeSchedule) {
             if (this.props.timeSchedule) {
                 this.props.timeSchedule.map(time => {
                     time.isSelected = false;
                 })
             }
-
-
             this.setState({
                 timeSchedule: this.props.timeSchedule,
             })
@@ -54,25 +50,19 @@ class ManageSchedule extends Component {
     }
 
     optionsSelectedDoctor = (list) => {
-
         list.map((doctor) => {
             this.state.options.push({ value: doctor.id, label: `${doctor.lastName} ${doctor.firstName}` });
         })
-
         return list;
     }
 
     handleChange = async (selectedDoctor) => {
-
         this.setState({
             selectedDoctor: selectedDoctor
         })
-
-
     }
 
     handleOnChangeDatePicker = (date) => {
-
         this.setState({
             currentDate: date[0]
         })
@@ -118,22 +108,15 @@ class ManageSchedule extends Component {
 
 
         if (timeSchedule && timeSchedule.length > 0) {
-            let selectedTime = timeSchedule.filter(time => time.isSelected = true)
-
-
+            let selectedTime = timeSchedule.filter(time => time.isSelected === true)
             selectedTime.map(time => {
                 let object = {};
-
                 object.doctorId = selectedDoctor.value;
                 object.timeType = time.keyMap;
                 object.date = formateDate;
-
                 result.push(object)
-
             })
-
         }
-
 
         let res = await bulkCreateScheduleService({
             arrSchedule: result,
@@ -142,19 +125,13 @@ class ManageSchedule extends Component {
 
         });
 
-
-
         if (res && res.errCode === 0) {
             toast.success('Create schedule successfully');
-
             this.state.timeSchedule.filter(time => time.isSelected = false);
-
             this.setState({
                 selectedDoctor: '',
                 currentDate: '',
             })
-
-
         } else {
             toast.error("Can't save schedule");
         }

@@ -151,7 +151,7 @@ class DoctorSchedule extends Component {
 
                             <div className="text-calendar">
                                 <span>
-                                    <i className="fas fa-calendar-plus">  <FormattedMessage id="patient.detail-doctor.schedule" /> </i>
+                                    <i className="fas fa-calendar-plus">  <FormattedMessage id="patient.detail-doctor.schedule" /> 👻</i>
                                 </span>
                             </div>
 

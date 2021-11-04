@@ -6,6 +6,12 @@ import './BookingModal.scss';
 import { LANGUAGES, CommonUtils } from '../../../../utils';
 import * as actions from '../../../../store/actions';
 import ProfileDoctor from '../ProfileDoctor';
+import DatePicker from '../../../../components/Input/DatePicker';
+import Select from 'react-select';
+import { postPatientBookAppointment } from '../../../../services/patientService'
+import { toast } from 'react-toastify';
+import Loading from '../../../../components/Loading/Loading';
+
 
 
 class BookingModal extends Component {
@@ -13,108 +19,241 @@ class BookingModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            genderArr: [],
+            selectedGender: '',
+            optionsGenders: [],
+            email: '',
+            fullName: '',
+            phoneNumber: '',
+            address: '',
+            reason: '',
+            birthday: '',
+            date: '',
+            doctorId: '',
+            timeType: '',
+            isLoading: false,
 
         }
-
-
-
     }
 
     componentDidMount() {
-
+        this.props.getGenderStart();
     }
 
     componentDidUpdate(prevProps, prevState) {
+        let { genders, language } = this.props;
+        if (prevProps.genders !== genders) {
+            this.setState({
+                optionsGenders: this.loopArrayGenders(genders, language)
+            })
+        }
 
+        if (this.props.language !== prevProps.language) {
+            this.setState({
+                optionsGenders: this.loopArrayGenders(genders, language)
+            })
+        }
+
+        if (this.props.doctorDetail !== prevProps.doctorDetail) {
+            this.setState({
+                doctorId: this.props.doctorDetail.doctorId,
+                timeType: this.props.doctorDetail.timeType,
+                date: this.props.doctorDetail.date,
+            })
+        }
 
     }
+
+    loopArrayGenders = (arr, language) => {
+        let arrGender = [];
+        if (arr && arr.length > 0) {
+            arr.map(item => {
+                arrGender.push({ value: item.keyMap, label: language === LANGUAGES.VI ? item.valueVi : item.valueEn })
+            })
+        }
+        return arrGender;
+    }
+
+    handleAcceptBooking = async () => {
+        this.setState({
+            isLoading: true
+        })
+        let { email, fullName, phoneNumber, address, reason, birthday, doctorId, timeType, selectedGender, date } = this.state;
+
+        let data = {
+            email: email,
+            fullName: fullName,
+            phoneNumber: phoneNumber,
+            address: address,
+            reason: reason,
+            birthday: birthday,
+            doctorId: doctorId,
+            timeType: timeType,
+            gender: selectedGender.value,
+            date: date,
+            language: this.props.language
+        }
+
+
+        let res = await postPatientBookAppointment(data);
+
+        if (res && res.errCode === 0) {
+            this.setState({
+                isLoading: false,
+            })
+            toast.success('Successful appointment booking')
+            this.toggle();
+        } else {
+            this.setState({
+                isLoading: false,
+            })
+            toast.error(res.message)
+        }
+    }
+
 
     toggle = () => {
         this.props.toggleModalBooking();
     };
 
-    handleAcceptBooking = () => {
-        console.log('đâsds');
+    handleOnChangeDatePicker = (birthday) => {
+        this.setState({
+            birthday: new Date(birthday[0]).getTime()
+        })
+    }
+
+    handleChangeGender = (value) => {
+        this.setState({
+            selectedGender: value
+        })
+    }
+
+    handleOnChangeInput = (e, name) => {
+        let valueInput = e.target.value;
+        let copyState = { ...this.state };
+        copyState[name] = valueInput;
+        this.setState({ ...copyState });
     }
 
 
 
-    render() {
 
+
+
+    render() {
         let { language, doctorDetail } = this.props;
-        let hourVi, hourEn;
-        if (doctorDetail && doctorDetail.timeTypeData) {
-            hourVi = doctorDetail.timeTypeData.valueVi;
-            hourEn = doctorDetail.timeTypeData.valueEn;
-        }
+        let { optionsGenders, selectedGender, isLoading } = this.state
+
 
 
         return (
-            <Modal
-                isOpen={this.props.isOpen}
-                toggle={() => this.toggle()}
-                size='lg'
-
-
-            >
-                <ModalHeader toggle={() => this.toggle()}>
-                    <ProfileDoctor
-                        id={doctorDetail.doctorId}
-                        doctorDetail={doctorDetail}
-                    />
-                </ModalHeader>
-
-                <ModalBody>
-
-                    <div className="form-row">
-
-                        <div className="form-group col-md-6">
-                            <label>Họ tên</label>
-                            <input type="text" className="form-control" />
-                        </div>
-
-                        <div className="form-group col-md-6">
-                            <label>Số điện thoại</label>
-                            <input type="text" className="form-control" />
-                        </div>
-
-                        <div className="form-group col-md-6">
-                            <label>Địa chỉ Email</label>
-                            <input type="text" className="form-control" />
-
-                        </div>
-                        <div className="form-group col-md-6">
-                            <label>Địa chỉ liên hệ</label>
-                            <input type="text" className="form-control" />
-
-                        </div>
-
-                        <div className="form-group col-md-6">
-                            <label>Đặt cho ai</label>
-                            <input type="text" className="form-control" />
-
-                        </div>
-
-                        <div className="form-group col-md-6">
-                            <label>Giới tính</label>
-                            <input type="text" className="form-control" />
-                        </div>
-
-                        <div className="form-group col-md-12">
-                            <label>Lý do khám</label>
-                            <input type="text" className="form-control" />
-                        </div>
-
+            <>
+                {
+                    this.state.isLoading &&
+                    <div className="block-cover" style={{ display: isLoading ? 'block' : 'none' }}>
+                        <Loading />
                     </div>
+                }
 
-                </ModalBody>
 
-                <ModalFooter>
-                    <Button color="primary" onClick={this.handleAcceptBooking}>Xác nhận</Button>{' '}
-                    <Button color="secondary" onClick={this.toggle}>Hủy</Button>
-                </ModalFooter>
-            </Modal>
+
+                <Modal
+                    isOpen={this.props.isOpen}
+                    toggle={() => this.toggle()}
+                    size='lg'
+                >
+                    <ModalHeader toggle={() => this.toggle()}>
+                        <ProfileDoctor
+                            id={doctorDetail.doctorId}
+                            doctorDetail={doctorDetail}
+                        />
+                    </ModalHeader>
+
+                    <ModalBody>
+
+                        <div className="form-row">
+
+                            <div className="form-group col-md-6">
+                                <label>Họ tên</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={this.state.fullName}
+                                    onChange={(e) => this.handleOnChangeInput(e, 'fullName')}
+                                />
+                            </div>
+
+                            <div className="form-group col-md-6">
+                                <label>Số điện thoại</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={this.state.phoneNumber}
+                                    onChange={(e) => this.handleOnChangeInput(e, 'phoneNumber')}
+
+                                />
+                            </div>
+
+                            <div className="form-group col-md-6">
+                                <label>Địa chỉ Email</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={this.state.email}
+                                    onChange={(e) => this.handleOnChangeInput(e, 'email')}
+                                />
+
+                            </div>
+
+                            <div className="form-group col-md-6">
+                                <label>Địa chỉ liên hệ</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={this.state.address}
+                                    onChange={(e) => this.handleOnChangeInput(e, 'address')}
+                                />
+
+                            </div>
+
+                            <div className="form-group col-md-6">
+                                <label>Ngày sinh</label>
+                                <DatePicker
+                                    onChange={this.handleOnChangeDatePicker}
+                                    className="form-control"
+                                    value={this.state.birthday}
+                                />
+                            </div>
+
+                            <div className="form-group col-md-6">
+                                <label>Giới tính</label>
+                                <Select
+                                    onChange={this.handleChangeGender}
+                                    options={optionsGenders}
+                                    placeholder="Gender"
+                                    value={selectedGender}
+                                />
+                            </div>
+
+                            <div className="form-group col-md-12">
+                                <label>Lý do khám</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={this.state.reason}
+                                    onChange={(e) => this.handleOnChangeInput(e, 'reason')}
+                                />
+                            </div>
+                        </div>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button color="primary" onClick={this.handleAcceptBooking}>Xác nhận</Button>{' '}
+                        <Button color="secondary" onClick={this.toggle}>Hủy</Button>
+                    </ModalFooter>
+                </Modal>
+            </>
+
         )
     }
 
@@ -133,7 +272,7 @@ class BookingModal extends Component {
 const mapStateToProps = state => {
     return {
         language: state.app.language,
-
+        genders: state.admin.genders,
     };
 };
 
@@ -141,7 +280,7 @@ const mapStateToProps = state => {
 // Actions
 const mapDispatchToProps = dispatch => {
     return {
-
+        getGenderStart: () => dispatch(actions.fetchGenderStart()),
     };
 };
 

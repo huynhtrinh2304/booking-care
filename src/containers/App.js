@@ -18,6 +18,7 @@ import System from '../routes/System';
 import Doctor from '../routes/Doctor';
 import HomePage from './HomePage/HomePage.js';
 import DetailDoctor from './Patient/Doctor/DetailDoctor';
+import VerifyBooking from '../containers/Patient/VerifyBooking';
 
 
 
@@ -69,7 +70,7 @@ class App extends Component {
                                     <Route path={path.HOMEPAGE} component={HomePage} />
                                     <Route path={path.DETAIL} component={DetailDoctor} />
                                     <Route path={path.DOCTOR} component={userIsAuthenticated(Doctor)} />
-
+                                    <Route path={path.VERIFY} component={VerifyBooking} />
                                 </Switch>
                             </CustomScrollbars>
                         </div>

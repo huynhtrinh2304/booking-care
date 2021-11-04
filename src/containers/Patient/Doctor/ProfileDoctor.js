@@ -5,7 +5,8 @@ import { LANGUAGES, CommonUtils } from '../../../utils';
 import * as actions from '../../../store/actions';
 import './ProfileDoctor.scss';
 import { getProfileDoctorById } from '../../../services/doctorService'
-
+import moment from 'moment';
+import localization from 'moment/locale/vi';
 
 
 
@@ -44,33 +45,62 @@ class ProfileDoctor extends Component {
 
     }
 
+    renderTimeBooking = (timeBooking, language) => {
+        let date;
+        let hour;
+        if (timeBooking && timeBooking.date && timeBooking.timeTypeData) {
+            date = language === LANGUAGES.VI ?
+                moment.unix(+timeBooking.date / 1000).format('dddd  DD-MM-YYYY').charAt(0).toUpperCase()
+                + moment.unix(+timeBooking.date / 1000).format('dddd  DD-MM-YYYY').slice(1)
+
+                : moment.unix(+timeBooking.date / 1000).locale('en').format('ddd  MM-DD-YYYY')
 
 
-    render() {
-        let inforEn, inforVi;
+            hour = language === LANGUAGES.VI ? timeBooking.timeTypeData.valueVi : timeBooking.timeTypeData.valueEn;
+        }
+        return (
+            <p>Ngày đặt: {date} vào lúc: {hour}</p>
+        )
+    }
+
+    renderPrice = (dataProfiles, language) => {
         let priceVi, priceEn;
-        let dateBooking = '';
-        let hourVi = '';
-        let hourEn = '';
-        let { dataProfiles, } = this.state;
-        let { language, doctorDetail } = this.props;
+        if (dataProfiles && dataProfiles.Doctor_Infor && dataProfiles.Doctor_Infor.priceData) {
+            priceVi = dataProfiles.Doctor_Infor.priceData.valueVi.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' đ';
+            priceEn = dataProfiles.Doctor_Infor.priceData.valueEn + ' USD';
+        }
+
+        return (
+            <p className="mt-4">
+                Giá khám : {language === LANGUAGES.VI ? priceVi : priceEn}
+            </p>
+        )
+    }
+
+    renderNameDoctor = (dataProfiles, language) => {
+        let inforEn, inforVi;
         if (dataProfiles && dataProfiles.positionData
             && dataProfiles.Doctor_Infor && dataProfiles.Doctor_Infor.priceData
         ) {
             inforEn = `${dataProfiles.positionData.valueEn}, ${dataProfiles.firstName} ${dataProfiles.lastName} `;
             inforVi = `${dataProfiles.positionData.valueVi}, ${dataProfiles.lastName} ${dataProfiles.firstName} `;
-
-            priceVi = dataProfiles.Doctor_Infor.priceData.valueVi.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' đ';
-            priceEn = dataProfiles.Doctor_Infor.priceData.valueEn + ' USD';
-        }
-        if (doctorDetail && doctorDetail.date && doctorDetail.timeTypeData) {
-            let date = new Date(doctorDetail.date);
-            dateBooking = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-            hourVi = doctorDetail.timeTypeData.valueVi;
-            hourEn = doctorDetail.timeTypeData.valueEn;
         }
 
+        return (
+            <h3>
+                {language === 'vi' ? inforVi : inforEn}
+            </h3>
+        )
+    }
 
+
+
+
+
+
+    render() {
+        let { dataProfiles } = this.state;
+        let { language, doctorDetail } = this.props;
 
         return (
             <div className="intro-doctor-container">
@@ -81,11 +111,10 @@ class ProfileDoctor extends Component {
 
                     <div className="content-doctor">
                         <div className="name-date">
-                            <h3>
-                                {language === 'vi' ? inforVi : inforEn}
-                            </h3>
+                            {this.renderNameDoctor(dataProfiles, language)}
 
-                            <p>Ngày đặt: {dateBooking} vào lúc: {language === LANGUAGES.VI ? hourVi : hourEn}</p>
+                            {this.renderTimeBooking(doctorDetail, language)}
+
                         </div>
 
 
@@ -103,9 +132,9 @@ class ProfileDoctor extends Component {
 
 
                 </div>
-                <p className="mt-4">
-                    Giá khám : {language === LANGUAGES.VI ? priceVi : priceEn}
-                </p>
+
+                {this.renderPrice(dataProfiles, language)}
+
             </div>
 
 

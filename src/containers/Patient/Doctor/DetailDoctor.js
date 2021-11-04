@@ -32,7 +32,6 @@ class DetailDoctor extends Component {
         let id = this.props.match.params.id;
         if (this.props.match && this.props.match.params && this.props.match.params.id) {
             let res = await getDetailDoctorService(id);
-
             this.setState({
                 detailDoctor: res.inforDoctor
             })
