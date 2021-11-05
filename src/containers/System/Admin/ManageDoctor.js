@@ -572,7 +572,6 @@ class ManageDoctor extends Component {
                         >
                             Lưu
                         </button> :
-
                         <button
                             type="button"
                             className="btn btn-success"
@@ -581,11 +580,7 @@ class ManageDoctor extends Component {
                         >
                             Thêm thông tin
                         </button>
-
                     }
-
-
-
                 </div>
 
             </div>

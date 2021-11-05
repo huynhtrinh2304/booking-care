@@ -5,11 +5,8 @@ import { LANGUAGES, CommonUtils } from '../../../utils';
 import * as actions from '../../../store/actions'
 import './UserRedux.scss'
 import TableManageUser from './TableManageUser';
-
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
-
-
 import 'react-toastify/dist/ReactToastify.css';
 
 
