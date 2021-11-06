@@ -1,21 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-
 import Slider from 'react-slick';
-
 import './Speciality.scss';
-
-
+import { getAllSpecialtyService } from '../../../../services/specialtyService'
 
 
 
 
 
 class Speciality extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            listDataSpecialty: [],
+        }
+    }
+
+
+    async componentDidMount() {
+        let data = await getAllSpecialtyService();
+        this.setState({ listDataSpecialty: data.data });
+
+    }
 
 
     render() {
+
+
+        let { listDataSpecialty } = this.state;
 
         return (
 
@@ -36,69 +49,27 @@ class Speciality extends Component {
 
                         <Slider {...this.props.settings}>
 
-                            <div className="block-slide-speciality">
-                                <div className="img-customize-speciality">
+                            {listDataSpecialty && listDataSpecialty.length > 0 &&
+                                listDataSpecialty.map((item, index) => {
+                                    let imageSpecialty = '';
+                                    if (item.image) {
+                                        console.log('asd')
+                                        imageSpecialty = new Buffer(item.image, 'base64').toString('binary');
+                                    }
+                                    return (
+                                        <div className="block-slide-speciality" key={index}>
+                                            <div
+                                                className="img-customize-speciality"
+                                                style={{ backgroundImage: `url(${imageSpecialty})` }}
+                                            >
+                                            </div>
+                                            <p>{item.name}</p>
+                                        </div>
+                                    )
+                                })
+                            }
 
-                                </div>
 
-                                <p>Cơ xương khớp</p>
-                            </div>
-
-                            <div className="block-slide-speciality">
-                                <div className="img-customize-speciality">
-
-                                </div>
-
-                                <p>Cơ xương khớp</p>
-                            </div>
-
-                            <div className="block-slide-speciality">
-                                <div className="img-customize-speciality">
-
-                                </div>
-
-                                <p>Cơ xương khớp</p>
-                            </div>
-
-                            <div className="block-slide-speciality">
-                                <div className="img-customize-speciality">
-
-                                </div>
-
-                                <p>Cơ xương khớp</p>
-                            </div>
-
-                            <div className="block-slide-speciality">
-                                <div className="img-customize-speciality">
-
-                                </div>
-
-                                <p>Cơ xương khớp</p>
-                            </div>
-
-                            <div className="block-slide-speciality">
-                                <div className="img-customize-speciality">
-
-                                </div>
-
-                                <p>Cơ xương khớp</p>
-                            </div>
-
-                            <div className="block-slide-speciality">
-                                <div className="img-customize-speciality">
-
-                                </div>
-
-                                <p>Cơ xương khớp</p>
-                            </div>
-
-                            <div className="block-slide-speciality">
-                                <div className="img-customize-speciality">
-
-                                </div>
-
-                                <p>Cơ xương khớp</p>
-                            </div>
 
 
 

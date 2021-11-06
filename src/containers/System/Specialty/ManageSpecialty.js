@@ -83,7 +83,15 @@ class ManageSpecialty extends Component {
             nameSpecialty: nameSpecialty
         });
         if (res && res.errCode === 0) {
+            this.setState({
+                previewImgURL: '',
+                imgSpecialty: '',
+                contentHtml: '',
+                contentMarkdown: '',
+                nameSpecialty: '',
+            })
             toast.success(res.message);
+
         } else {
             toast.error(res.message);
         }
