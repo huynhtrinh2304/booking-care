@@ -19,6 +19,10 @@ import Doctor from '../routes/Doctor';
 import HomePage from './HomePage/HomePage.js';
 import DetailDoctor from './Patient/Doctor/DetailDoctor';
 import VerifyBooking from '../containers/Patient/VerifyBooking';
+import DetailSpecialty from './Patient/Specialty/DetailSpecialty';
+
+
+
 
 
 
@@ -69,6 +73,7 @@ class App extends Component {
                                     <Route path={path.SYSTEM} component={userIsAuthenticated(System)} />
                                     <Route path={path.HOMEPAGE} component={HomePage} />
                                     <Route path={path.DETAIL} component={DetailDoctor} />
+                                    <Route path={path.DETAIL_SPECIALTY} component={DetailSpecialty} />
                                     <Route path={path.DOCTOR} component={userIsAuthenticated(Doctor)} />
                                     <Route path={path.VERIFY} component={VerifyBooking} />
                                 </Switch>

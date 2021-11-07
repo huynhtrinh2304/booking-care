@@ -9,6 +9,7 @@ import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
 import Select from 'react-select';
 import { getInforDoctorService, putUpdateDetailDoctor } from '../../../services/doctorService';
+
 import { toast } from 'react-toastify';
 import { LANGUAGES } from '../../../utils';
 
@@ -36,6 +37,9 @@ class ManageDoctor extends Component {
             listPaymentEn: [],
             listProvinceEn: [],
 
+            listSpecialty: [],
+            listClinic: [],
+
             // Save to doctor_infor table
             selectedPriceVi: '',
             selectedPaymentVi: '',
@@ -45,11 +49,14 @@ class ManageDoctor extends Component {
             selectedPaymentEn: '',
             selectedProvinceEn: '',
 
-
+            selectedSpecialty: '',
+            selectedClinic: '',
 
             nameClinic: '',
             addressClinic: '',
             note: '',
+
+
 
 
         }
@@ -59,6 +66,7 @@ class ManageDoctor extends Component {
     componentDidMount() {
         this.props.fetchAllDoctors();
         this.props.fetchDataFromAllCode();
+
 
 
     }
@@ -74,6 +82,8 @@ class ManageDoctor extends Component {
             let price = this.buildDataSelect(this.props.dataAllCode.price, true);
             let payment = this.buildDataSelect(this.props.dataAllCode.payment);
             let province = this.buildDataSelect(this.props.dataAllCode.province);
+            let specialty = this.buildDataSelectMore(this.props.dataAllCode.specialty);
+
 
             this.setState({
                 listPriceVi: price.dataVi,
@@ -83,10 +93,8 @@ class ManageDoctor extends Component {
                 listPriceEn: price.dataEn,
                 listPaymentEn: payment.dataEn,
                 listProvinceEn: province.dataEn,
+                listSpecialty: specialty,
             })
-
-
-
         }
 
         if (prevProps.language !== this.props.language) {
@@ -129,7 +137,16 @@ class ManageDoctor extends Component {
             })
         }
         return result
+    }
 
+    buildDataSelectMore = (data) => {
+        let result = [];
+        if (data && data.length > 0) {
+            data.map((item) => {
+                result.push({ value: item.id, label: item.name })
+            })
+        }
+        return result;
     }
 
     optionsSelectedDoctor = (list) => {
@@ -164,6 +181,7 @@ class ManageDoctor extends Component {
             price: this.state.selectedPriceVi.value,
             payment: this.state.selectedPaymentVi.value,
             province: this.state.selectedProvinceVi.value,
+            specialty: this.state.selectedSpecialty.value,
             addressClinic: this.state.addressClinic,
             nameClinic: this.state.nameClinic,
             note: this.state.note,
@@ -204,6 +222,8 @@ class ManageDoctor extends Component {
                     selectedProvinceVi: '',
                     selectedProvinceEn: '',
 
+                    selectedSpecialty: ''
+
                 })
             }
         }
@@ -213,6 +233,7 @@ class ManageDoctor extends Component {
         let arrValidate = [
             'price',
             'payment',
+            'specialty',
             'province',
             'nameClinic',
             'addressClinic',
@@ -245,6 +266,7 @@ class ManageDoctor extends Component {
             price: this.state.selectedPriceVi.value,
             payment: this.state.selectedPaymentVi.value,
             province: this.state.selectedProvinceVi.value,
+            specialty: state.selectedSpecialty.value,
             addressClinic: this.state.addressClinic,
             nameClinic: this.state.nameClinic,
             note: this.state.note,
@@ -269,6 +291,8 @@ class ManageDoctor extends Component {
 
                 selectedProvinceVi: '',
                 selectedProvinceEn: '',
+
+                selectedSpecialty: '',
 
                 nameClinic: '',
                 addressClinic: '',
@@ -327,9 +351,10 @@ class ManageDoctor extends Component {
                         label: res.inforDoctor.doctorInfor.provinceData.valueEn
                     },
 
-
-
-
+                    selectedSpecialty: {
+                        value: res.inforDoctor.doctorInfor.specialty.id,
+                        label: res.inforDoctor.doctorInfor.specialty.name
+                    },
 
                     nameClinic: res.inforDoctor.doctorInfor.nameClinic,
                     addressClinic: res.inforDoctor.doctorInfor.addressClinic,
@@ -338,9 +363,9 @@ class ManageDoctor extends Component {
 
                 })
             }
-
-
         }
+
+
 
         if (res.inforDoctor === 0) {
             this.setState({
@@ -383,7 +408,6 @@ class ManageDoctor extends Component {
         let valueVi = {};
         let valueEn = {};
 
-
         listPriceVi.map(item => {
             if (item.value === value.value) {
                 valueVi = { value: value.value, label: item.label }
@@ -400,6 +424,12 @@ class ManageDoctor extends Component {
             [nameVi]: valueVi,
             [nameEn]: valueEn,
 
+        })
+    }
+
+    handleChangeSelectDataMore = (value) => {
+        this.setState({
+            selectedSpecialty: value
         })
     }
 
@@ -422,12 +452,13 @@ class ManageDoctor extends Component {
 
         let { language } = this.props;
         let {
-            listPriceVi, listPaymentVi, listProvinceVi, listPriceEn, listPaymentEn, listProvinceEn,
+            listPriceVi, listPaymentVi, listProvinceVi, listPriceEn, listPaymentEn, listProvinceEn, listSpecialty
         } = this.state;
 
         let {
             selectedPriceVi, selectedPaymentVi, selectedProvinceVi,
             selectedPriceEn, selectedPaymentEn, selectedProvinceEn,
+            selectedSpecialty
         } = this.state;
 
 
@@ -439,7 +470,7 @@ class ManageDoctor extends Component {
                 <div className="form-row mb-4">
 
 
-                    <div className="select-doctor col-3 mt-4">
+                    <div className="select-doctor col-4 mt-4">
                         <label htmlFor=""><FormattedMessage id="admin.manage-doctor.select-doctor" /></label>
 
                         <Select
@@ -453,7 +484,7 @@ class ManageDoctor extends Component {
 
 
 
-                    <div className="select-price col-3 mt-4">
+                    <div className="select-price col-4 mt-4">
                         <label htmlFor="">Chọn giá</label>
 
                         <Select
@@ -467,7 +498,7 @@ class ManageDoctor extends Component {
                     </div>
 
 
-                    <div className="select-payment col-3 mt-4">
+                    <div className="select-payment col-4 mt-4">
                         <label htmlFor="">Chọn phương thức thanh toán</label>
 
                         <Select
@@ -481,7 +512,33 @@ class ManageDoctor extends Component {
                     </div>
 
 
-                    <div className="select-province col-3 mt-4">
+                    <div className="select-province col-4 mt-4">
+                        <label htmlFor="">Chọn chuyên khoa</label>
+
+                        <Select
+                            options={listSpecialty}
+                            placeholder="Specialty..."
+                            onChange={this.handleChangeSelectDataMore}
+                            value={selectedSpecialty}
+                        />
+
+                    </div>
+
+                    <div className="select-province col-4 mt-4">
+                        <label htmlFor="">Chọn phòng khám</label>
+
+                        <Select
+                        // options={language === LANGUAGES.VI ? listProvinceVi : listProvinceEn}
+                        // placeholder="Province..."
+                        // onChange={this.handleChangeSelectData.bind(
+                        //     this, 'selectedProvinceVi', 'selectedProvinceEn', listProvinceVi, listProvinceEn
+                        // )}
+                        // value={language === LANGUAGES.VI ? selectedProvinceVi : selectedProvinceEn}
+                        />
+
+                    </div>
+
+                    <div className="select-province col-4 mt-4">
                         <label htmlFor="">Chọn tỉnh thành</label>
 
                         <Select
