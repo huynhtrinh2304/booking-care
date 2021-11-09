@@ -100,7 +100,7 @@ class ProfileDoctor extends Component {
 
     render() {
         let { dataProfiles } = this.state;
-        let { language, doctorDetail } = this.props;
+        let { language, doctorDetail, hiddenTime, hiddenPrice } = this.props;
 
         return (
             <div className="intro-doctor-container">
@@ -113,10 +113,9 @@ class ProfileDoctor extends Component {
                         <div className="name-date">
                             {this.renderNameDoctor(dataProfiles, language)}
 
-                            {this.renderTimeBooking(doctorDetail, language)}
+                            {hiddenTime === false ? this.renderTimeBooking(doctorDetail, language) : null}
 
                         </div>
-
 
 
                         <div className="content">
@@ -133,7 +132,7 @@ class ProfileDoctor extends Component {
 
                 </div>
 
-                {this.renderPrice(dataProfiles, language)}
+                {hiddenPrice === false ? this.renderPrice(dataProfiles, language) : null}
 
             </div>
 

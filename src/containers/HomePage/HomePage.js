@@ -31,9 +31,9 @@ class HomePage extends Component {
         let settings = {
 
             infinite: false,
-            speed: 1000,
+            speed: 800,
             slidesToShow: 4,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             // autoplay: true,
 
 

@@ -27,8 +27,15 @@ class Speciality extends Component {
 
 
     handleViewDetailSpecialty = (value) => {
-        this.props.history.push(`detail-specialty/${value.id}`)
-        console.log(value);
+        this.props.history.push(
+            `detail-specialty/${value.id}`,
+            {
+                descriptionHtml: value.descriptionHtml,
+                image: value.image,
+
+            }
+
+        )
     }
 
 

@@ -145,7 +145,6 @@ class BookingModal extends Component {
         let { optionsGenders, selectedGender, isLoading } = this.state
 
 
-
         return (
             <>
                 {
@@ -166,6 +165,9 @@ class BookingModal extends Component {
                         <ProfileDoctor
                             id={doctorDetail.doctorId}
                             doctorDetail={doctorDetail}
+                            hiddenTime={false}
+                            hiddenPrice={false}
+
                         />
                     </ModalHeader>
 

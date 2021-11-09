@@ -376,7 +376,7 @@ class UserRedux extends Component {
                                             type="file"
                                             hidden
                                             onChange={(e) => this.handleOnChangeImg(e)}
-
+                                            accept="image/png, image/gif, image/jpeg"
                                         />
                                         <label className="label-upload" htmlFor="preview-img" >Tải ảnh </label>
 
@@ -391,6 +391,7 @@ class UserRedux extends Component {
                                         }
                                     </div>
                                 </div>
+
 
 
                                 <div className="form-group col-3">

@@ -387,6 +387,8 @@ class ManageDoctor extends Component {
                 selectedProvinceVi: '',
                 selectedProvinceEn: '',
 
+                selectedSpecialty: ''
+
             })
         }
 
