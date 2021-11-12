@@ -66,15 +66,11 @@ class Speciality extends Component {
 
                             {listDataSpecialty && listDataSpecialty.length > 0 &&
                                 listDataSpecialty.map((item, index) => {
-                                    let imageSpecialty = '';
-                                    if (item.image) {
-                                        imageSpecialty = new Buffer(item.image, 'base64').toString('binary');
-                                    }
                                     return (
                                         <div className="block-slide-speciality" key={index} onClick={() => this.handleViewDetailSpecialty(item)}>
                                             <div
                                                 className="img-customize-speciality"
-                                                style={{ backgroundImage: `url(${imageSpecialty})` }}
+                                                style={{ backgroundImage: `url(${item.image})` }}
                                             >
                                             </div>
                                             <p>{item.name}</p>

@@ -1,19 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-
 import Slider from 'react-slick';
-
 import './MedicalFacility.scss';
-
+import { getAllClinicService } from '../../../../services/clinicService'
 
 
 
 
 class MedicalFacility extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            listDataClinic: [],
+        }
+    }
+
+    async componentDidMount() {
+        let data = await getAllClinicService();
+        this.setState({ listDataClinic: data.data });
+
+    }
+
 
 
     render() {
+
+        let { listDataClinic } = this.state;
+
+        console.log(listDataClinic);
 
         return (
 
@@ -33,72 +48,26 @@ class MedicalFacility extends Component {
                     <div className="container">
 
                         <Slider {...this.props.settings}>
+                            {
+                                listDataClinic && listDataClinic.length > 0 && listDataClinic.map((item, index) => {
+                                    return (
+                                        <a href={`/detail-clinic/${item.id}`}>
+                                            <div className="block-slide-medical-facility" key={index} onClick={this.nextPageDetailClinic}>
+                                                <div
+                                                    className="img-customize-medical-facility"
+                                                    style={{ backgroundImage: `url(${item.image})`, cursor: 'pointer' }}
 
-                            <div className="block-slide-medical-facility">
-                                <div className="img-customize-medical-facility">
+                                                >
 
-                                </div>
+                                                </div>
 
-                                <p>Bệnh viện hữa nghị việt đức</p>
-                            </div>
+                                                <p>{item.name}</p>
+                                            </div>
+                                        </a>
 
-                            <div className="block-slide-medical-facility">
-                                <div className="img-customize-medical-facility">
-
-                                </div>
-
-                                <p>Bệnh viện hữa nghị việt đức</p>
-                            </div>
-
-                            <div className="block-slide-medical-facility">
-                                <div className="img-customize-medical-facility">
-
-                                </div>
-
-                                <p>Bệnh viện hữa nghị việt đức</p>
-                            </div>
-
-                            <div className="block-slide-medical-facility">
-                                <div className="img-customize-medical-facility">
-
-                                </div>
-
-                                <p>Bệnh viện hữa nghị việt đức</p>
-                            </div>
-
-                            <div className="block-slide-medical-facility">
-                                <div className="img-customize-medical-facility">
-
-                                </div>
-
-                                <p>Bệnh viện hữa nghị việt đức</p>
-                            </div>
-
-                            <div className="block-slide-medical-facility">
-                                <div className="img-customize-medical-facility">
-
-                                </div>
-
-                                <p>Bệnh viện hữa nghị việt đức</p>
-                            </div>
-
-                            <div className="block-slide-medical-facility">
-                                <div className="img-customize-medical-facility">
-
-                                </div>
-
-                                <p>Bệnh viện hữa nghị việt đức</p>
-                            </div>
-
-                            <div className="block-slide-medical-facility">
-                                <div className="img-customize-medical-facility">
-
-                                </div>
-
-                                <p>Bệnh viện hữa nghị việt đức</p>
-                            </div>
-
-
+                                    )
+                                })
+                            }
 
 
 

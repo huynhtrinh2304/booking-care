@@ -9,6 +9,8 @@ import {
 
 import { getAllDoctorsService, postInforDoctorService, getDetailDoctorService } from '../../services/doctorService';
 import { getAllNameSpecialtyService } from '../../services/specialtyService';
+import { getAllNameClinicService } from '../../services/clinicService';
+
 import { toast } from 'react-toastify';
 
 
@@ -377,19 +379,24 @@ export const fetchDataFromAllCode = () => {
             let resPayment = await getAllCodeServicesApi("PAYMENT");
             let resProvince = await getAllCodeServicesApi("PROVINCE");
             let resSpecialty = await getAllNameSpecialtyService();
+            let resClinic = await getAllNameClinicService();
+
 
             if (
                 resPrice && resPrice.errCode === 0 &&
                 resPayment && resPayment.errCode === 0 &&
                 resProvince && resProvince.errCode === 0 &&
-                resSpecialty && resSpecialty.errCode === 0
+                resSpecialty && resSpecialty.errCode === 0 &&
+                resClinic && resClinic.errCode === 0
+
             ) {
 
                 let data = {
                     price: resPrice.data,
                     payment: resPayment.data,
                     province: resProvince.data,
-                    specialty: resSpecialty.data
+                    specialty: resSpecialty.data,
+                    clinic: resClinic.data,
                 }
                 dispatch({
                     type: actionTypes.FETCH_PRICE_PAYMENT_PROVINCE_SUCCESS,

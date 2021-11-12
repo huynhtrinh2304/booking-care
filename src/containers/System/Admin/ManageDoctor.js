@@ -83,6 +83,7 @@ class ManageDoctor extends Component {
             let payment = this.buildDataSelect(this.props.dataAllCode.payment);
             let province = this.buildDataSelect(this.props.dataAllCode.province);
             let specialty = this.buildDataSelectMore(this.props.dataAllCode.specialty);
+            let clinic = this.buildDataSelectMore(this.props.dataAllCode.clinic);
 
 
             this.setState({
@@ -94,6 +95,8 @@ class ManageDoctor extends Component {
                 listPaymentEn: payment.dataEn,
                 listProvinceEn: province.dataEn,
                 listSpecialty: specialty,
+                listClinic: clinic,
+
             })
         }
 
@@ -178,13 +181,16 @@ class ManageDoctor extends Component {
             selectedDoctor: state.selectedDoctor.value,
 
             // data table doctor_infor
-            price: this.state.selectedPriceVi.value,
-            payment: this.state.selectedPaymentVi.value,
-            province: this.state.selectedProvinceVi.value,
-            specialty: this.state.selectedSpecialty.value,
-            addressClinic: this.state.addressClinic,
-            nameClinic: this.state.nameClinic,
-            note: this.state.note,
+            price: state.selectedPriceVi.value,
+            payment: state.selectedPaymentVi.value,
+            province: state.selectedProvinceVi.value,
+            specialty: state.selectedSpecialty.value,
+            clinic: state.selectedclinic.value,
+            addressClinic: state.addressClinic,
+            nameClinic: state.nameClinic,
+            note: state.note,
+
+
 
 
         }
@@ -222,7 +228,9 @@ class ManageDoctor extends Component {
                     selectedProvinceVi: '',
                     selectedProvinceEn: '',
 
-                    selectedSpecialty: ''
+                    selectedSpecialty: '',
+                    selectedClinic: '',
+
 
                 })
             }
@@ -266,7 +274,8 @@ class ManageDoctor extends Component {
             price: this.state.selectedPriceVi.value,
             payment: this.state.selectedPaymentVi.value,
             province: this.state.selectedProvinceVi.value,
-            specialty: state.selectedSpecialty.value,
+            specialty: this.state.selectedSpecialty.value,
+            clinic: this.state.selectedClinic.value,
             addressClinic: this.state.addressClinic,
             nameClinic: this.state.nameClinic,
             note: this.state.note,
@@ -293,6 +302,7 @@ class ManageDoctor extends Component {
                 selectedProvinceEn: '',
 
                 selectedSpecialty: '',
+                selectedClinic: '',
 
                 nameClinic: '',
                 addressClinic: '',
@@ -307,7 +317,7 @@ class ManageDoctor extends Component {
     handleChange = async (selectedDoctor) => {
 
         let res = await getInforDoctorService(selectedDoctor.value);
-
+        console.log(res);
 
         if (res && res.error === 0 && res.inforDoctor !== 0) {
             if (res.inforDoctor && res.inforDoctor.dataMarkdown && res.inforDoctor.doctorInfor) {
@@ -356,6 +366,11 @@ class ManageDoctor extends Component {
                         label: res.inforDoctor.doctorInfor.specialty.name
                     },
 
+                    selectedClinic: {
+                        value: res.inforDoctor.doctorInfor.clinic.id,
+                        label: res.inforDoctor.doctorInfor.clinic.name
+                    },
+
                     nameClinic: res.inforDoctor.doctorInfor.nameClinic,
                     addressClinic: res.inforDoctor.doctorInfor.addressClinic,
                     note: res.inforDoctor.doctorInfor.note,
@@ -387,7 +402,9 @@ class ManageDoctor extends Component {
                 selectedProvinceVi: '',
                 selectedProvinceEn: '',
 
-                selectedSpecialty: ''
+                selectedSpecialty: '',
+                selectedClinic: ''
+
 
             })
         }
@@ -429,9 +446,9 @@ class ManageDoctor extends Component {
         })
     }
 
-    handleChangeSelectDataMore = (value) => {
+    handleChangeSelectDataMore = (value, name) => {
         this.setState({
-            selectedSpecialty: value
+            [name]: value,
         })
     }
 
@@ -454,13 +471,15 @@ class ManageDoctor extends Component {
 
         let { language } = this.props;
         let {
-            listPriceVi, listPaymentVi, listProvinceVi, listPriceEn, listPaymentEn, listProvinceEn, listSpecialty
+            listPriceVi, listPaymentVi, listProvinceVi, listPriceEn, listPaymentEn, listProvinceEn,
+            listSpecialty,
+            listClinic
         } = this.state;
 
         let {
             selectedPriceVi, selectedPaymentVi, selectedProvinceVi,
             selectedPriceEn, selectedPaymentEn, selectedProvinceEn,
-            selectedSpecialty
+            selectedSpecialty, selectedClinic
         } = this.state;
 
 
@@ -520,7 +539,7 @@ class ManageDoctor extends Component {
                         <Select
                             options={listSpecialty}
                             placeholder="Specialty..."
-                            onChange={this.handleChangeSelectDataMore}
+                            onChange={(e) => this.handleChangeSelectDataMore(e, 'selectedSpecialty')}
                             value={selectedSpecialty}
                         />
 
@@ -530,13 +549,12 @@ class ManageDoctor extends Component {
                         <label htmlFor="">Chọn phòng khám</label>
 
                         <Select
-                        // options={language === LANGUAGES.VI ? listProvinceVi : listProvinceEn}
-                        // placeholder="Province..."
-                        // onChange={this.handleChangeSelectData.bind(
-                        //     this, 'selectedProvinceVi', 'selectedProvinceEn', listProvinceVi, listProvinceEn
-                        // )}
-                        // value={language === LANGUAGES.VI ? selectedProvinceVi : selectedProvinceEn}
+                            options={listClinic}
+                            placeholder="Clinic..."
+                            onChange={(e) => this.handleChangeSelectDataMore(e, 'selectedClinic')}
+                            value={selectedClinic}
                         />
+
 
                     </div>
 
