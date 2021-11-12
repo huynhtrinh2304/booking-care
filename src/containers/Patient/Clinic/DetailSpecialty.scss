@@ -1,0 +1,80 @@
+.content-markdown-specialty {
+    background-position: center;
+    background-repeat  : no-repeat;
+    background-size    : cover;
+
+    .block-content-specialty {
+        background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 1));
+
+        .content-specialty {
+            padding   : 40px 200px 20px 215px;
+        }
+
+        .hidden-markdown {
+            height : calc(80vh /2)!important;
+            overflow: hidden;
+        }
+
+        a {
+            background: #fff;
+            display   : block;
+            text-decoration: none;
+            padding   : 0 200px 20px 200px;
+
+        }
+    }
+
+}
+
+.container-detail-specialty {
+    position  : relative;
+    background: #eee;
+    padding   : 40px 200px;
+
+    .block-select-province {
+        margin-bottom: 20px;
+
+        .select-province {
+            width        : 160px;
+            height       : 40px;
+            border-radius: 5px;
+            font-size    : 14px
+        }
+    }
+
+    .block-content-detail {
+        display      : flex;
+        border-radius: 8px;
+        width        : 1200px;
+        align-items  : center;
+        background   : #fff;
+        margin-bottom: 20px;
+        padding      : 10px;
+        box-shadow   : 1px 1px 1px 1px #ccc;
+
+
+
+        .content-right {
+            border-right: solid 1px #ccc;
+            width       : 50%;
+
+        }
+
+        .content-left {
+            width      : 50%;
+            margin-left: 40px;
+
+            .doctor-schedule {}
+
+            .doctor-extraInfor {
+                margin-top: 20px;
+
+                .more-detail-doctor {
+                    margin: 0;
+                }
+            }
+
+        }
+    }
+
+}
