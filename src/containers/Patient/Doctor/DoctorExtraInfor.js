@@ -38,8 +38,13 @@ class DetailDoctor extends Component {
 
     }
 
-    componentDidUpdate(prevProps, prevState) {
-
+    async componentDidUpdate(prevProps, prevState) {
+        if (this.props.id !== prevProps.id) {
+            let res = await getInforDoctorService(this.props.id);
+            this.setState({
+                moreDetailDoctor: res.inforDoctor.doctorInfor
+            })
+        }
 
     }
 

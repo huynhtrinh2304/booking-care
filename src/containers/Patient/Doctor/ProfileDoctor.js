@@ -24,7 +24,6 @@ class ProfileDoctor extends Component {
     async componentDidMount() {
         let inforDoctor = await this.getInforDoctor(this.props.id);
         this.setState({ dataProfiles: inforDoctor });
-
     }
 
     getInforDoctor = async (id) => {
@@ -38,10 +37,12 @@ class ProfileDoctor extends Component {
         return result;
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    async componentDidUpdate(prevProps, prevState) {
         if (this.props.id !== prevProps.id) {
-            // this.getInforDoctor(this.props.id)
+            let inforDoctor = await this.getInforDoctor(this.props.id);
+            this.setState({ dataProfiles: inforDoctor });
         }
+
 
     }
 

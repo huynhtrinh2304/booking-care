@@ -5,13 +5,42 @@
 
     .block-content-specialty {
         background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 1));
-        padding: 40px 205px;
+
+        .content-specialty {
+            padding   : 40px 200px 20px 215px;
+        }
+
+        .hidden-markdown {
+            height : calc(80vh /2)!important;
+            overflow: hidden;
+        }
+
+        a {
+            background: #fff;
+            display   : block;
+            text-decoration: none;
+            padding   : 0 200px 20px 200px;
+
+        }
     }
+
 }
 
 .container-detail-specialty {
-    background   : #eee;
-    padding      : 60px 200px;
+    position  : relative;
+    background: #eee;
+    padding   : 40px 200px;
+
+    .block-select-province {
+        margin-bottom: 20px;
+
+        .select-province {
+            width        : 160px;
+            height       : 40px;
+            border-radius: 5px;
+            font-size    : 14px
+        }
+    }
 
     .block-content-detail {
         display      : flex;

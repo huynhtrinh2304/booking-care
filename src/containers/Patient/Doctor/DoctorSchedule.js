@@ -20,6 +20,7 @@ class DoctorSchedule extends Component {
             scheduleOfDay: [],
             isOpenModelBooking: false,
             inforDoctor: '',
+            selectedDay: ''
 
         }
 
@@ -27,7 +28,6 @@ class DoctorSchedule extends Component {
     }
 
     async componentDidMount() {
-
         let date = moment(new Date()).add(0, 'days').startOf('day').valueOf();
         let doctorId = this.props.id;
         this.callFunctionGetSchedule(doctorId, date);
@@ -39,58 +39,13 @@ class DoctorSchedule extends Component {
             this.setArrDays();
         }
 
-    }
+        if (this.props.id !== prevProps.id) {
+            let doctorId = this.props.id;
+            this.callFunctionGetSchedule(doctorId, this.state.selectedDay);
 
-    setArrDays = () => {
-        let allDay = [];
-        let today = new Date().setHours(0, 0, 0, 0);
-
-
-
-        for (let i = 0; i < 7; i++) {
-            let object = {};
-            object.value = moment(new Date()).add(i, 'days').startOf('day').valueOf();
-
-
-            if (this.props.language === LANGUAGES.VI) {
-                let day = moment(new Date()).add(i, 'days').format('dddd - DD/MM');
-
-                object.label = day.charAt(0).toUpperCase() + day.slice(1);
-
-                if (object.value === today) {
-                    let label = object.label.slice(object.label.indexOf(' ', 6))
-                    object.label = 'Hôm nay' + label;
-
-                }
-
-            } else {
-                object.label = moment(new Date()).locale('en').add(i, 'days').format('ddd - DD/MM');
-
-                if (object.value === today) {
-                    let label = object.label.slice(object.label.indexOf(' ', 3))
-                    object.label = 'Today' + label;
-
-                }
-            }
-
-
-
-            allDay.push(object);
         }
-        this.setState({
-            allDay: allDay
-        })
-    }
-
-
-    onChangeSelectChooseDate = async (e) => {
-        let date = e.target.value;
-        let doctorId = this.props.id;
-        this.callFunctionGetSchedule(doctorId, date);
-
 
     }
-
 
     callFunctionGetSchedule = async (doctorId, date) => {
         let res = await getScheduleDoctorByDateService(doctorId, date);
@@ -100,6 +55,49 @@ class DoctorSchedule extends Component {
             })
         }
     }
+
+    onChangeSelectChooseDate = async (e) => {
+        let date = e.target.value;
+        let doctorId = this.props.id;
+        this.callFunctionGetSchedule(doctorId, date);
+        this.setState({
+            selectedDay: date
+        })
+
+    }
+
+    setArrDays = () => {
+        let allDay = [];
+        let today = new Date().setHours(0, 0, 0, 0);
+        for (let i = 0; i < 7; i++) {
+            let object = {};
+            object.value = moment(new Date()).add(i, 'days').startOf('day').valueOf();
+
+            if (this.props.language === LANGUAGES.VI) {
+                let day = moment(new Date()).add(i, 'days').format('dddd - DD/MM');
+
+                object.label = day.charAt(0).toUpperCase() + day.slice(1);
+
+                if (object.value === today) {
+                    let label = object.label.slice(object.label.indexOf(' ', 6))
+                    object.label = 'Hôm nay' + label;
+                }
+
+            } else {
+                object.label = moment(new Date()).locale('en').add(i, 'days').format('ddd - DD/MM');
+                if (object.value === today) {
+                    let label = object.label.slice(object.label.indexOf(' ', 3))
+                    object.label = 'Today' + label;
+                }
+            }
+            allDay.push(object);
+        }
+        this.setState({
+            allDay: allDay
+        })
+    }
+
+
 
     openModelBookingSchedule = (value) => {
         this.setState({
@@ -142,7 +140,6 @@ class DoctorSchedule extends Component {
                                     <option value={item.value} key={index}>{item.label}</option>
                                 )
                             })}
-
                         </select>
                     </div>
 
@@ -166,18 +163,10 @@ class DoctorSchedule extends Component {
                                     }) :
 
                                     <h3 className="mt-4" style={{ color: 'red' }}>Doctor's schedule is currently not available. Please you should choose other day</h3>
-
                                 }
-
-
                             </div>
-
                         </div>
-
                     </div>
-
-
-
                 </div>
 
             </>
