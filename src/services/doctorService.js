@@ -29,7 +29,9 @@ const getProfileDoctorById = (id) => {
     return axios.get(`/api/get-profile-doctor-by-id?id=${id}`)
 }
 
-
+const getListPaitentFortDoctorService = (id, time) => {
+    return axios.get(`/api/get-list-paitent-fort-doctor?id=${id}&time=${time}`)
+}
 
 
 
@@ -40,5 +42,6 @@ export {
     putUpdateDetailDoctor,
     bulkCreateScheduleService,
     getInforDoctorService,
-    getProfileDoctorById
+    getProfileDoctorById,
+    getListPaitentFortDoctorService
 }

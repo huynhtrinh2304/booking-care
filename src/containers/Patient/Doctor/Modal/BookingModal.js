@@ -27,7 +27,6 @@ class BookingModal extends Component {
             phoneNumber: '',
             address: '',
             reason: '',
-            birthday: '',
             date: '',
             doctorId: '',
             timeType: '',
@@ -78,7 +77,7 @@ class BookingModal extends Component {
         this.setState({
             isLoading: true
         })
-        let { email, fullName, phoneNumber, address, reason, birthday, doctorId, timeType, selectedGender, date } = this.state;
+        let { email, fullName, phoneNumber, address, reason, doctorId, timeType, selectedGender, date } = this.state;
 
         let data = {
             email: email,
@@ -86,7 +85,6 @@ class BookingModal extends Component {
             phoneNumber: phoneNumber,
             address: address,
             reason: reason,
-            birthday: birthday,
             doctorId: doctorId,
             timeType: timeType,
             gender: selectedGender.value,
@@ -116,11 +114,6 @@ class BookingModal extends Component {
         this.props.toggleModalBooking();
     };
 
-    handleOnChangeDatePicker = (birthday) => {
-        this.setState({
-            birthday: new Date(birthday[0]).getTime()
-        })
-    }
 
     handleChangeGender = (value) => {
         this.setState({
@@ -218,14 +211,7 @@ class BookingModal extends Component {
 
                             </div>
 
-                            <div className="form-group col-md-6">
-                                <label>Ngày sinh</label>
-                                <DatePicker
-                                    onChange={this.handleOnChangeDatePicker}
-                                    className="form-control"
-                                    value={this.state.birthday}
-                                />
-                            </div>
+
 
                             <div className="form-group col-md-6">
                                 <label>Giới tính</label>
@@ -237,7 +223,7 @@ class BookingModal extends Component {
                                 />
                             </div>
 
-                            <div className="form-group col-md-12">
+                            <div className="form-group col-md-6">
                                 <label>Lý do khám</label>
                                 <input
                                     type="text"

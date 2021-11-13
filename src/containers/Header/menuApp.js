@@ -25,11 +25,6 @@ export const adminMenu = [
             //     name: 'menu.admin.manage-admin', link: '/system/user-admin'
             // },
 
-            { //Quản lý schedule
-                name: 'menu.doctor.manage-schedule', link: '/doctor/manage-schedule'
-            },
-
-
         ]
     },
 
@@ -61,6 +56,9 @@ export const adminMenu = [
     },
 ];
 
+
+
+
 export const doctorMenu = [
 
     {
@@ -70,6 +68,9 @@ export const doctorMenu = [
 
             {
                 name: 'menu.doctor.manage-schedule', link: '/doctor/manage-schedule'
+            },
+            {
+                name: 'menu.doctor.manage-paitent', link: '/doctor/manage-paitent'
             },
 
 

@@ -22,6 +22,7 @@
             }
         }
         .menu-list {
+            // width: 240px;
             display: none;
             background-color: $bg-menu-color;
             box-shadow: 2px 2px 4px 0 $box-shadow-color;
@@ -30,7 +31,6 @@
             position: absolute;
             padding: 0;
             .menu {
-                width: 205px;
                 padding-left: 15px;
                 height: 35px;
                 line-height: 35px;
@@ -43,16 +43,20 @@
                     &:hover {
                         background-color: rgb(45, 52, 56);
                         a {
+                            
                             color: white;
                         }
                     }
                 }
 
                 .menu-link {
+                    margin-right: 20px;
                     text-decoration: none;
                     display: block;
+                    width: 100%;
                     padding-left: 10px;
                     color: $text-in-light;
+                   
                 }
                 .sub-menu-list {
                     display: none;
