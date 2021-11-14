@@ -30,9 +30,12 @@ const getProfileDoctorById = (id) => {
 }
 
 const getListPaitentFortDoctorService = (id, time) => {
-    return axios.get(`/api/get-list-paitent-fort-doctor?id=${id}&time=${time}`)
+    return axios.get(`/api/get-list-paitent-for-doctor?id=${id}&time=${time}`)
 }
 
+const sendMailForPatientService = (data) => {
+    return axios.post(`/api/send-mail-for-patient`, data)
+}
 
 
 export {
@@ -43,5 +46,7 @@ export {
     bulkCreateScheduleService,
     getInforDoctorService,
     getProfileDoctorById,
-    getListPaitentFortDoctorService
+    getListPaitentFortDoctorService,
+    sendMailForPatientService
+
 }

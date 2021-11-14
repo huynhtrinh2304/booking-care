@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import './ManagePaitent.scss';
 import DatePicker from '../../../components/Input/DatePicker';
 import { getListPaitentFortDoctorService } from '../../../services/doctorService'
-
-
+import DoneConfirm from './ModalConfirmPatient/DoneConfirm'
 
 
 
@@ -15,10 +14,11 @@ class ManagePaitent extends Component {
         super(props);
         this.state = {
             currentDate: new Date(),
-            listPatients: []
+            listPatients: [],
+            isOpenModel: false,
+            inforPatientDoctor: {},
+
         }
-
-
     }
 
     async componentDidMount() {
@@ -31,8 +31,13 @@ class ManagePaitent extends Component {
 
     async componentDidUpdate(prevProps, prevState) {
 
+    }
 
-
+    setAgainPatient = async () => {
+        let today = this.state.currentDate.setHours(0, 0, 0, 0);
+        let doctorId = this.props.userInfo.id;
+        let listPatients = await getListPaitentFortDoctorService(doctorId, today);
+        this.setState({ listPatients: listPatients.data });
     }
 
     handleOnChangeDatePicker = async (date) => {
@@ -44,13 +49,39 @@ class ManagePaitent extends Component {
         })
     }
 
+    handleBtnConfirm = (inforpatient) => {
+        let data = {
+            doctorId: inforpatient.doctorId,
+            patientId: inforpatient.patient.id,
+            emailPatient: inforpatient.patient.email,
+            fullName: inforpatient.fullName,
+            date: inforpatient.date,
+            timeType: inforpatient.timeType,
+            statusId: inforpatient.statusId
+        }
+
+        this.setState({
+            isOpenModel: true,
+            inforPatientDoctor: data
+        })
+    }
+
+    toggleParent = () => {
+        this.setState({
+            isOpenModel: !this.state.isOpenModel
+        })
+    }
+
+
+
+
 
     render() {
         let { listPatients } = this.state
 
 
         return (
-            <div className="container container-manage-paitent">
+            <div className="container-manage-paitent">
                 <div className="title-container text-center mt-4">
                     <h2>Manage Paitent</h2>
                 </div>
@@ -66,18 +97,21 @@ class ManagePaitent extends Component {
                         />
                     </div>
 
+
                     <div className="col-12">
                         <table className="table table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Name paitent</th>
+                                    <th scope="col">Name patient</th>
                                     <th scope="col">Appointment time</th>
                                     <th scope="col">Phone number</th>
                                     <th scope="col">Gender</th>
                                     <th scope="col">Reason</th>
                                     <th scope="col">Address</th>
-                                    <th scope="col">Comfirm</th>
+                                    <th scope="col" className="text-center">Confirm</th>
+
+
                                 </tr>
                             </thead>
 
@@ -107,9 +141,14 @@ class ManagePaitent extends Component {
                                                 <td>{item.gender}</td>
                                                 <td>{item.reason}</td>
                                                 <td>{item.address}</td>
-                                                <td>
-                                                    <button>Commplete</button>
+                                                <td className="text-center">
+                                                    <button
+                                                        className="btn btn-success"
+                                                        onClick={() => this.handleBtnConfirm(item)}
+                                                    >Done
+                                                    </button>
                                                 </td>
+
                                             </tr>
                                         )
                                     })
@@ -123,16 +162,21 @@ class ManagePaitent extends Component {
                         }
                     </div>
                 </div>
+
+                <DoneConfirm
+                    isOpen={this.state.isOpenModel}
+                    toggleParent={this.toggleParent}
+                    data={this.state.inforPatientDoctor}
+                    setAgainPatient={this.setAgainPatient}
+                />
+
             </div>
         )
     }
 
-
-
-
-
-
 }
+
+
 
 
 

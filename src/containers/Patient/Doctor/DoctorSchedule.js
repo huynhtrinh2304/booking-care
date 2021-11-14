@@ -128,7 +128,6 @@ class DoctorSchedule extends Component {
                     isOpen={this.state.isOpenModelBooking}
                     toggleModalBooking={this.setIsOpenModalBooking}
                     doctorDetail={this.state.inforDoctor}
-
                 />
                 <div className="container-schedule">
 
@@ -172,12 +171,6 @@ class DoctorSchedule extends Component {
             </>
         )
     }
-
-
-
-
-
-
 }
 
 

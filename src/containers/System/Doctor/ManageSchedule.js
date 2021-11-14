@@ -19,7 +19,7 @@ class ManageSchedule extends Component {
         super(props);
         this.state = {
             selectedDoctor: '',
-            options: [],
+            // options: [],
             currentDate: '',
             timeSchedule: [],
 
@@ -33,9 +33,19 @@ class ManageSchedule extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevProps.doctors !== this.props.doctors) {
-            this.optionsSelectedDoctor(this.props.doctors);
+        // if (prevProps.doctors !== this.props.doctors) {
+        //     this.optionsSelectedDoctor(this.props.doctors);
 
+        // }
+
+        if (prevProps.doctors !== this.props.doctors) {
+            this.props.doctors.filter((item) => {
+                if (item.id === this.props.userInfo.id) {
+                    this.setState({
+                        selectedDoctor: { value: item.id, label: `${item.firstName} ${item.lastName}` }
+                    })
+                }
+            })
         }
         if (prevProps.timeSchedule !== this.props.timeSchedule) {
             if (this.props.timeSchedule) {
@@ -49,18 +59,18 @@ class ManageSchedule extends Component {
         }
     }
 
-    optionsSelectedDoctor = (list) => {
-        list.map((doctor) => {
-            this.state.options.push({ value: doctor.id, label: `${doctor.lastName} ${doctor.firstName}` });
-        })
-        return list;
-    }
+    // optionsSelectedDoctor = (list) => {
+    //     list.map((doctor) => {
+    //         this.state.options.push({ value: doctor.id, label: `${doctor.lastName} ${doctor.firstName}` });
+    //     })
+    //     return list;
+    // }
 
-    handleChange = async (selectedDoctor) => {
-        this.setState({
-            selectedDoctor: selectedDoctor
-        })
-    }
+    // handleChange = async (selectedDoctor) => {
+    //     this.setState({
+    //         selectedDoctor: selectedDoctor
+    //     })
+    // }
 
     handleOnChangeDatePicker = (date) => {
         this.setState({
@@ -95,10 +105,6 @@ class ManageSchedule extends Component {
         let result = [];
 
 
-        if (!selectedDoctor && _.isEmpty(selectedDoctor && selectedDoctor.value === 0)) {
-            toast.error('Please choose a doctor');
-            return;
-        }
 
         if ((currentDate instanceof Date && !isNaN(currentDate)) === false) {
             toast.error('Invalid date');
@@ -129,7 +135,6 @@ class ManageSchedule extends Component {
             toast.success('Create schedule successfully');
             this.state.timeSchedule.filter(time => time.isSelected = false);
             this.setState({
-                selectedDoctor: '',
                 currentDate: '',
             })
         } else {
@@ -147,6 +152,8 @@ class ManageSchedule extends Component {
 
     render() {
         let { timeSchedule } = this.state;
+
+
         let language = this.props.language;
         let date = new Date();
 
@@ -168,10 +175,11 @@ class ManageSchedule extends Component {
                             <label htmlFor="">Choose a doctor</label>
 
                             <Select
-                                onChange={this.handleChange}
-                                options={this.state.options}
+                                // onChange={this.handleChange}
+                                // options={options}
                                 value={this.state.selectedDoctor}
                                 placeholder="Doctor..."
+                                isDisabled={true}
                             />
 
                         </div>
@@ -232,6 +240,7 @@ class ManageSchedule extends Component {
 const mapStateToProps = state => {
     return {
         isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo,
         doctors: state.admin.allDoctors,
         timeSchedule: state.admin.timeSchedule,
         language: state.app.language,
