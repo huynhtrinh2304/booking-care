@@ -28,9 +28,11 @@ class DoctorSchedule extends Component {
     }
 
     async componentDidMount() {
-        let date = moment(new Date()).add(0, 'days').startOf('day').valueOf();
+        // let date = moment(new Date()).add(0, 'days').startOf('day').valueOf();
+        let currentDate = new Date().getTime();
+        let timeFuture = new Date().setHours(23, 59, 0, 0);
         let doctorId = this.props.id;
-        this.callFunctionGetSchedule(doctorId, date);
+        this.callFunctionGetSchedule(doctorId, currentDate, timeFuture);
         this.setArrDays();
     }
 
@@ -47,8 +49,8 @@ class DoctorSchedule extends Component {
 
     }
 
-    callFunctionGetSchedule = async (doctorId, date) => {
-        let res = await getScheduleDoctorByDateService(doctorId, date);
+    callFunctionGetSchedule = async (doctorId, date, timeFuture) => {
+        let res = await getScheduleDoctorByDateService(doctorId, date, timeFuture);
         if (res && res.errCode === 0) {
             this.setState({
                 scheduleOfDay: res.data
@@ -59,7 +61,13 @@ class DoctorSchedule extends Component {
     onChangeSelectChooseDate = async (e) => {
         let date = e.target.value;
         let doctorId = this.props.id;
-        this.callFunctionGetSchedule(doctorId, date);
+
+        if (moment(new Date()).add(0, 'days').startOf('day').valueOf() === +date) {
+            this.callFunctionGetSchedule(doctorId, new Date().getTime(), +date + 86400000);
+        } else {
+            this.callFunctionGetSchedule(doctorId, date, +date + 86400000);
+        }
+
         this.setState({
             selectedDay: date
         })
@@ -72,7 +80,6 @@ class DoctorSchedule extends Component {
         for (let i = 0; i < 7; i++) {
             let object = {};
             object.value = moment(new Date()).add(i, 'days').startOf('day').valueOf();
-
             if (this.props.language === LANGUAGES.VI) {
                 let day = moment(new Date()).add(i, 'days').format('dddd - DD/MM');
 
@@ -121,6 +128,8 @@ class DoctorSchedule extends Component {
 
 
 
+
+
         return (
             <>
 
@@ -156,6 +165,7 @@ class DoctorSchedule extends Component {
                                     scheduleOfDay.map((value, index) => {
 
                                         let timeValue = language === LANGUAGES.VI ? value.timeTypeData.valueVi : value.timeTypeData.valueEn;
+
                                         return (
                                             <button key={index} onClick={() => this.openModelBookingSchedule(value)}>{timeValue}</button>
                                         )

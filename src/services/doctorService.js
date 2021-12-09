@@ -29,8 +29,8 @@ const getProfileDoctorById = (id) => {
     return axios.get(`/api/get-profile-doctor-by-id?id=${id}`)
 }
 
-const getListPaitentFortDoctorService = (id, time) => {
-    return axios.get(`/api/get-list-paitent-for-doctor?id=${id}&time=${time}`)
+const getListPaitentFortDoctorService = (id, time, futureTime) => {
+    return axios.get(`/api/get-list-paitent-for-doctor?id=${id}&time=${time}&futureTime=${futureTime}`)
 }
 
 const sendMailForPatientService = (data) => {

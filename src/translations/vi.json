@@ -38,7 +38,7 @@
         },
         "doctor": {
             "manage-schedule": "Quản lý lịch trình",
-            "manage-paitent": "Quản lý bệnh nhân"
+            "manage-patient": "Quản lý bệnh nhân"
         }
     },
     "manage-user": {

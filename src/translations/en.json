@@ -38,7 +38,7 @@
         },
         "doctor": {
             "manage-schedule": "Manage Doctor's Schedule",
-            "manage-paitent": "Manage Doctor's Paitent"
+            "manage-patient": "Manage Doctor's Paitent"
         }
     },
     "manage-user": {

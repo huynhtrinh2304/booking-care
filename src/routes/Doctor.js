@@ -22,7 +22,7 @@ class Doctor extends Component {
                     <div className="">
                         <Switch>
                             <Route path="/doctor/manage-schedule" component={ManageSchedule} />
-                            <Route path="/doctor/manage-paitent" component={ManagePaitent} />
+                            <Route path="/doctor/manage-patient" component={ManagePaitent} />
 
                         </Switch>
                     </div>

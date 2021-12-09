@@ -79,19 +79,20 @@ class ManageSchedule extends Component {
     }
 
     handleSelectBtnTime = (timeChosse) => {
-        let { timeSchedule } = this.state;
+        let { timeSchedule, currentDate } = this.state;
+        if ((currentDate instanceof Date && !isNaN(currentDate)) === false) {
+            alert('Please select a date');
+            return;
+        }
 
-
+        // console.log(this.state.currentDate.setHours(9));
         if (timeSchedule && timeSchedule.length > 0) {
             timeSchedule.map((time) => {
                 if (time.keyMap === timeChosse.keyMap) {
                     timeChosse.isSelected = !timeChosse.isSelected;
-
-
+                    timeChosse.timeStampChoosed = currentDate.setHours(time.valueVi.slice(0, time.valueVi.indexOf(':')));
                 }
-
             })
-
             this.setState({
                 timeSchedule: timeSchedule
             })
@@ -101,17 +102,12 @@ class ManageSchedule extends Component {
 
     handleSaveScheduleDoctor = async () => {
         let { timeSchedule, currentDate, selectedDoctor } = this.state;
-        let formateDate = new Date(currentDate).getTime();
         let result = [];
-
-
 
         if ((currentDate instanceof Date && !isNaN(currentDate)) === false) {
             toast.error('Invalid date');
             return;
         }
-
-
 
         if (timeSchedule && timeSchedule.length > 0) {
             let selectedTime = timeSchedule.filter(time => time.isSelected === true)
@@ -119,41 +115,32 @@ class ManageSchedule extends Component {
                 let object = {};
                 object.doctorId = selectedDoctor.value;
                 object.timeType = time.keyMap;
-                object.date = formateDate;
+                object.date = time.timeStampChoosed;
                 result.push(object)
             })
         }
 
+
         let res = await bulkCreateScheduleService({
             arrSchedule: result,
             doctorId: selectedDoctor.value,
-            date: formateDate
-
         });
 
         if (res && res.errCode === 0) {
             toast.success('Create schedule successfully');
             this.state.timeSchedule.filter(time => time.isSelected = false);
-            this.setState({
-                currentDate: '',
-            })
+            // this.setState({
+            //     currentDate: '',
+            // })
         } else {
             toast.error("Can't save schedule");
         }
-
-
     }
-
-
-
-
 
 
 
     render() {
         let { timeSchedule } = this.state;
-
-
         let language = this.props.language;
         let date = new Date();
 
@@ -201,23 +188,16 @@ class ManageSchedule extends Component {
                                 timeSchedule.map((time, i) => {
                                     let timeEn = time.valueEn;
                                     let timeVi = time.valueVi;
-
-
                                     return (
-
                                         <button
                                             key={i}
                                             onClick={() => this.handleSelectBtnTime(time)}
                                             className={time.isSelected === true ? "btn btn-info btn-schedule" : "btn btn-secondary btn-schedule"}
-
                                         >{timeVi}
                                         </button>
-
                                     )
                                 })
-
                             }
-
 
                         </div>
 

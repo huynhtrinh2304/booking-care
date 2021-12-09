@@ -24,9 +24,9 @@ class ManagePaitent extends Component {
     async componentDidMount() {
         let today = this.state.currentDate.setHours(0, 0, 0, 0);
         let doctorId = this.props.userInfo.id;
-        let listPatients = await getListPaitentFortDoctorService(doctorId, today);
+        let timeFuture = new Date().setHours(23, 59, 0, 0);
+        let listPatients = await getListPaitentFortDoctorService(doctorId, today, timeFuture);
         this.setState({ listPatients: listPatients.data })
-
     }
 
     async componentDidUpdate(prevProps, prevState) {
@@ -36,13 +36,15 @@ class ManagePaitent extends Component {
     setAgainPatient = async () => {
         let today = this.state.currentDate.setHours(0, 0, 0, 0);
         let doctorId = this.props.userInfo.id;
-        let listPatients = await getListPaitentFortDoctorService(doctorId, today);
+        let listPatients = await getListPaitentFortDoctorService(doctorId, today, +today + 86400000);
+        console.log(listPatients);
         this.setState({ listPatients: listPatients.data });
     }
 
     handleOnChangeDatePicker = async (date) => {
-        let listPatients = await getListPaitentFortDoctorService(this.props.userInfo.id, date[0].getTime());
+        let time = date[0].getTime();
 
+        let listPatients = await getListPaitentFortDoctorService(this.props.userInfo.id, time, time + 86400000);
         this.setState({
             currentDate: date[0],
             listPatients: listPatients.data
@@ -78,7 +80,6 @@ class ManagePaitent extends Component {
 
     render() {
         let { listPatients } = this.state
-
 
         return (
             <div className="container-manage-paitent">

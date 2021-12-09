@@ -70,7 +70,7 @@ export const doctorMenu = [
                 name: 'menu.doctor.manage-schedule', link: '/doctor/manage-schedule'
             },
             {
-                name: 'menu.doctor.manage-paitent', link: '/doctor/manage-paitent'
+                name: 'menu.doctor.manage-patient', link: '/doctor/manage-patient'
             },
 
 
