@@ -21,11 +21,13 @@ class VerifyBooking extends Component {
 
     async componentDidMount() {
         let query = this.getQueryParams();
+
         let res = await postVerifyBookAppointment({
             token: query.token,
             doctorId: query.doctorId,
             patientId: query.patientId,
-            timeType: query.timeType
+            timeType: query.timeType,
+            date: query.date
         })
         if (res.errCode === 0) {
             this.setState({
@@ -44,12 +46,15 @@ class VerifyBooking extends Component {
         let doctorId = query.get('doctorId');
         let patientId = query.get('patientId');
         let timeType = query.get('timeType');
+        let date = query.get('date');
+
 
         return {
             token: token,
             doctorId: doctorId,
             patientId: patientId,
-            timeType: timeType
+            timeType: timeType,
+            date:date
         }
 
     }
