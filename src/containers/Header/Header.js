@@ -43,8 +43,6 @@ class Header extends Component {
                 {/* thanh navigator */}
                 <div className="header-tabs-container">
                     {userInfo.roleId === 'R2' ? <Navigator menus={doctorMenu} /> : <Navigator menus={adminMenu} />}
-
-
                 </div>
 
                 <div className="header-languages-logout">

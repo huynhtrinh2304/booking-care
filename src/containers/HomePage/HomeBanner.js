@@ -44,8 +44,9 @@ class HomeHeader extends Component {
 
                     </div>
                     <div className="search">
-                        <i className="fas fa-search"></i>
-                        <input type="text" />
+                        {/* <i className="fas fa-search"></i>
+                        <input type="text" /> */}
+
                     </div>
 
                 </div>
@@ -94,7 +95,7 @@ class HomeHeader extends Component {
 
                         </div>
 
-                        <div className="option-child">
+                        {/* <div className="option-child">
 
                             <div className="icon-child">
                                 <img src={suckhoe_tinhthan} alt="" />
@@ -112,7 +113,7 @@ class HomeHeader extends Component {
 
                             <p className="text-child"><FormattedMessage id="banner.text-child6" /></p>
 
-                        </div>
+                        </div> */}
 
                     </div>
 

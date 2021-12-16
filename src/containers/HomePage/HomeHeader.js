@@ -30,15 +30,15 @@ class HomeHeader extends Component {
                     <div className="home-header-content">
 
                         <div className="left-content">
-
-                            <i className="fas fa-bars"></i>
                             <div className="header-logo" onClick={this.handleBackHome}>
                             </div>
 
                         </div>
 
                         <div className="center-content">
+                            <marquee>Chào mừng các bạn đến với website Doctor Care</marquee>
 
+                            {/* 
                             <div className="child-content">
 
                                 <div>
@@ -77,7 +77,7 @@ class HomeHeader extends Component {
                                 </div>
                                 <div className="subs-title"><FormattedMessage id="home-header.check-health" /></div>
 
-                            </div>
+                            </div> */}
 
 
 

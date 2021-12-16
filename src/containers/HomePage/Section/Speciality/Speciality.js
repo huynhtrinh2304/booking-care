@@ -51,13 +51,7 @@ class Speciality extends Component {
                 <div className="content-carousel">
 
                     <div className="title-carousel">
-
-                        <h3 className="text-carousel">Chuyên khoa phổ biến</h3>
-
-                        <div className="more-carousel">
-                            <a href="">Xem thêm</a>
-                        </div>
-
+                        <h3 className="text-carousel">Chuyên khoa nổi bậc</h3>
                     </div>
 
                     <div className="container">

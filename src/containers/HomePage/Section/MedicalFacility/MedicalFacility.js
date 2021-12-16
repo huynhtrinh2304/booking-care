@@ -37,11 +37,7 @@ class MedicalFacility extends Component {
 
                     <div className="title-carousel">
 
-                        <h3 className="text-carousel">Cơ sở y tế nổi bật</h3>
-
-                        <div className="more-carousel">
-                            <a href="">Xem thêm</a>
-                        </div>
+                        <h3 className="text-carousel">Các cơ sở y tế mà bạn có thể khám</h3>
 
                     </div>
 
@@ -51,7 +47,7 @@ class MedicalFacility extends Component {
                             {
                                 listDataClinic && listDataClinic.length > 0 && listDataClinic.map((item, index) => {
                                     return (
-                                        <a href={`/detail-clinic/${item.id}`}>
+                                        <a key={index} href={`/detail-clinic/${item.id}`}>
                                             <div className="block-slide-medical-facility" key={index} onClick={this.nextPageDetailClinic}>
                                                 <div
                                                     className="img-customize-medical-facility"

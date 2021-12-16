@@ -1,42 +1,53 @@
 .home-header-container {
-    height: 80px;
-    position: fixed;
+    height          : 80px;
+    position        : fixed;
     background-color: #fff;
-    z-index: 1000;
-    width: 100%;
-    padding: 0 20px;
+    z-index         : 1000;
+    width           : 100%;
+    padding         : 0 20px;
 
     .home-header-content {
-        width: 100%;
-        height: 100%;
+        width  : 100%;
+        height : 100%;
         display: flex;
 
         .left-content {
-            width: 25%;
-            display: flex;
-            gap: 20px;
+            width          : 25%;
+            display        : flex;
+            gap            : 20px;
             justify-content: center;
-            align-items: center;
+            align-items    : center;
 
             i {
                 font-size: 25px;
-                color: grey;
-                cursor: pointer;
+                color    : grey;
+                cursor   : pointer;
             }
 
             .header-logo {
-                background: url("../../assets/logo.svg") center center no-repeat;
-                height: 70%;
-                width: 50%;
-                cursor: pointer;
+                background         : url("../../assets/logo2.png") center center no-repeat;
+                height             : 80px;
+                width              : 150px;
+                cursor             : pointer;
+                background-position: center;
+                background-repeat  : no-repeat;
+                background-size    : cover;
+
             }
         }
 
         .center-content {
-            width: 50%;
+
+            marquee {
+                font-size:30px;
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+                color : rgb(0, 0, 0);
+            }
+
+            width  : 50%;
             display: flex;
 
-            align-items: center;
+            align-items    : center;
             justify-content: space-evenly;
 
             .child-content {
@@ -46,15 +57,15 @@
 
                 .subs-title {
                     font-weight: 500;
-                    font-size: 12px;
+                    font-size  : 12px;
                 }
             }
         }
 
         .right-content {
-            width: 25%;
-            display: flex;
-            align-items: center;
+            width          : 25%;
+            display        : flex;
+            align-items    : center;
             justify-content: center;
 
             .support {
@@ -67,12 +78,12 @@
 
             .language-vi {
                 margin-right: 10px;
-                cursor: pointer;
+                cursor      : pointer;
             }
 
             .active-vi {
                 font-size: 25px;
-                color: red;
+                color    : red;
             }
 
             .language-en {
@@ -81,7 +92,7 @@
 
             .active-en {
                 font-size: 25px;
-                color: rgb(109, 8, 224);
+                color    : rgb(109, 8, 224);
             }
         }
     }

@@ -1,8 +1,31 @@
 .section-carousel-handbook {
-    height: 330px;
     padding-top: 1px;
+    height:500px;
     background: #f5f5f5;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+ 
+    .content-carousel {
+        .title-carousel {
+            justify-content: center;
+            background: #0a1e34;
+            color: #fff;
+        }
+
+        .block-container {
+            display: flex;
+            text-align: center;
+            .reason {
+                padding: 20px;
+                img {
+                    margin-bottom: 10px;
+                    height: 135px;
+                    width: 135px;
+                }
+            }
+        }
+    }
+
+
 
     .block-slide-handbook {
         display: flex !important;

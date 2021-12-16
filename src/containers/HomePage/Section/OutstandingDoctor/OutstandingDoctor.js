@@ -46,12 +46,7 @@ class OutstandingDoctor extends Component {
 
                     <div className="title-carousel">
 
-                        <h3 className="text-carousel">Bác sĩ nổi bật tuần qua</h3>
-
-                        <div className="more-carousel">
-                            <a href="">Xem thêm</a>
-                        </div>
-
+                        <h3 className="text-carousel">Bác sĩ có kinh nghiệm cao</h3>
                     </div>
 
                     <div className="container">

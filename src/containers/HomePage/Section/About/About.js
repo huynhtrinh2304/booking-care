@@ -18,7 +18,7 @@ class About extends Component {
 
             <div className="section-about">
                 <div className="title-video">
-                    <h3>Truyền thông nói về BookingCare</h3>
+                    <h3>Đặt lịch khám chữa bệnh trực tuyến toàn quốc </h3>
                 </div>
 
                 <div className="content-about">
@@ -26,13 +26,15 @@ class About extends Component {
                     <div className="video">
 
                         <iframe
-                            width="650"
-                            height="370"
-                            src="https://www.youtube.com/embed/FyDQljKtWnI"
+                            width="560"
+                            height="315"
+                            src="https://www.youtube.com/embed/y7UsgXAVwog"
                             title="YouTube video player"
                             frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen>
+                            allowFullScreen
+                        >
+
                         </iframe>
 
                     </div>
