@@ -138,6 +138,7 @@ class BookingModal extends Component {
         let { optionsGenders, selectedGender, isLoading } = this.state
 
 
+
         return (
             <>
                 {
@@ -161,7 +162,10 @@ class BookingModal extends Component {
                             hiddenTime={false}
                             hiddenPrice={false}
 
+
                         />
+
+                        <h4>{doctorDetail.currentNumber == doctorDetail.maxNumber ? "Lịch này hiện tại đã đầy" : `Số lượng bệnh nhận đặt lịch là : ${doctorDetail.currentNumber}`}</h4>
                     </ModalHeader>
 
                     <ModalBody>

@@ -107,6 +107,7 @@ class DoctorSchedule extends Component {
 
 
     openModelBookingSchedule = (value) => {
+        console.log(value);
         this.setState({
             isOpenModelBooking: true,
             inforDoctor: value
